@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View} from 'react-native';
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput} from 'react-native';
 
 
 import {
@@ -27,24 +27,53 @@ const Login = ({navigation}) => {
     return (
         <ScrollView 
         style={{flex: 1, backgroundColor: '#ffffff'}}
-        showsVerticalScrollIndicator={false}>
+        >
             <ImageBackground
-            source={require('./../assets/background.jpg')}
+            source={require('./../assets/back7.jpg')}
             style={{
-                height: Dimensions.get('window').height / 2.5,
+                height: Dimensions.get('window').height / 2.4,
             }}>
             
             <StyledContainer>
-            <InnerContainer>
-                <PageLogo resizeMode="cover" source={require('./../assets/logo3.png')}></PageLogo>
-                    
-            </InnerContainer>
-        </StyledContainer>
+                <InnerContainer>
+                    <PageLogo resizeMode="cover" source={require('./../assets/logo3.png')}></PageLogo>
+                </InnerContainer>
+            </StyledContainer>
             </ImageBackground>
+            <View style={styles.formView}>
+                <View style={{padding: 40}}>
+                    <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Login</Text>
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Username' placeholderTextColor="grey"></TextInput>
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput placeholder='Password' secureTextEntry={true}></TextInput>
+                </View>
+            </View>
         </ScrollView>
     );
 
 }
 
+const styles = StyleSheet.create({
+    formView:{
+        flex: 1.5,
+        backgroundColor: '#f0f8ff',
+        bottom: 50,
+        borderTopStartRadius: 60,
+        borderTopEndRadius: 60,
+        alignItems: "center"
+    },
+    inputView:{
+        backgroundColor: "#71ebeb",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: "center",
+        justifyContent: "center"
+    }
+})
 
 export default Login;
