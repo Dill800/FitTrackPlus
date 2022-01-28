@@ -1,5 +1,6 @@
-import React from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput} from 'react-native';
+
+import React, {useState, useEffect} from 'react';
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button} from 'react-native';
 
 
 import {
@@ -24,6 +25,9 @@ const Login = () => {
 
 const Login = ({navigation}) => {
 
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
         <ScrollView 
         style={{flex: 1, backgroundColor: '#ffffff'}}
@@ -45,11 +49,12 @@ const Login = ({navigation}) => {
                     <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Login</Text>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Username' placeholderTextColor="grey"></TextInput>
+                    <TextInput placeholder='Username' placeholderTextColor="grey" onChangeText={e => setUser(e)}></TextInput>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Password' secureTextEntry={true}></TextInput>
+                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
                 </View>
+                <Button title="Press here" onPress={() => console.log(user)}></Button>
             </View>
         </ScrollView>
     );
