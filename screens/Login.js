@@ -30,7 +30,7 @@ const Login = ({navigation}) => {
 
     return (
         <ScrollView 
-        style={{flex: 1, backgroundColor: '#ffffff'}}
+        style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
             <ImageBackground
             source={require('./../assets/back7.jpg')}
@@ -54,7 +54,7 @@ const Login = ({navigation}) => {
                 <View style={styles.inputView}>
                     <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
                 </View>
-                <Button title="Press here" onPress={() => console.log(user)}></Button>
+                <Button title="Login" onPress={() => console.log(user)}></Button>
             </View>
         </ScrollView>
     );
