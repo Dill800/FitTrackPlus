@@ -10,19 +10,6 @@ import {
     PageTitle
 } from './../components/styles'
 
-/*
-const Login = () => {
-    return (
-        <StyledContainer>
-            <InnerContainer>
-                <PageLogo resizeMode="cover" source={require('./../assets/logo3.png')}></PageLogo>
-                    
-            </InnerContainer>
-        </StyledContainer>
-    );
-}
-*/
-
 const Login = ({navigation}) => {
 
     const [user, setUser] = useState('');
