@@ -15,8 +15,12 @@ const Login = ({navigation}) => {
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
 
+    const toHomeScreen = () => {
+        navigation.navigate('Home')
+    }
+
     return (
-        <ScrollView 
+        <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
             <ImageBackground
@@ -41,9 +45,9 @@ const Login = ({navigation}) => {
                 <View style={styles.inputView}>
                     <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
                 </View>
-                <Button title="Login" onPress={() => console.log(user)}></Button>
+                <Button title="Login" onPress={toHomeScreen}></Button>
             </View>
-        </ScrollView>
+        </View>
     );
 
 }
