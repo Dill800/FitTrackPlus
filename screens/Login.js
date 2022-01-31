@@ -19,6 +19,10 @@ const Login = ({navigation}) => {
         navigation.navigate('Home')
     }
 
+    const toRegisterScreen = () => {
+        navigation.navigate('Register')
+    }
+
     return (
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
@@ -46,6 +50,7 @@ const Login = ({navigation}) => {
                     <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
                 </View>
                 <Button title="Login" onPress={toHomeScreen}></Button>
+                <Button title="Register" onPress={toRegisterScreen}></Button>
             </View>
         </View>
     );
