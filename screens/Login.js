@@ -1,21 +1,35 @@
 
 import React, {useState, useEffect} from 'react';
 import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button} from 'react-native';
-
-
 import {
     StyledContainer,
     InnerContainer,
     PageLogo,
     PageTitle
 } from './../components/styles'
+import axios from 'axios'
 
 const Login = ({navigation}) => {
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
 
-    const toHomeScreen = () => {
+    const toHomeScreen = (e) => {
+        console.log('Username: ' + user)
+        console.log('Password: ' + password)
+
+        // Get data based on username, change URL
+        axios.get('URL', 
+        {
+            'headers': {'user': user, 'password': password}
+        })
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
         navigation.navigate('Home')
     }
 
@@ -47,9 +61,9 @@ const Login = ({navigation}) => {
                     <TextInput placeholder='Username' placeholderTextColor="grey" onChangeText={e => setUser(e)}></TextInput>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
+                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true} onChangeText={e => setPassword(e)}></TextInput>
                 </View>
-                <Button title="Login" onPress={toHomeScreen}></Button>
+                <Button title="Login" onPress={(e) => toHomeScreen(e)}></Button>
                 <Button title="Register" onPress={toRegisterScreen}></Button>
             </View>
         </View>
