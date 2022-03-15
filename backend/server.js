@@ -32,4 +32,6 @@ mongoose.connect(process.env.MONGODB_URI || require('./config/config').db.uri, {
 //     });
 // }
 
+// test comment
+
 server.listen(port, () => console.log(`Server now running on port ${port}!`));
