@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import Login from './screens/Login'
 import Home from './screens/Home'
 import Register from './screens/Register'
+import WorkoutLogDashboard from './screens/WorkoutLogDashboard'
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
         <Stack.Screen name='Login' options={{headerShown: false}} component={Login}/>
         <Stack.Screen name='Home' options={{headerShown: false, gestureEnabled: false}} component={Home}/>
         <Stack.Screen name='Register' options={{headerShown: false, gestureEnabled: true}} component={Register}/>
+        <Stack.Screen name='WorkoutLog' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDashboard}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
