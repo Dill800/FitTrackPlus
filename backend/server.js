@@ -1,6 +1,7 @@
 const express = require('express') // Middleware
 const mongoose = require('mongoose') // DB Connection
 const morgan = require('morgan') // Logger
+const bodyParser = require('body-parser')
 // const path = require('path') // Connect to frontend
 
 // Imports for routing (controllers inside routes, only need router import here)
@@ -11,6 +12,10 @@ const port = process.env.PORT || 5000;
 const server = express();
 server.use(morgan('dev'));
 server.use(express.json());
+server.use(bodyParser.urlencoded({
+    extended: true
+}))
+server.use(bodyParser.json())
 
 // Routes for backend only
 server.use('/user', userRouter)

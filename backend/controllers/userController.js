@@ -24,10 +24,20 @@ module.exports = {
         });
     },
 
+    retrieve: async (req, res) => {
+
+        console.log("Retrieving user with username ", req.user);
+
+
+    },
+
     // Add entry for a new user to the DB
     create: async (req, res) => {
-    
+
+
         console.log("Attempting to add new user to database ...")
+        console.log(req.body)
+
         User.create(req.body, (err, newUser) => {
 
             if(err){
