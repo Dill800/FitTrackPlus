@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     friendList: {type: [String], required: true, default: []},
 	groupName: {type: String, required: true},
 	exerciseList: {type: [String], required: true, default: []},
-	weightList: {type: [mongoose.Number], required: true, default: []},
+	weightList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 
 }, {timestamps: true});
 

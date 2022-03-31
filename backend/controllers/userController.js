@@ -162,5 +162,46 @@ module.exports = {
 
         })
 
+    },
+
+    // Needs updating, for now just add the exercise in as a string
+    addExercise: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {$push: {exerciseList: req.body.exercise}}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })        
+
+    },
+
+    removeExercise: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {$pull: {exerciseList: req.body.exercise}}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })
+
+    },
+
+    addWeight: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {$push: {weightList: {weight: req.body.weight, date: Date.now()}}}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })        
+
     }
+
 }
