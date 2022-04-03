@@ -1,7 +1,9 @@
 import * as React from "react";
-// import PieChart from 'react-native-pie-chart';
+import Constants from 'expo-constants';
+import Donut from '../navigation/Donut'
 
-import {ScrollView, StyleSheet, Text, View, TouchableOpacity} from "react-native";
+
+import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
 
 class Today extends React.Component {
   constructor(props) {
@@ -87,6 +89,7 @@ class Today extends React.Component {
       activities: activities.activities,
     });
   }
+  
 
   render() {
     let exercise = [];
@@ -99,7 +102,7 @@ class Today extends React.Component {
     friends.push(<View
         style={{
           alignItems: "center",
-          width: 340,
+          width: 370,
           height: 100,
           paddingTop: 8,
           marginBottom: 15,
@@ -122,7 +125,7 @@ class Today extends React.Component {
       friends.push(<View
         style={{
           alignItems: "center",
-          width: 340,
+          width: 370,
           height: 100,
           paddingTop: 8,
           marginBottom: 15,
@@ -145,7 +148,7 @@ class Today extends React.Component {
       friends.push(<View
         style={{
           alignItems: "center",
-          width: 340,
+          width: 370,
           height: 100,
           paddingTop: 8,
           marginBottom: 15,
@@ -168,7 +171,7 @@ class Today extends React.Component {
       friends.push(<View
         style={{
           alignItems: "center",
-          width: 340,
+          width: 370,
           height: 100,
           paddingTop: 8,
           marginBottom: 15,
@@ -191,7 +194,7 @@ class Today extends React.Component {
       friends.push(<View
         style={{
           alignItems: "center",
-          width: 340,
+          width: 370,
           height: 100,
           paddingTop: 8,
           marginBottom: 15,
@@ -218,7 +221,7 @@ class Today extends React.Component {
           key={x.id}
           style={{
             alignItems: "center",
-            width: 340,
+            width: 370,
             height: 100,
             paddingTop: 8,
             marginBottom: 15,
@@ -241,6 +244,32 @@ class Today extends React.Component {
       );
       activityTotal = activityTotal + x.duration;
     });
+    const donutData = [{
+        percentage: 1700,
+        color: 'tomato',
+        max: 2400,
+        calorie: true,
+        dataLabel: "calorie"
+      }, {
+        percentage: 76,
+        color: 'skyblue',
+        max: 92,
+        calorie: false,
+        dataLabel: "fat"
+      }, {
+        percentage: 130,
+        color: 'gold',
+        max: 150,
+        calorie: false,
+        dataLabel: "protein"
+      }, {
+        percentage: 200,
+        color: '#222',
+        max: 400,
+        calorie: false,
+        dataLabel: "carb"
+      }];
+
     const styles = StyleSheet.create({
       container: {
         flex: 1,
@@ -396,23 +425,14 @@ class Today extends React.Component {
         >
           <Text style={styles.btn_text}>Log Out</Text>
         </TouchableOpacity> */}
-        {/* <View style={styles.container}>
-          <Text style={styles.title}>Basic</Text>
-          <PieChart
-            widthAndHeight={widthAndHeight}
-            series={series}
-            sliceColor={sliceColor}
-          />
-          <Text style={styles.title}>Doughnut</Text>
-          <PieChart
-            widthAndHeight={widthAndHeight}
-            series={series}
-            sliceColor={sliceColor}
-            doughnut={true}
-            coverRadius={0.45}
-            coverFill={'#FFF'}
-          />
-        </View> */}
+        <View style={styles.container}>
+            <StatusBar hidden/>
+            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: 'wrap', alignItems: 'center', top: 10}}>
+                {donutData.map((p, i) => {
+                return <Donut key={i} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} calorie={p.calorie} dataLabel={p.dataLabel}/>
+                })}
+            </View>
+        </View>
       </View>
     );
   }

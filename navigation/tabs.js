@@ -67,6 +67,9 @@ const Tabs = () => {
                         headerStyle: {
                             backgroundColor: '#71ebeb',
                           },
+                        headerTitleStyle: {
+                            color: '#71ebeb',
+                        },
                 }}/>
                 <Tab.Screen name="Login" component={Login} 
                     options={{
