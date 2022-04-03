@@ -1,14 +1,5 @@
-
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
-
-
-import {
-    StyledContainer,
-    InnerContainer,
-    PageLogo,
-    PageTitle
-} from './../components/styles'
+import { Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 
 const CircleButton = props => (
     <TouchableOpacity
@@ -41,8 +32,10 @@ const WorkoutLogDashboard = ({navigation}) => {
         fontSize={20}
       />
 
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#46ff7e" }]}>
-            <Text style={styles.btn_text}>placeholder</Text>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#46ff7e" }]}
+          onPress={() => navigation.navigate("AddExercise")}
+        >
+            <Text style={styles.btn_text}>Add Exercise</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#d446ff" }]}>
@@ -71,7 +64,21 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         alignItems: "center",
         justifyContent: "center"
-    }
+    },
+    btn_shape: {
+      backgroundColor: "rgba(178,108,233,1)",
+      borderRadius: 10,
+      width: "50%",
+      height: 40,
+      marginTop: 10,
+      justifyContent: "center",
+  },
+  btn_text: {
+      color: "rgba(255,255,255,1)",
+      fontSize: 16,
+      textAlign: "center",
+      fontWeight: "bold",
+  },
 })
 
 export default WorkoutLogDashboard;
