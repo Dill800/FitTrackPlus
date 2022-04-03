@@ -12,26 +12,36 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/art": "^1.2.0",
+    "@react-native/normalize-color": "^2.0.0",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.3.0",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "expo": "^44.0.5",
-    "expo-constants": "~13.0.1",
+    "expo-blur": "^11.0.0",
+    "expo-constants": "^13.0.2",
     "expo-status-bar": "~1.2.0",
     "express": "^4.17.2",
     "formik": "^2.2.9",
     "mongoose": "^6.1.10",
     "morgan": "^1.10.0",
     "native-base": "^3.3.4",
+<<<<<<< HEAD
     "qs": "^6.10.3",
+=======
+    "normalize-color": "^0.1.0",
+>>>>>>> 3deb6c6975b2a106d3fab6423a69d4dd1bd1d38b
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-donut-chart": "^1.2.2",
     "react-native": "0.64.3",
+    "react-native-pie-chart": "^2.0.2",
+    "react-native-progress": "^5.0.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
-    "react-native-svg": "^12.1.1",
+    "react-native-svg": "^12.3.0",
     "react-native-web": "0.17.1",
     "react-navigation-stack": "^2.10.4",
     "styled-components": "^5.3.3"
