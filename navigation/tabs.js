@@ -49,7 +49,16 @@ const Tabs = () => {
                 }
             }}
         >
-                <Tab.Screen name="Home" component={Home} 
+                <Tab.Screen name="Home" component={Home}
+                    listeners={({ navigation }) => ({
+                        tabPress: (e) => {
+                        // Prevent default action
+                        e.preventDefault();
+                
+                        // Do something with the `navigation` object
+                        navigation.navigate("Home"); // Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        },
+                    })} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
@@ -69,7 +78,7 @@ const Tabs = () => {
                             backgroundColor: '#71ebeb',
                           },
                         headerTitleStyle: {
-                            color: '#71ebeb',
+                            color: '#000',
                         },
                 }}/>
                 <Tab.Screen name="Login" component={Login} 

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import Svg, { G, Circle, Rect } from 'react-native-svg';
+import { useIsFocused } from '@react-navigation/native'
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -31,7 +32,16 @@ export default function Donut({
   const circumference = 2 * Math.PI * radius;
   const halfCircle = radius + strokeWidth;
 
+
+  const isFocused = useIsFocused()
+
+  //console.log(isFocused);
+
   const animation = (toValue) => {
+    let num = 0;
+    if (!isFocused) {
+        num = 1;
+    }
     return Animated.timing(animated, {
       delay: 1000,
       toValue,
@@ -39,12 +49,21 @@ export default function Donut({
       useNativeDriver: true,
       easing: Easing.out(Easing.ease),
     }).start(() => {
-      //animation(toValue === 0 ? percentage : 0);
+        //animation(isFocused);
+        //animation(num === 0 ? percentage : 0);
+        //animation(percentage);
     });
   };
 
   React.useEffect(() => {
-    animation(percentage);
+    if (!isFocused) {
+        duration = 0;
+        animation(0);
+    }
+    else {
+        duration = 1000;
+        animation(percentage);
+    }
     animated.addListener((v) => {
       const maxPerc = 100 * v.value / max;
       let text2 = Math.round(v.value) + " g";

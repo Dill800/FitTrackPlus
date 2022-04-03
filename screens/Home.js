@@ -5,7 +5,7 @@ import Donut from '../navigation/Donut'
 
 import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
 
-class Today extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +14,7 @@ class Today extends React.Component {
     };
   }
   static navigationOptions = {
-    title: "Today",
+    title: "Home",
   };
 
   async componentDidMount() {
@@ -438,7 +438,7 @@ class Today extends React.Component {
   }
 }
 
-export default Today;
+export default Home;
 // import React, {useState, useEffect} from 'react';
 // import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button} from 'react-native';
 
