@@ -9,18 +9,16 @@ import Home from './screens/Home'
 import Register from './screens/Register'
 import WorkoutLogNavigator from './screens/WorkoutLogNavigator'
 
+import Tabs from './navigation/tabs'
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name='Login' options={{headerShown: false}} component={Login}/>
-        <Stack.Screen name='Home' options={{headerShown: false, gestureEnabled: false}} component={Home}/>
-        <Stack.Screen name='Register' options={{headerShown: false, gestureEnabled: true}} component={Register}/>
-        <Stack.Screen name='WorkoutLogNavigator' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogNavigator}/>
-      </Stack.Navigator>
+      <Tabs />
+      
     </NavigationContainer>
   );
 }

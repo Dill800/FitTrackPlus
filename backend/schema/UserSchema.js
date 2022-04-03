@@ -7,9 +7,14 @@ const collectionName = 'users' // Database table name
 const userSchema = new mongoose.Schema({
 	username : {type: String, required: true},
     passwordHash : {type: String, required: true},
-    streakCounter : {type: mongoose.Number, required: true},
-    points : {type: mongoose.Number, required: true}
-});
+    streakCounter : {type: mongoose.Number, required: true, default: 0},
+	lastCheckIn: {type: Date, required: true, default: new Date(-287364287364)},
+    friendList: {type: [String], required: true, default: []},
+	groupName: {type: String, required: true},
+	exerciseList: {type: [String], required: true, default: []},
+	weightList: {type: [mongoose.Number], required: true, default: []},
+
+}, {timestamps: true});
 
 // Password hashing methods
 userSchema.methods = {
