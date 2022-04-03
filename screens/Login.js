@@ -24,7 +24,7 @@ const Login = ({navigation}) => {
     }
 
     const toWorkoutLog = () => {
-        navigation.navigate('WorkoutLog')
+        navigation.navigate('WorkoutLogNavigator')
     }
 
     return (
