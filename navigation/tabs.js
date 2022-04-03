@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabActions } from '@react-navigation/native';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
+
 import Home from '../screens/Home'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
@@ -36,13 +37,13 @@ const Tabs = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: 'absolute',
-                    bottom: 25,
+                    bottom: 20,
                     left: 20,
                     right: 20,
                     elevation: 0,
                     backgroundColor: '#71ebeb',
                     borderRadius: 15,
-                    height: 90,
+                    height: 80,
                     ... styles.shadow
                 }
             }}
@@ -50,7 +51,7 @@ const Tabs = () => {
                 <Tab.Screen name="Home" component={Home} 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
                                 <Image
                                     source={require('../assets/home.png')}
                                     resizeMode='contain'
@@ -63,11 +64,14 @@ const Tabs = () => {
                                 <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
+                        headerStyle: {
+                            backgroundColor: '#71ebeb',
+                          },
                 }}/>
                 <Tab.Screen name="Login" component={Login} 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
                                 <Image
                                     source={require('../assets/barbell.png')}
                                     resizeMode='contain'
@@ -80,6 +84,9 @@ const Tabs = () => {
                                 <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
+                        headerStyle: {
+                            backgroundColor: '#71ebeb',
+                          },
                     }}
                     // options={{
                     //     tabBarIcon: ({focused}) => (
@@ -101,7 +108,7 @@ const Tabs = () => {
                 <Tab.Screen name="Register" component={Register} 
                     options={{
                         tabBarIcon: ({focused}) => (
-                            <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
                                 <Image
                                     source={require('../assets/fork.png')}
                                     resizeMode='contain'
@@ -114,6 +121,9 @@ const Tabs = () => {
                                 <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
+                        headerStyle: {
+                            backgroundColor: '#71ebeb',
+                          },
                 }}
                 />
         </Tab.Navigator>
