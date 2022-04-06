@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 import axios from 'axios'
-import SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
     StyledContainer,
@@ -13,10 +13,52 @@ import {
 
 import config from '../backend/config/config.js'
 
+const storeData = async (value) => {
+    try {
+        await AsyncStorage.setItem('user_token', value)
+    } catch (e) {
+        // saving error
+        console.log(e)
+    }
+}
+
+const getUser = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user_token')
+      if(value !== null) {
+        console.log("Non null value", value)
+        navigation.navigate('Home')
+  
+      }
+      else {
+        console.log("null value")
+      }
+    }
+    catch(e) {
+      console.log(e)
+    }
+  }
+
+
+
+
 const Login = ({navigation}) => {
+
+    AsyncStorage.getItem('user_token')
+    .then(newnit => {
+        console.log("Non null value", newnit)
+        navigation.navigate('Home')
+    })
+    .catch(e => {
+        console.log(e)
+    })
+
+    //useEffect(getUser, [])
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
+
+    
 
     const toHomeScreen = () => {
 
@@ -31,6 +73,7 @@ const Login = ({navigation}) => {
             .then(response => {
                 if(response.data.success === 1) {
                     console.log('Logged in successfully')
+                    storeData(user)
                     navigation.navigate('Home')
                     console.log(response)
                 }

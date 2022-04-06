@@ -10,13 +10,18 @@ import Home from './screens/Home'
 import Register from './screens/Register'
 import WorkoutLogNavigator from './screens/WorkoutLogNavigator'
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Tabs from './navigation/tabs'
 
 const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
 
+
 export default function App() {
-  
+
+
+
   return (
 
     <NavigationContainer>
