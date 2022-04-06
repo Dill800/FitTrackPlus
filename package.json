@@ -28,11 +28,8 @@
     "mongoose": "^6.1.10",
     "morgan": "^1.10.0",
     "native-base": "^3.3.4",
-<<<<<<< HEAD
     "qs": "^6.10.3",
-=======
     "normalize-color": "^0.1.0",
->>>>>>> 3deb6c6975b2a106d3fab6423a69d4dd1bd1d38b
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-donut-chart": "^1.2.2",
