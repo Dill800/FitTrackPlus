@@ -10,7 +10,6 @@ import {
     PageLogo,
     PageTitle
 } from './../components/styles'
-import axios from 'axios'
 
 import config from '../backend/config/config.js'
 
