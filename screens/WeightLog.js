@@ -47,12 +47,12 @@ const WeightLog = ({navigation}) => {
         <View style={{flex: 1, alignItems: 'center'}}>
             <Logger>
                 <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Weight Log</Text>
-                <View style={styles.progress_container}>
-                    <View style={styles.progress_box}>
-                        <Text style={styles.progress_title}>Add Weight</Text>
+                <View style={styles.container}>
+                    <View style={styles.box}>
+                        <Text style={styles.title}>Add Weight</Text>
                         <View style={styles.inputView}>
                             <TextInput
-                                style={styles.input_placeholder}
+                                style={styles.input}
                                 keyboardType='numeric'
                                 placeholder='Submit'
                                 placeholderTextColor='grey'
@@ -64,7 +64,7 @@ const WeightLog = ({navigation}) => {
                                     Keyboard.dismiss();
                                     setWeight('');
                                 }}
-                                style={styles.btn_shape}
+                                style={styles.button}
                             >
                                 <Text>⬇️</Text>
                             </TouchableOpacity>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 50,
         alignItems: "center",
     },
-    input_placeholder: {
+    input: {
         flex: 1,
         height: 40,
         paddingHorizontal: 20,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         color: "#121212",
         backgroundColor: "#f0f8ff"
     },
-    btn_shape: {
+    button: {
         backgroundColor: "#71ebeb",
         borderRadius: 15,
         borderTopLeftRadius: 0,
@@ -181,25 +181,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingHorizontal: 20
     },
-    title_box: {
-        backgroundColor: "rgba(74,144,226,1)",
-        borderRadius: 10,
-        width: "95%",
-        height: 40,
-        justifyContent: "center",
-    },
     title: {
         color: "rgba(255,255,255,1)",
         fontSize: 22,
         alignSelf: "center",
     },
-    progress_container: {
+    container: {
         flexDirection: "row",
         width: "100%",
         marginTop: 20,
         justifyContent: "center",
     },
-    progress_box: {
+    box: {
         backgroundColor: "rgba(213,218,223,1)",
         width: "95%",
         height: 'auto',
@@ -207,16 +200,10 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
     },
-    progress_title: {
+    title: {
         color: "#121212",
         alignSelf: "center",
         marginVertical: 20,
-    },
-    progress_value: {
-        color: "#121212",
-        fontSize: 20,
-        fontWeight: "bold",
-        alignSelf: "center",
     },
     graph: {
         backgroundColor: "rgba(213,218,223,1)",
