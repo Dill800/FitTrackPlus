@@ -286,7 +286,7 @@ class Meals extends React.Component {
             <View style={styles.container}>
                 <View style={styles.progress}>
                     <View style={styles.title_box}>
-                        <Text style={styles.title}>Frank</Text>
+                        <Text style={styles.title}>Today</Text>
                     </View>
 
                 </View>

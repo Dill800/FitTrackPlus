@@ -1,17 +1,18 @@
 Arguments: 
   C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+  /usr/local/bin/node /usr/local/bin/yarn install --global expo-cli
 
 PATH: 
-  C:\Users\RA700\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\RA700\AppData\Local\Programs\Python\Python310\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Foundation\jdk-17.0.0.35-hotspot\bin;C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Python27\;C:\Python27\Scripts;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Git\cmd;C:\Program Files\PuTTY\;C:\ProgramData\chocolatey\bin;C:\Users\RA700\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\sqlite3;C:\Program Files\MATLAB\R2021b\bin;C:\Program Files\nodejs\;C:\Users\RA700\AppData\Local\Microsoft\WindowsApps;C:\Users\RA700\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\RA700\AppData\Roaming\nvm;C:\Program Files\nodejs;";C:\Program Files\nodejs\";C:\Users\RA700\AppData\Local\Yarn\bin;C:\Program Files\heroku\bin;C:\Users\RA700\AppData\Local\GitHubDesktop\bin;C:\Users\RA700\AppData\Local\Microsoft\WindowsApps;C:\Users\RA700\AppData\Local\Programs\Python\Python310;C:\Users\RA700\AppData\Local\Programs\Python\Python310\Scripts;C:\Users\RA700\AppData\Roaming\npm
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
-  1.21.1
+  1.22.17
 
 Node version: 
-  16.14.2
+  16.14.0
 
 Platform: 
-  win32 x64
+  darwin arm64
 
 Trace: 
   SyntaxError: C:\Users\RA700\OneDrive\Documents\2021-2022 School Year\CS Design 2\FitTrackPlus\package.json: Unexpected token < in JSON at position 873
@@ -20,6 +21,12 @@ Trace:
       at Generator.next (<anonymous>)
       at step (C:\Program Files (x86)\Yarn\lib\cli.js:310:30)
       at C:\Program Files (x86)\Yarn\lib\cli.js:321:13
+  SyntaxError: /Users/gary/UF/Senior Project/FitTrackPlus/package.json: Unexpected token < in JSON at position 873
+      at JSON.parse (<anonymous>)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
 
 npm manifest: 
   {
