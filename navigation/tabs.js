@@ -6,7 +6,9 @@ import {StyleSheet, Text, View, Image, TouchableOpacity, Button} from 'react-nat
 import Home from '../screens/Home'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
+import WeightLog from '../screens/WeightLog'
 import Meals from '../screens/Meals'
+import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
 
 const Tab = createBottomTabNavigator();
 
@@ -83,12 +85,12 @@ const Tabs = () => {
                         headerRight: () => (
                             <Button
                               onPress={() => alert('This is a button!')}
-                              title="Settings"
+                              title="Info"
                               color="#fff"
                             />
                           ),
                 }}/>
-                <Tab.Screen name="Login" component={Login} 
+                <Tab.Screen name="Workout Log" component={WorkoutLogNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
@@ -125,7 +127,7 @@ const Tabs = () => {
                     //     )
                     // }}
                 />
-                <Tab.Screen name="Register" component={Register} 
+                <Tab.Screen name="Meals" component={Meals} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
@@ -146,12 +148,12 @@ const Tabs = () => {
                           },
                 }}
                 />
-                <Tab.Screen name="Meals" component={Meals} 
+                <Tab.Screen name="Weight Log" component={WeightLog} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
                                 <Image
-                                    source={require('../assets/fork.png')}
+                                    source={require('../assets/scale.png')}
                                     resizeMode='contain'
                                     style={{
                                         width: 25,
@@ -162,9 +164,6 @@ const Tabs = () => {
                                 <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
-                        headerStyle: {
-                            backgroundColor: '#71ebeb',
-                          },
                 }}
                 />
         </Tab.Navigator>

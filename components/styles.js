@@ -35,3 +35,10 @@ export const PageTitle = styled.Text`
     text-align: center;
     font-weight: bold;
 `
+
+export const Logger = styled.View`
+    width: 95%;
+    height: auto;
+    margin-top: ${StatusBarHeight + 30}px;
+    align-items: center;
+`
