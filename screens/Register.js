@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button} from 'react-native';
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
 
 import axios from 'axios'
 import qs from 'qs'
@@ -12,7 +12,12 @@ import {
     PageTitle
 } from './../components/styles'
 
+
 const Register = ({navigation}) => {
+
+    const toLoginScreen = () => {
+        navigation.navigate('Login')
+    }
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
@@ -85,7 +90,25 @@ const Register = ({navigation}) => {
                 <View style={styles.inputView}>
                     <TextInput placeholder='Password' placeholderTextColor="grey" onChangeText={e => setPassword(e)} secureTextEntry={true}></TextInput>
                 </View>
-                <Button title="Create" onPress={registerAccount}></Button>
+                <TouchableOpacity
+                    onPress={registerAccount}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Create</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={toLoginScreen}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Back</Text>
+                </TouchableOpacity>
+                
             </View>
         </View>
     );
@@ -109,7 +132,21 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         alignItems: "center",
         justifyContent: "center"
-    }
+    },
+    btn_shape: {
+        backgroundColor: "rgba(178,108,233,1)",
+        borderRadius: 10,
+        width: "50%",
+        height: 40,
+        marginTop: 10,
+        justifyContent: "center",
+      },
+    btn_text: {
+        color: "rgba(255,255,255,1)",
+        fontSize: 16,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
 })
 
 export default Register;

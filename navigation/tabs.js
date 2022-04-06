@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabActions } from '@react-navigation/native';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Button} from 'react-native';
 
 
 import Home from '../screens/Home'
@@ -80,6 +80,13 @@ const Tabs = () => {
                         headerTitleStyle: {
                             color: '#000',
                         },
+                        headerRight: () => (
+                            <Button
+                              onPress={() => alert('This is a button!')}
+                              title="Info"
+                              color="#fff"
+                            />
+                          ),
                 }}/>
                 <Tab.Screen name="Login" component={Login} 
                     options={{
