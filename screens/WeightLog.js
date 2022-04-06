@@ -1,7 +1,7 @@
 
 import { keyboardDismissHandlerManager, Row } from 'native-base';
 import React, {useState, useEffect} from 'react';
-import { Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity } from 'react-native';
+import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {Svg, Rect, Text as TextSVG } from 'react-native-svg';
 import {NavigationContainer, useNavigation } from '@react-navigation/native'
@@ -10,6 +10,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
   
 import { Logger } from './../components/styles'
 import WeightLogList from './WeightLogList'
+
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const WeightLog = ({navigation}) => {
 
@@ -66,6 +72,7 @@ const WeightLog = ({navigation}) => {
     const [data, setData] = useState(dataAll);
 
     return (
+        <HideKeyboard>
         <View style={{flex: 1, alignItems: 'center'}}>
             <Logger>
                 <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Weight Log</Text>
@@ -214,7 +221,7 @@ const WeightLog = ({navigation}) => {
                 </View>
             </Logger>
         </View>
-
+        </HideKeyboard>
       );
 
 }

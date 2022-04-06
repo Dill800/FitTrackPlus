@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 
 import axios from 'axios'
 import qs from 'qs'
@@ -14,6 +14,11 @@ import {
     PageTitle
 } from './../components/styles'
 
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const Register = ({navigation}) => {
 
@@ -57,6 +62,7 @@ const Register = ({navigation}) => {
     }
 
     return (
+        <HideKeyboard>
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
@@ -114,6 +120,7 @@ const Register = ({navigation}) => {
                 
             </View>
         </View>
+        </HideKeyboard>
     );
 
 }

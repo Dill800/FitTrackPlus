@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import { Keyboard, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert, TouchableWithoutFeedback} from 'react-native';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +12,12 @@ import {
 } from './../components/styles'
 
 import config from '../backend/config/config.js'
+
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const storeData = async (value) => {
     try {
@@ -81,6 +87,7 @@ const Login = ({navigation}) => {
     }
 
     return (
+        <HideKeyboard>
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
@@ -137,6 +144,7 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
             </View>
         </View>
+        </HideKeyboard>
     );
 
 }
