@@ -1,6 +1,8 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import { Keyboard, TouchableWithoutFeedback, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 import axios from 'axios'
 import qs from 'qs'
@@ -61,11 +63,14 @@ const Register = ({navigation}) => {
 
     }
 
+    const passRef = useRef();
+
     return (
         <HideKeyboard>
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
+            <KeyboardAwareScrollView bounces={false} keyboardOpeningTime={0} showsVerticalScrollIndicator={false} extraHeight={300}>
             <ImageBackground
             source={require('./../assets/back7.jpg')}
             style={{
@@ -88,15 +93,20 @@ const Register = ({navigation}) => {
                         placeholder='Username'
                         placeholderTextColor='grey'
                         onChangeText={e => setUser(e)}
+                        onSubmitEditing={() => {
+                            passRef.current.focus();
+                        }}
                     />
                 </View>
                 <View style={styles.inputView}>
                     <TextInput
+                        ref={passRef}
                         style={styles.input}
                         placeholder='Password'
                         placeholderTextColor='grey'
                         secureTextEntry={true}
                         onChangeText={e => setPassword(e)}
+                        onSubmitEditing={registerAccount}
                     />
                 </View>
                 <TouchableOpacity
@@ -119,6 +129,7 @@ const Register = ({navigation}) => {
                 </TouchableOpacity>
                 
             </View>
+            </KeyboardAwareScrollView>
         </View>
         </HideKeyboard>
     );
