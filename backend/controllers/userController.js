@@ -2,6 +2,14 @@ const User = require('../schema/UserSchema.js')
 
 module.exports = {
 
+    getUser: async (req, res, next) => {
+        
+        User.findOne({username: req.body.username}, (err, user) => {
+
+            res.send(user)
+        });
+    },
+
     exists: async (req, res, next) => {
         
         User.findOne({username: req.body.username}, (err, user) => {

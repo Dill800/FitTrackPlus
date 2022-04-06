@@ -12,6 +12,7 @@ import {
 } from './../components/styles'
 
 import config from '../backend/config/config.js'
+import { propsFlattener } from 'native-base/lib/typescript/hooks/useThemeProps/propsFlattener';
 
 const storeData = async (value) => {
     try {
@@ -22,32 +23,20 @@ const storeData = async (value) => {
     }
 }
 
-const getUser = async () => {
-    try {
-      const value = await AsyncStorage.getItem('user_token')
-      if(value !== null) {
-        console.log("Non null value", value)
-        navigation.navigate('Home')
-  
-      }
-      else {
-        console.log("null value")
-      }
-    }
-    catch(e) {
-      console.log(e)
-    }
-  }
-
-
-
-
 const Login = ({navigation}) => {
 
     AsyncStorage.getItem('user_token')
     .then(newnit => {
         console.log("Non null value", newnit)
-        navigation.navigate('Home')
+
+        if(newnit !== null) {
+
+            
+
+            navigation.navigate('Home')
+        }
+
+        
     })
     .catch(e => {
         console.log(e)
@@ -57,8 +46,6 @@ const Login = ({navigation}) => {
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
-
-    
 
     const toHomeScreen = () => {
 

@@ -21,11 +21,11 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-
+  const [userData, setUserData] = useState(null);
 
   return (
 
-    <NavigationContainer>
+    <NavigationContainer userData={userData} setUserData={setUserData}>
       <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name='Login' options={{headerShown: false}} component={Login}/>
         <Stack.Screen name='Home' options={{headerShown: false, gestureEnabled: false}} component={Tabs}/>
