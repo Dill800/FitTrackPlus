@@ -12,7 +12,6 @@ import {
 } from './../components/styles'
 
 import config from '../backend/config/config.js'
-import { propsFlattener } from 'native-base/lib/typescript/hooks/useThemeProps/propsFlattener';
 
 const storeData = async (value) => {
     try {
