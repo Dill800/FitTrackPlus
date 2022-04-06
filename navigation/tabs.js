@@ -7,6 +7,7 @@ import Home from '../screens/Home'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
 import Meals from '../screens/Meals'
+import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
 
 const Tab = createBottomTabNavigator();
 
@@ -88,7 +89,7 @@ const Tabs = () => {
                             />
                           ),
                 }}/>
-                <Tab.Screen name="Login" component={Login} 
+                <Tab.Screen name="Workout Log" component={WorkoutLogNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
@@ -124,27 +125,6 @@ const Tabs = () => {
                     //         <CustomTabBarButton {... props} />
                     //     )
                     // }}
-                />
-                <Tab.Screen name="Register" component={Register} 
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
-                                <Image
-                                    source={require('../assets/fork.png')}
-                                    resizeMode='contain'
-                                    style={{
-                                        width: 25,
-                                        height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
-                                    }}
-                                />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
-                            </View>
-                        ),
-                        headerStyle: {
-                            backgroundColor: '#71ebeb',
-                          },
-                }}
                 />
                 <Tab.Screen name="Meals" component={Meals} 
                     options={{
