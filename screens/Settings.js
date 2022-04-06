@@ -35,6 +35,15 @@ const Settings = ({navigation}) => {
                 >
                     <Text style={styles.btn_text}>Back</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                    // onPress={goBack}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "black", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Dark Mode</Text>
+            </TouchableOpacity>
         </View>
     );
 }
