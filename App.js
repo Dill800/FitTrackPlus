@@ -17,6 +17,7 @@ const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
 
 export default function App() {
+  
   return (
 
     <NavigationContainer>

@@ -1,9 +1,11 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 
 import axios from 'axios'
 import qs from 'qs'
+
+import config from '../backend/config/config.js'
 
 import {
     StyledContainer,
@@ -27,6 +29,10 @@ const Register = ({navigation}) => {
         console.log('user: ', user)
         console.log('password: ', password)
 
+        if(user === '' || password === '') {
+            Alert.alert("Missing Fields", "Please enter a valid username and password.")
+        }
+
         var data = qs.stringify({
             'username': user,
             'passwordHash': password 
@@ -34,7 +40,7 @@ const Register = ({navigation}) => {
 
         axios({
             method: 'post',
-            url: 'http://192.168.0.190:5000/user/register',
+            url: 'http://' + config.ipv4 + ':5000/user/register',
             headers: { 
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -46,20 +52,6 @@ const Register = ({navigation}) => {
         .catch(e => {
             console.log(e)
         })
-
-        /*
-        try {
-            axios.post('http://localhost:5000/user/register',
-            {username: user,
-            password: password})
-            .then(response => {
-                console.log(response)
-            })
-        }
-        catch (e) {
-            console.log(e)
-        }
-        */
         
 
     }

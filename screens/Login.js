@@ -1,7 +1,8 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
-
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import axios from 'axios'
+import SecureStore from 'expo-secure-store'
 
 import {
     StyledContainer,
@@ -10,13 +11,40 @@ import {
     PageTitle
 } from './../components/styles'
 
+import config from '../backend/config/config.js'
+
 const Login = ({navigation}) => {
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
 
     const toHomeScreen = () => {
-        navigation.navigate('Home')
+
+        if(user === 'admin' && password === 'admin') {
+            navigation.navigate('Home')
+        }
+        else {
+            axios.post('http://' + config.ipv4 + ':5000/user/login', {
+            username: user,
+            password: password
+            })
+            .then(response => {
+                if(response.data.success === 1) {
+                    console.log('Logged in successfully')
+                    navigation.navigate('Home')
+                    console.log(response)
+                }
+                else {
+                    console.log("Did not log in successfully")
+                    Alert.alert('Invalid Username or Password')
+                    console.log(response)
+                }
+            })
+        }
+
+        
+
+        
     }
 
     const toRegisterScreen = () => {
@@ -47,7 +75,7 @@ const Login = ({navigation}) => {
                     <TextInput placeholder='Username' placeholderTextColor="grey" onChangeText={e => setUser(e)}></TextInput>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
+                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true} onChangeText={e => setPassword(e)}></TextInput>
                 </View>
                 <TouchableOpacity
                     onPress={toHomeScreen}
