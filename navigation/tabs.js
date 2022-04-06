@@ -6,6 +6,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity, Button} from 'react-nat
 import Home from '../screens/Home'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
+import WeightLog from '../screens/WeightLog'
 import Meals from '../screens/Meals'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
 
@@ -145,6 +146,24 @@ const Tabs = () => {
                         headerStyle: {
                             backgroundColor: '#71ebeb',
                           },
+                }}
+                />
+                <Tab.Screen name="Weight Log" component={WeightLog} 
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
+                                <Image
+                                    source={require('../assets/scale.png')}
+                                    resizeMode='contain'
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                    }}
+                                />
+                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                            </View>
+                        ),
                 }}
                 />
         </Tab.Navigator>

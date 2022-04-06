@@ -23,10 +23,6 @@ const Login = ({navigation}) => {
         navigation.navigate('Register')
     }
 
-    const toWorkoutLog = () => {
-        navigation.navigate('WorkoutLogNavigator')
-    }
-
     return (
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
