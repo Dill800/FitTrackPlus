@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button} from 'react-native';
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
 
 
 import {
@@ -49,13 +49,30 @@ const Login = ({navigation}) => {
                 <View style={styles.inputView}>
                     <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true}></TextInput>
                 </View>
-                <Button title="Login" onPress={toHomeScreen}></Button>
-                <Button title="Register" onPress={toRegisterScreen}></Button>
+                <TouchableOpacity
+                    onPress={toHomeScreen}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={toRegisterScreen}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Register</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
 
 }
+
 
 const styles = StyleSheet.create({
     formView:{
@@ -74,7 +91,23 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         alignItems: "center",
         justifyContent: "center"
-    }
+    },
+    btn_shape: {
+        backgroundColor: "rgba(178,108,233,1)",
+        borderRadius: 10,
+        width: "50%",
+        height: 40,
+        marginTop: 10,
+        justifyContent: "center",
+      },
+    btn_text: {
+        color: "rgba(255,255,255,1)",
+        fontSize: 16,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
+    
+      
 })
 
 export default Login;

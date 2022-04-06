@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     streakCounter : {type: mongoose.Number, required: true, default: 0},
 	lastCheckIn: {type: Date, required: true, default: new Date(-287364287364)},
     friendList: {type: [String], required: true, default: []},
-	groupName: {type: String, required: true},
+	groupName: {type: String, required: true, default: 'Fellow'},
 	exerciseList: {type: [String], required: true, default: []},
 	weightList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 

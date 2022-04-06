@@ -16,8 +16,11 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Tabs />
-      
+      <Stack.Navigator initialRouteName='Login'>
+        <Stack.Screen name='Login' options={{headerShown: false}} component={Login}/>
+        <Stack.Screen name='Home' options={{headerShown: false, gestureEnabled: false}} component={Tabs}/>
+        <Stack.Screen name='Register' options={{headerShown: false, gestureEnabled: true}} component={Register}/>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
