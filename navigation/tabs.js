@@ -7,7 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import Home from '../screens/Home'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
-import WeightLog from '../screens/WeightLog'
+import WeightLogNavigator from '../screens/WeightLogNavigator'
 import Meals from '../screens/Meals'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
 import Settings from '../screens/Settings'
@@ -180,7 +180,7 @@ const Tabs = ({navigation}) => {
                         ),
                 }}
                 />
-                <Tab.Screen name="Weight Log" component={WeightLog} 
+                <Tab.Screen name="Weight Log" component={WeightLogNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
