@@ -13,7 +13,6 @@ import {
 import axios from 'axios'
 
 import config from '../backend/config/config.js'
-import { propsFlattener } from 'native-base/lib/typescript/hooks/useThemeProps/propsFlattener';
 
 const storeData = async (value) => {
     try {
