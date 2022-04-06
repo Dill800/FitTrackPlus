@@ -23,7 +23,7 @@ export default function App() {
         <Stack.Screen name='Login' options={{headerShown: false}} component={Login}/>
         <Stack.Screen name='Home' options={{headerShown: false, gestureEnabled: false}} component={Tabs}/>
         <Stack.Screen name='Register' options={{headerShown: false, gestureEnabled: true}} component={Register}/>
-      {/* </Stack.Navigator> */}
+      </Stack.Navigator> 
       {/* <Drawer.Navigator
           drawerType="front"
           initialRouteName="Settings"
