@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabActions } from '@react-navigation/native';
 import {StyleSheet, Text, View, Image, TouchableOpacity, Button} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
 
 import Home from '../screens/Home'
@@ -9,8 +10,10 @@ import Register from '../screens/Register'
 import WeightLog from '../screens/WeightLog'
 import Meals from '../screens/Meals'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
+import Settings from '../screens/Settings'
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const CustomTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
@@ -33,7 +36,7 @@ const CustomTabBarButton = ({children, onPress}) => (
     </TouchableOpacity>
 );
 
-const Tabs = () => {
+const Tabs = ({navigation}) => {
     return (
         <Tab.Navigator
             screenOptions={{
@@ -83,11 +86,16 @@ const Tabs = () => {
                             color: '#000',
                         },
                         headerRight: () => (
-                            <Button
-                              onPress={() => alert('This is a button!')}
-                              title="Info"
-                              color="#fff"
-                            />
+                            <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                                <Image
+                                    source={require('../assets/settings.png')}
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        right: 20
+                                    }}
+                                />
+                          </TouchableOpacity>
                           ),
                 }}/>
                 <Tab.Screen name="Workout Log" component={WorkoutLogNavigator} 
@@ -109,6 +117,18 @@ const Tabs = () => {
                         headerStyle: {
                             backgroundColor: '#71ebeb',
                           },
+                        headerRight: () => (
+                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                            <Image
+                                source={require('../assets/settings.png')}
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    right: 20
+                                }}
+                            />
+                        </TouchableOpacity>
+                        ),  
                     }}
                     // options={{
                     //     tabBarIcon: ({focused}) => (
@@ -146,6 +166,18 @@ const Tabs = () => {
                         headerStyle: {
                             backgroundColor: '#71ebeb',
                           },
+                        headerRight: () => (
+                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                            <Image
+                                source={require('../assets/settings.png')}
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    right: 20
+                                }}
+                            />
+                        </TouchableOpacity>
+                        ),
                 }}
                 />
                 <Tab.Screen name="Weight Log" component={WeightLog} 
@@ -153,7 +185,7 @@ const Tabs = () => {
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
                                 <Image
-                                    source={require('../assets/scale.png')}
+                                    source={require('../assets/weight-scale.png')}
                                     resizeMode='contain'
                                     style={{
                                         width: 25,
@@ -163,6 +195,21 @@ const Tabs = () => {
                                 />
                                 <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
                             </View>
+                        ),
+                        headerStyle: {
+                            backgroundColor: '#71ebeb',
+                          },
+                        headerRight: () => (
+                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                            <Image
+                                source={require('../assets/settings.png')}
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    right: 20
+                                }}
+                            />
+                        </TouchableOpacity>
                         ),
                 }}
                 />
