@@ -15,4 +15,4 @@ Run expo register and expo login to create/login to account
 
 Download Expo Go app on phone and log in
 
-Run expo start
+Run expo start (or ```expo start --tunnel``` if you're using a WSL terminal)

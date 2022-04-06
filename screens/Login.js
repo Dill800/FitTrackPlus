@@ -1,6 +1,9 @@
 
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button} from 'react-native';
+import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
     StyledContainer,
     InnerContainer,
@@ -9,28 +12,70 @@ import {
 } from './../components/styles'
 import axios from 'axios'
 
+import config from '../backend/config/config.js'
+import { propsFlattener } from 'native-base/lib/typescript/hooks/useThemeProps/propsFlattener';
+
+const storeData = async (value) => {
+    try {
+        await AsyncStorage.setItem('user_token', value)
+    } catch (e) {
+        // saving error
+        console.log(e)
+    }
+}
+
 const Login = ({navigation}) => {
+
+    AsyncStorage.getItem('user_token')
+    .then(newnit => {
+        console.log("Non null value", newnit)
+
+        if(newnit !== null) {
+
+            
+
+            navigation.navigate('Home')
+        }
+
+        
+    })
+    .catch(e => {
+        console.log(e)
+    })
+
+    //useEffect(getUser, [])
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
 
-    const toHomeScreen = (e) => {
-        console.log('Username: ' + user)
-        console.log('Password: ' + password)
+    const toHomeScreen = () => {
 
-        // Get data based on username, change URL
-        axios.get('URL', 
-        {
-            'headers': {'user': user, 'password': password}
-        })
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        if(user === 'admin' && password === 'admin') {
+            navigation.navigate('Home')
+        }
+        else {
+            axios.post('http://' + config.ipv4 + ':5000/user/login', {
+            username: user,
+            password: password
+            })
+            .then(response => {
+                if(response.data.success === 1) {
+                    console.log('Logged in successfully')
+                    storeData(user)
+                    navigation.navigate('Home')
+                    console.log(response)
+                }
+                else {
+                    console.log("Did not log in successfully")
+                    Alert.alert('Invalid Username or Password')
+                    console.log(response)
+                }
+            })
+        }
 
-        navigation.navigate('Home')
+        
+
+        
     }
 
     const toRegisterScreen = () => {
@@ -63,13 +108,30 @@ const Login = ({navigation}) => {
                 <View style={styles.inputView}>
                     <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true} onChangeText={e => setPassword(e)}></TextInput>
                 </View>
-                <Button title="Login" onPress={(e) => toHomeScreen(e)}></Button>
-                <Button title="Register" onPress={toRegisterScreen}></Button>
+                <TouchableOpacity
+                    onPress={toHomeScreen}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={toRegisterScreen}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Register</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
 
 }
+
 
 const styles = StyleSheet.create({
     formView:{
@@ -88,7 +150,23 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         alignItems: "center",
         justifyContent: "center"
-    }
+    },
+    btn_shape: {
+        backgroundColor: "rgba(178,108,233,1)",
+        borderRadius: 10,
+        width: "50%",
+        height: 40,
+        marginTop: 10,
+        justifyContent: "center",
+      },
+    btn_text: {
+        color: "rgba(255,255,255,1)",
+        fontSize: 16,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
+    
+      
 })
 
 export default Login;
