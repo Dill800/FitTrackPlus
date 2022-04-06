@@ -101,10 +101,21 @@ const Login = ({navigation}) => {
                     <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Login</Text>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Username' placeholderTextColor="grey" onChangeText={e => setUser(e)}></TextInput>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Username'
+                        placeholderTextColor='grey'
+                        onChangeText={e => setUser(e)}
+                    />
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true} onChangeText={e => setPassword(e)}></TextInput>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Password'
+                        placeholderTextColor='grey'
+                        secureTextEntry={true}
+                        onChangeText={e => setPassword(e)}
+                    />
                 </View>
                 <TouchableOpacity
                     onPress={toHomeScreen}
@@ -162,6 +173,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         fontWeight: "bold",
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        width: '100%',
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        color: "#121212",
+        backgroundColor: "#71ebeb"
     },
     
       
