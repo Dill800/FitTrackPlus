@@ -9,6 +9,7 @@ import Register from '../screens/Register'
 import WeightLog from '../screens/WeightLog'
 import Meals from '../screens/Meals'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
+import ForumNavigator from '../screens/ForumNavigator'
 
 const Tab = createBottomTabNavigator();
 
@@ -126,6 +127,27 @@ const Tabs = () => {
                     //         <CustomTabBarButton {... props} />
                     //     )
                     // }}
+                />
+                <Tab.Screen name="Forum" component={ForumNavigator} 
+                    options={{
+                        tabBarIcon: ({focused}) => (
+                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
+                                <Image
+                                    source={require('../assets/forum_icon.png')}
+                                    resizeMode='contain'
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                    }}
+                                />
+                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                            </View>
+                        ),
+                        headerStyle: {
+                            backgroundColor: '#71ebeb',
+                          },
+                }}
                 />
                 <Tab.Screen name="Meals" component={Meals} 
                     options={{
