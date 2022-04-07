@@ -4,8 +4,8 @@ module.exports = {
 
     getUser: async (req, res, next) => {
         
-        User.findOne({username: req.body.username}, (err, user) => {
-
+        User.findOne({username: req.query.username}, (err, user) => {
+            console.log(req)
             res.send(user)
         });
     },

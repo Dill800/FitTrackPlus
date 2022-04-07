@@ -1,7 +1,7 @@
 import * as React from "react";
 import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
-
+import {useSelector, useDispatch} from 'react-redux'
 
 import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
 
@@ -92,6 +92,9 @@ class Home extends React.Component {
   
 
   render() {
+
+    const userData = useSelector(state => state.user)
+
     let exercise = [];
     let activityTotal = 0.0;
     const activities = this.state.activities;

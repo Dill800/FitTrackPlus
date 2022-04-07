@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector, useDispatch} from 'react-redux'
 
 import {
     StyledContainer,
@@ -12,6 +13,8 @@ import {
 } from './../components/styles'
 
 import config from '../backend/config/config.js'
+import { useDisclose } from 'native-base';
+import { updateUsername } from '../redux/actions/user';
 
 const storeData = async (value) => {
     try {
@@ -24,14 +27,88 @@ const storeData = async (value) => {
 
 const Login = ({navigation}) => {
 
+    const userData = useSelector(state => state.user)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+
+        //dispatch(updateUsername(null))
+        
+
+        //dispatch(updateUsername({"_id":"624cf2d132f91a30aacd2cff","username":"bid","passwordHash":"$2a$10$FzMghYsH6rGYdHjym/JvLuMEW/yp9jm859DHFDsrfwJv5EdwKtMcC","streakCounter":0,"lastCheckIn":"1960-11-23T00:35:12.636Z","friendList":[],"groupName":"Fellow","exerciseList":[],"weightList":[],"createdAt":"2022-04-06T01:54:25.087Z","updatedAt":"2022-04-06T01:54:25.087Z","__v":0}))
+        //return;
+
+        if(userData.username !== null) {
+            // Do a fetch of most recent data
+            console.log("UserData is ", userData)
+
+            // grab user info from backend
+            axios.get('http://' + config.ipv4 + ':5000/user/get', {
+                params: {
+                    username: userData.username.username
+                }
+            })
+            .then(response => {
+                console.log("User information retrieved, saving to store")
+                
+                dispatch(updateUsername(response.data))
+                console.log('Response: ', response.data)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+            /*
+            axios({
+                method: 'get',
+                url: 'http://' + config.ipv4 + ':5000/user/get',
+                headers: { 
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => {
+                console.log("User information retrieved, saving to store")
+                dispatch(updateUsername(response.data))
+                console.log(response)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+            */
+    
+            console.log("User data not null: ", userData)
+            navigation.navigate('Home')
+        }
+        else {
+            console.log("No previous user data in store,")
+        }
+
+    }, [])
+    
+    
+
+    /*
     AsyncStorage.getItem('user_token')
     .then(newnit => {
         console.log("Non null value", newnit)
 
         if(newnit !== null) {
 
+            // grab user info from backend
+            axios({
+                method: 'get',
+                url: 'http://' + config.ipv4 + ':5000/user/get',
+                headers: { 
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => {
+                console.log("NEWNIT MERCXH!")
+                console.log(response)
+            })
+            .catch(e => {
+                console.log(e)
+            })
             
-
             navigation.navigate('Home')
         }
 
@@ -40,8 +117,7 @@ const Login = ({navigation}) => {
     .catch(e => {
         console.log(e)
     })
-
-    //useEffect(getUser, [])
+    */
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
@@ -59,7 +135,10 @@ const Login = ({navigation}) => {
             .then(response => {
                 if(response.data.success === 1) {
                     console.log('Logged in successfully')
-                    storeData(user)
+
+                    dispatch(updateUsername(response.data.user))
+                    console.log('Response: ', response.data.user)
+
                     navigation.navigate('Home')
                     console.log(response)
                 }
@@ -122,8 +201,22 @@ const Login = ({navigation}) => {
                     { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
                     ]}
                 >
+                    
                     <Text style={styles.btn_text}>Register</Text>
                 </TouchableOpacity>
+                {/*
+                <TouchableOpacity
+                    onPress={() => {console.log("test clicked")
+                dispatch(updateUsername('dfkd'))}}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    
+                    <Text style={styles.btn_text}>Test</Text>
+                </TouchableOpacity>
+                */}
             </View>
         </View>
     );
