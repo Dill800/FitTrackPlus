@@ -1,8 +1,10 @@
 
-import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import { KeyboardAvoidingView, Keyboard, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert, TouchableWithoutFeedback} from 'react-native';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 import {
     StyledContainer,
@@ -12,6 +14,12 @@ import {
 } from './../components/styles'
 
 import config from '../backend/config/config.js'
+
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const storeData = async (value) => {
     try {
@@ -80,16 +88,19 @@ const Login = ({navigation}) => {
         navigation.navigate('Register')
     }
 
+    const passRef = useRef();
+
     return (
+        <HideKeyboard>
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
+            <KeyboardAwareScrollView bounces={false} keyboardOpeningTime={0} showsVerticalScrollIndicator={false} extraHeight={300}>
             <ImageBackground
             source={require('./../assets/back7.jpg')}
             style={{
                 height: Dimensions.get('window').height / 2.4,
             }}>
-            
             <StyledContainer>
                 <InnerContainer>
                     <PageLogo resizeMode="cover" source={require('./../assets/logo3.png')}></PageLogo>
@@ -106,15 +117,20 @@ const Login = ({navigation}) => {
                         placeholder='Username'
                         placeholderTextColor='grey'
                         onChangeText={e => setUser(e)}
+                        onSubmitEditing={() => {
+                            passRef.current.focus();
+                        }}
                     />
                 </View>
                 <View style={styles.inputView}>
                     <TextInput
+                        ref={passRef}
                         style={styles.input}
                         placeholder='Password'
                         placeholderTextColor='grey'
                         secureTextEntry={true}
                         onChangeText={e => setPassword(e)}
+                        onSubmitEditing={toHomeScreen}
                     />
                 </View>
                 <TouchableOpacity
@@ -136,7 +152,9 @@ const Login = ({navigation}) => {
                     <Text style={styles.btn_text}>Register</Text>
                 </TouchableOpacity>
             </View>
+            </KeyboardAwareScrollView>
         </View>
+        </HideKeyboard>
     );
 
 }

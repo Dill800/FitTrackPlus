@@ -1,30 +1,56 @@
 
 import { keyboardDismissHandlerManager, Row } from 'native-base';
 import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity } from 'react-native';
+import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {Svg, Rect, Text as TextSVG } from 'react-native-svg';
+import {NavigationContainer, useNavigation } from '@react-navigation/native'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+
   
-import {
-    StyledContainer,
-    InnerContainer,
-    PageLogo,
-    PageTitle,
-    Logger
-} from './../components/styles'
+import { Logger } from './../components/styles'
+import WeightLogList from './WeightLogList'
+
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const WeightLog = ({navigation}) => {
+
+    const navi = useNavigation();
 
     const [weight, setWeight] = useState('');
     const [point, setPoint] = useState({ x: 0, y: 0, visible: false, value: 0 })
 
     const screenWidth = Dimensions.get("window").width;
 
-    const data = {
-        labels: ["3/1", "3/2", "3/3", "3/4", "3/5", "3/6"],
+    const dataWeek = {
+        labels: ["3/11", "3/12", "3/13", "3/14", "3/15"],
+        datasets: [
+            {
+              data: [198.3, 197.3, 197.9, 197.2, 196.9],
+              color: (opacity = 1) => `rgba(113, 235, 235, ${opacity})`
+            }
+        ],
+    };
+
+    const dataMonth = {
+        labels: ["3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15"],
+        datasets: [
+            {
+                data: [200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9],
+                color: (opacity = 1) => `rgba(113, 235, 235, ${opacity})`
+            }
+        ]
+    };
+
+    const dataAll = {
+        labels: ["3/1", "3/2", "3/3", "3/4", "3/5", "3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15"],
         datasets: [
           {
-            data: [201.2, 200.8, 200.7, 201.0, 200.3, 200.1],
+            data: [201.2, 200.8, 200.7, 201.0, 200.3, 200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9],
             color: (opacity = 1) => `rgba(113, 235, 235, ${opacity})`
           }
         ],
@@ -43,7 +69,10 @@ const WeightLog = ({navigation}) => {
         }
       };
 
+    const [data, setData] = useState(dataAll);
+
     return (
+        <HideKeyboard>
         <View style={{flex: 1, alignItems: 'center'}}>
             <Logger>
                 <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Weight Log</Text>
@@ -132,11 +161,67 @@ const WeightLog = ({navigation}) => {
                                 }
                             }}
                         />
+                        <View style={styles.bottom_buttons}>
+                            <TouchableOpacity
+                                    onPress={() => {
+                                        setData(dataWeek);
+                                    }}
+                                    style={[styles.button, {borderTopRightRadius: 0, 
+                                        borderBottomRightRadius: 0, 
+                                        borderTopLeftRadius: 15, 
+                                        borderBottomLeftRadius: 15, 
+                                        marginHorizontal: 0,
+                                        borderColor:'black',
+                                        borderWidth:1
+                                    }]}
+                                >
+                                    <Text>1w</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                    onPress={() => {
+                                        setData(dataMonth);
+                                    }}
+                                    style={[styles.button, {borderTopRightRadius: 0, 
+                                        borderBottomRightRadius: 0, 
+                                        marginHorizontal: 0,
+                                        borderColor:'black',
+                                        borderWidth:1,
+                                        borderLeftWidth: 0,
+                                        borderRightWidth: 0
+                                    }]}
+                                >
+                                    <Text>1m</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                    onPress={() => {
+                                        setData(dataAll);
+                                    }}
+                                    style={[styles.button, {marginHorizontal: 0,
+                                        borderColor:'black',
+                                        borderWidth:1
+                                    }]}
+                                >
+                                    <Text>All</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity
+                                    onPress={() => {
+                                        navi.navigate("Log List");
+                                    }}
+                                    style={[styles.button, {borderTopLeftRadius: 15, 
+                                        borderBottomLeftRadius: 15,
+                                        borderColor:'black',
+                                        borderWidth:1,
+                                        marginHorizontal: 0
+                                    }]}
+                                >
+                                    <Text>View Log</Text>
+                            </TouchableOpacity>
                     {/* </ScrollView> */}
                 </View>
             </Logger>
         </View>
-
+        </HideKeyboard>
       );
 
 }
@@ -215,6 +300,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 20
     },
+    bottom_buttons: {
+        flex: 1,
+        flexDirection: 'row'
+    }
 })
 
 export default WeightLog;

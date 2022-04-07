@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const styles = StyleSheet.create({
     container: {
@@ -47,6 +53,7 @@ const AddExercise = ({navigation}) => {
     const [numReps, setNumReps] = useState('');
 
     return (
+        <HideKeyboard>
         <View style={styles.container}>
 
             <View style={styles.input_box}>
@@ -97,6 +104,7 @@ const AddExercise = ({navigation}) => {
             </TouchableOpacity>
 
         </View>
+        </HideKeyboard>
     );
 }
 
