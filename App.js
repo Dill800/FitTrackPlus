@@ -34,9 +34,6 @@ export default function App() {
         <Stack.Screen name='Home' options={{headerShown: false, gestureEnabled: false}} component={Tabs}/>
         <Stack.Screen name='Register' options={{headerShown: false, gestureEnabled: true}} component={Register}/>
         <Stack.Screen name='Settings' options={{headerShown: false, gestureEnabled: true}} component={Settings}/>
-        <Stack.Screen name='Macros' options={{headerShown: false, gestureEnabled: true}} component={Macros}/>
-        <Stack.Screen name='Meals' options={{headerShown: false, gestureEnabled: true}} component={Meals}/>
-
       </Stack.Navigator> 
       {/* <Drawer.Navigator
           drawerType="front"

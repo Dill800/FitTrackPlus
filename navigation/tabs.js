@@ -12,6 +12,7 @@ import Meals from '../screens/Meals'
 import Macros from '../screens/Macros'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
 import Settings from '../screens/Settings'
+import MacrosNavigator from '../screens/MacrosNavigator'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -148,7 +149,7 @@ const Tabs = ({navigation}) => {
                     //     )
                     // }}
                 />
-                <Tab.Screen name="Macros" component={Macros} 
+                <Tab.Screen name="Macros" component={MacrosNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>

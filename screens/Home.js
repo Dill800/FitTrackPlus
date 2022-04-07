@@ -267,7 +267,7 @@ const Home = ({navigation}) => {
           </View>
         </View>
       );
-    }
+  }
   
 
 

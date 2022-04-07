@@ -1,9 +1,11 @@
 import * as React from "react";
 
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {NavigationContainer, useNavigation } from '@react-navigation/native'
 
 
 const Meals = ({navigation}) => {
+    const navi = useNavigation();
     let foodList = [];
     foodList.push(<View
         style={{
@@ -212,7 +214,9 @@ const Meals = ({navigation}) => {
             </View>
             <View style={styles.btn_box}>
                 <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("Macros")}
+                    onPress={() => {
+                        navi.navigate("Macros");
+                    }}
                     style={[styles.btn_shape, { marginHorizontal: 10 }]}
                 >
                     <Text style={styles.btn_text}>Add Food</Text>
