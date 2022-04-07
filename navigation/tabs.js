@@ -30,7 +30,7 @@ const CustomTabBarButton = ({children, onPress}) => (
             width: 70,
             height: 70,
             borderRadius: 35,
-            backGroundColor: '#e32f45'
+            backGroundColor: '#000'
         }}>
             {children}
         </View>
@@ -74,10 +74,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : '#748c94'
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -109,10 +109,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : '#748c94'
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -158,10 +158,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : '#748c94'
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -192,10 +192,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : '#748c94'
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
