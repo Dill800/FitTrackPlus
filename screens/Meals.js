@@ -308,15 +308,10 @@ class Meals extends React.Component {
                 </View>
                 <View style={styles.btn_box}>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.props.navigation.navigate("Exercise", {
-                                username: this.props.navigation.state.params.username,
-                                token: this.props.navigation.state.params.token,
-                            });
-                        }}
+                        onPress={() => this.props.navigation.navigate("Macros")}
                         style={[styles.btn_shape, { marginHorizontal: 10 }]}
                     >
-                        <Text style={styles.btn_text}>Add foodList</Text>
+                        <Text style={styles.btn_text}>Add Food</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => this.refresh()}

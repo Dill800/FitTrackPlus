@@ -9,6 +9,7 @@ import Login from '../screens/Login'
 import Register from '../screens/Register'
 import WeightLogNavigator from '../screens/WeightLogNavigator'
 import Meals from '../screens/Meals'
+import Macros from '../screens/Macros'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
 import Settings from '../screens/Settings'
 
@@ -147,7 +148,7 @@ const Tabs = ({navigation}) => {
                     //     )
                     // }}
                 />
-                <Tab.Screen name="Meals" component={Meals} 
+                <Tab.Screen name="Macros" component={Macros} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
@@ -180,6 +181,7 @@ const Tabs = ({navigation}) => {
                         ),
                 }}
                 />
+
                 <Tab.Screen name="Weight Log" component={WeightLogNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (

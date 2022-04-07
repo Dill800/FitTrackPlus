@@ -1,23 +1,34 @@
 import * as React from "react";
+import { useState } from "react";
+import {Component} from "react";
+
 
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Donut from '../navigation/Donut'
-
+import CircularProgress from "react-native-circular-progress-indicator";
 
 
 class Macros extends React.Component {
+    
+    
     constructor(props) {
+        
         super(props);
         this.state = {
             goalDailyActivity: "",
             activities: [],
         };
+        //const [value, setValue] = useState(0);
+
     }
     static navigationOptions = {
         title: "Macros",
     };
 
+    
+
     render() {
+
         let foodList = [];
         const donutData = [{
             percentage: 1700,
@@ -145,6 +156,7 @@ class Macros extends React.Component {
         });
 
         return (
+            
             <View style={styles.container}>
                 <View style={styles.progress}>
                     <View style={styles.title_box}>
@@ -164,25 +176,78 @@ class Macros extends React.Component {
                             { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
                         ]}
                     >
-                        <Text style={styles.title}>Macros</Text>
+                        <Text style={styles.title}>Macro Goals</Text>
                     </View>
 
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+        
+      
+                        <CircularProgress
+                            radius={80}
+                            value={60}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'tomato'}
+                            inActiveStrokeColor={'tomato'}
+                            inActiveStrokeOpacity={0.2}
+                            duration={500}
+                            title='Calories'
+
+                        />
+                        <CircularProgress
+                            radius={80}
+                            value={85}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'skyblue'}
+                            inActiveStrokeColor={'skyblue'}
+                            inActiveStrokeOpacity={0.2}
+                            title='Fat'
+                            
+                        />
+                    </View>
                     
-                    <View style={{flexDirection: 'column', justifyContent: 'flex-start', flexWrap: 'wrap', alignItems: 'center', top: 10, bottom: 10,}}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <CircularProgress
+                            radius={80}
+                            value={55}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'gold'}
+                            inActiveStrokeColor={'gold'}
+                            inActiveStrokeOpacity={0.2}
+                            title='Protein'
+                            
+                        />
+                        <CircularProgress
+                            radius={80}
+                            value={20}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'#222'}
+                            inActiveStrokeColor={'#222'}
+                            inActiveStrokeOpacity={0.2}
+                            title='Carbs'
+                            
+                        />
+
+                        </View>
+
+
+                    {/* <View style={{flexDirection: 'column', justifyContent: 'flex-start', flexWrap: 'wrap', alignItems: 'center', top: 10, bottom: 10,}}>
                         {donutData.map((p, i) => {
                             return <Donut style={styles.macrosText} key={i} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} calorie={p.calorie} dataLabel={p.dataLabel} />
                         })}
-                    </View>
+                    </View> */}
                     
                 </View>
                 <View style={styles.btn_box}>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.props.navigation.navigate("Exercise", {
-                                username: this.props.navigation.state.params.username,
-                                token: this.props.navigation.state.params.token,
-                            });
-                        }}
+                        onPress={() => this.props.navigation.navigate("Meals")}
                         style={[styles.btn_shape, { marginHorizontal: 10 }]}
                     >
                         <Text style={styles.btn_text}>Add Food</Text>
