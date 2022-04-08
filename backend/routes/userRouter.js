@@ -9,9 +9,6 @@ userRouter.post('/addFriend', userController.addFriend)
 userRouter.post('/removeFriend', userController.removeFriend)
 userRouter.post('/joinGroup', userController.joinGroup)
 userRouter.post('/checkIn', userController.checkIn)
-userRouter.post('/addExercise', userController.addExercise)
-userRouter.post('/removeExericse', userController.removeExercise)
-userRouter.post('/addWeight', userController.addWeight)
 
 // Logging in as an existing user
 // userRouter.post('/login', userController.authenticate)

@@ -22,6 +22,7 @@ const WorkoutLogNavigator = ({navigation}) => {
 }
 
 const Exercise = ({navigation}) => {
+  
   const navi = useNavigation();
 
   return (
@@ -62,7 +63,10 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box}>
-            {/* <Text>{exercise}</Text> */}
+            <Exercise></Exercise>
+            <Exercise></Exercise>
+            <Exercise></Exercise>
+            <Exercise></Exercise>
             <Exercise></Exercise>
             
           </ScrollView>
@@ -72,7 +76,7 @@ const WorkoutLogDashboard = ({navigation}) => {
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}
         onPress={() => navigation.navigate("AddExercise")}
       >
-          <Text style={styles.btn_text}>Add Exercise</Text>
+          <Text style={styles.btn_text}>Add New Workout</Text>
       </TouchableOpacity>
 
     </View>
@@ -130,14 +134,14 @@ const styles = StyleSheet.create({
   },
   exercise_container: {
     width: "95%",
-    height: 400,
+    height: "75%",
     alignItems: "center",
   },
   box: {
     backgroundColor: "rgba(213,218,223,1)",
-    borderRadius: 10,
-    width: "95%",
-    height: 275,
+    borderRadius: 0,
+    width: "100%",
+    height: 475,
     alignSelf: "center",
   },
   btn_box: {
