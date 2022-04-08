@@ -5,7 +5,6 @@ module.exports = {
     getUser: async (req, res, next) => {
         
         User.findOne({username: req.query.username}, (err, user) => {
-            console.log(req)
             res.send(user)
         });
     },
@@ -136,6 +135,21 @@ module.exports = {
             res.send({success: 1, data: data})
         })
 
+    },
+
+    listGroupMembers: async(req, res) => {
+        //console.log(req.body.username);
+        //console.log(req.body.groupName);
+        User.find({groupName: req.body.groupName}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })
+            
+        
     },
 
     checkIn: async (req, res) => {

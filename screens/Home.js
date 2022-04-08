@@ -1,166 +1,109 @@
 import * as React from "react";
+import {useRef, useState, useEffect} from 'react';
 import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
 import {useSelector, useDispatch} from 'react-redux'
 
 import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
 
-const Home = ({navigation}) => {
+import axios from 'axios'
+import qs from 'qs'
+import config from '../backend/config/config.js'
+
+const Home = ({navigation})  => {
 
     const userData = useSelector(state => state.user)
 
+    const [friendsList, setFriendsList] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    let friends = [];
+    let friends2 = [];
+
+
+   
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'groupName': userData.username.groupName 
+    });
+    var config2 = {
+      method: 'post',
+      url: 'http://' + config.ipv4+ ':5000/user/listGroupMembers',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+
+   
+    useEffect(() => {
+        async function getFriendsList() {
+          axios(config2)
+          .then(function (response) {
+            //console.log(JSON.stringify(response.data.data));
+            let bigDog = JSON.stringify(response.data.data);
+            let biggerDog = (JSON.parse(bigDog));
+            for (var i = 0; i < biggerDog.length; i++) {
+              var friend  = {
+                "Username" : biggerDog[i].username,
+                "Streak" : biggerDog[i].streakCounter,
+              };
+  
+              
+            //console.log(friend);
+            friends2.push(friend);
+            //setFriendsList(friendsList.concat(friend));
+            //setFriendsList(friendsList.concat(biggerDog[i].username));
+            }
+            setLoading(false);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+        }
+
+        getFriendsList();
+        setFriendsList(friends2);
+        console.log(friends2);
+    },[])
+
+  
     let exercise = [];
     let activityTotal = 0.0;
     const activities = [];
     const widthAndHeight = 250
     const series = [123, 321, 90]
     const sliceColor = ['#F44336','#2196F3','#FFEB3B']
-    let friends = [];
-    friends.push(<View
-        style={{
-          alignItems: "center",
-          width: 370,
-          height: 100,
-          paddingTop: 8,
-          marginBottom: 15,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "rgba(230,230,230,1)",
-            borderRadius: 15,
-            padding: 15,
-            width: "95%",
-            height: "95%",
-          }}
-        >
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>Dillon</Text>
-          <Text>{"Streak: 103"}</Text>
-          <Text>{"Wilk's Score: 386"}</Text>
-        </View>
-      </View>)
-      friends.push(<View
-        style={{
-          alignItems: "center",
-          width: 370,
-          height: 100,
-          paddingTop: 8,
-          marginBottom: 15,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "rgba(230,230,230,1)",
-            borderRadius: 15,
-            padding: 15,
-            width: "95%",
-            height: "95%",
-          }}
-        >
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>Brock</Text>
-          <Text>{"Streak: 103"}</Text>
-          <Text>{"Wilk's Score: 386"}</Text>
-        </View>
-      </View>)
-      friends.push(<View
-        style={{
-          alignItems: "center",
-          width: 370,
-          height: 100,
-          paddingTop: 8,
-          marginBottom: 15,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "rgba(230,230,230,1)",
-            borderRadius: 15,
-            padding: 15,
-            width: "95%",
-            height: "95%",
-          }}
-        >
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>David</Text>
-          <Text>{"Streak: 103"}</Text>
-          <Text>{"Wilk's Score: 386"}</Text>
-        </View>
-      </View>)
-      friends.push(<View
-        style={{
-          alignItems: "center",
-          width: 370,
-          height: 100,
-          paddingTop: 8,
-          marginBottom: 15,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "rgba(230,230,230,1)",
-            borderRadius: 15,
-            padding: 15,
-            width: "95%",
-            height: "95%",
-          }}
-        >
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>Gary</Text>
-          <Text>{"Streak: 103"}</Text>
-          <Text>{"Wilk's Score: 386"}</Text>
-        </View>
-      </View>)
-      friends.push(<View
-        style={{
-          alignItems: "center",
-          width: 370,
-          height: 100,
-          paddingTop: 8,
-          marginBottom: 15,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "rgba(230,230,230,1)",
-            borderRadius: 15,
-            padding: 15,
-            width: "95%",
-            height: "95%",
-          }}
-        >
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>Ryan</Text>
-          <Text>{"Streak: 103"}</Text>
-          <Text>{"Wilk's Score: 386"}</Text>
-        </View>
-      </View>)
 
-    activities.forEach((x) => {
-      exercise.push(
-        <View
-          key={x.id}
-          style={{
-            alignItems: "center",
-            width: 370,
-            height: 100,
-            paddingTop: 8,
-            marginBottom: 15,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "rgba(230,230,230,1)",
-              borderRadius: 15,
-              padding: 15,
-              width: "95%",
-              height: "95%",
-            }}
-          >
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>{x.name}</Text>
-            <Text>{"Duration: " + x.duration + " min"}</Text>
-            <Text>{"Calories: " + x.calories + " cal"}</Text>
-          </View>
-        </View>
-      );
-      activityTotal = activityTotal + x.duration;
-    });
+    for (var i = 0; i < friendsList.length; i++) {
+      friends.push(
+            <View
+              key= {i}
+              style={{
+                alignItems: "center",
+                width: 370,
+                height: 100,
+                paddingTop: 8,
+                marginBottom: 15,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: "rgba(230,230,230,1)",
+                  borderRadius: 15,
+                  padding: 15,
+                  width: "95%",
+                  height: "95%",
+                }}
+              >
+                <Text style={{ fontSize: 25, fontWeight: "bold" }}>{friendsList[i].Username}</Text>
+                <Text>{"Streak: " + friendsList[i].Streak}</Text>
+              </View>
+            </View>
+      )
+    }
+
+
     const donutData = [{
         percentage: 1700,
         color: 'tomato',
@@ -215,7 +158,7 @@ const Home = ({navigation}) => {
                 { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
               ]}
             >
-              <Text style={styles.title}>Workout Streak: 125 🔥</Text>
+              <Text style={styles.title}>Workout Streak: {userData.username.streakCounter} 🔥</Text>
             </View>
             <ScrollView horizontal={false} style={styles.box}>
               <Text>{friends}</Text>
@@ -231,7 +174,7 @@ const Home = ({navigation}) => {
               }}
               style={[styles.btn_shape, { marginHorizontal: 10 }]}
             >
-              <Text style={styles.btn_text}>Add Friends</Text>
+              <Text style={styles.btn_text}>Join Group</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.refresh()}
@@ -240,7 +183,7 @@ const Home = ({navigation}) => {
                 { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
               ]}
             >
-              <Text style={styles.btn_text}>Refresh</Text>
+              <Text style={styles.btn_text}>Create Group</Text>
             </TouchableOpacity>
           </View>
           {/* <TouchableOpacity
