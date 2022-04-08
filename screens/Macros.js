@@ -9,6 +9,7 @@ import Donut from '../navigation/Donut'
 import CircularProgress from "react-native-circular-progress-indicator";
 import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { VictoryPie } from "victory-native";
+import { Center } from "native-base";
 
 const Macros = ({ navigation }) => {
 
@@ -57,16 +58,29 @@ const Macros = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView horizontal={false} style={{ paddingBottom: 0 }}>
+            <ScrollView horizontal={false} style={{ paddingLeft: 10 }}>
 
 
                 <View style={styles.progress}>
                     <View style={styles.title_box}>
-                        <Text style={styles.title}>Today</Text>
+                        <Text style={styles.title}>Target Macros</Text>
                     </View>
+                    <View style={styles.progress_container}>
+                    <View style={styles.progress_box}>
+                        <Text style={styles.progress_title}>Calories: 1200</Text>
+                        <Text style={styles.progress_title}>Protein: 130</Text>
+                        
+                    </View>
+                    <View style={styles.progress_box}>
+                        <Text style={styles.progress_title}>Fat: 40</Text>
+                        <Text style={styles.progress_title}>Carbs: 125</Text>
+                    </View>
+                </View>
 
 
                 </View>
+
+
                 <View style={styles.exercise_container}>
 
 
@@ -78,7 +92,7 @@ const Macros = ({ navigation }) => {
                             { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
                         ]}
                     >
-                        <Text style={styles.title}>Macro Goals</Text>
+                        <Text style={styles.title}>Today's Progress</Text>
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -149,27 +163,30 @@ const Macros = ({ navigation }) => {
 
                 </View>
 
-                <View style={styles.btn_box}>
+
+                <View style={{ flexDirection: "row", paddingRight:30, paddingLeft: 10}}>
                     <TouchableOpacity
                         onPress={() => {
                             navi.navigate("Meals");
                         }}
-                        style={[styles.btn_shape, { marginHorizontal: 10 }]}
+                        style={[styles.btn_shape, ]}
                     >
                         <Text style={styles.btn_text}>Add Food</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.refresh()}
+                        onPress={() => {
+                            navi.navigate("EditMacros");
+                        }}
                         style={[
                             styles.btn_shape,
-                            { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                            { backgroundColor: "rgba(153,50,245,1)" },
                         ]}
                     >
-                        <Text style={styles.btn_text}>Refresh</Text>
+                        <Text style={styles.btn_text}>Set Goals</Text>
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{paddingTop: 30, fontSize: 30, textAlign:'center'}}>Calories: 135</Text>
+                <Text style={{ paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: 135</Text>
                 <VictoryPie
                     //padAngle={({ datum }) => datum.y}
                     innerRadius={100}

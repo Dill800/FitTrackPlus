@@ -11,6 +11,7 @@ import Register from './screens/Register'
 import Settings from './screens/Settings'
 import Meals from './screens/Meals'
 import Macros from './screens/Macros'
+import EditMacros from './screens/EditMacros'
 
 import WorkoutLogNavigator from './screens/WorkoutLogNavigator'
 
