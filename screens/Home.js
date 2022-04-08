@@ -1,11 +1,14 @@
 import * as React from "react";
 import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
-
+import {useSelector, useDispatch} from 'react-redux'
 
 import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
 
 const Home = ({navigation}) => {
+
+    const userData = useSelector(state => state.user)
+
     let exercise = [];
     let activityTotal = 0.0;
     const activities = [];
@@ -188,7 +191,7 @@ const Home = ({navigation}) => {
         <View style={styles.container}>
           <View style={styles.progress}>
             <View style={styles.title_box}>
-              <Text style={styles.title}>"Hi, Frank!" 👋</Text>
+              <Text style={styles.title}>Hi, {userData.username.username}! 👋</Text>
             </View>
             <View style={styles.progress_container}>
               <View style={styles.progress_box}>

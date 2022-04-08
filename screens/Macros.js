@@ -1,14 +1,19 @@
 import * as React from "react";
 import { useState } from "react";
-import {Component} from "react";
+import { Component } from "react";
+import Svg from "react-native-svg";
 
 
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Donut from '../navigation/Donut'
 import CircularProgress from "react-native-circular-progress-indicator";
-import {NavigationContainer, useNavigation } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { VictoryPie } from "victory-native";
+import { Center } from "native-base";
 
-const Macros = ({navigation}) => {
+const Macros = ({ navigation }) => {
+
+
     const navi = useNavigation();
     let foodList = [];
     const donutData = [{
@@ -37,6 +42,7 @@ const Macros = ({navigation}) => {
         dataLabel: "carb"
     }];
 
+
     foodList.push(<View
         style={{
             alignItems: "center",
@@ -51,116 +57,157 @@ const Macros = ({navigation}) => {
     </View>);
 
     return (
-                
         <View style={styles.container}>
-            <View style={styles.progress}>
-                <View style={styles.title_box}>
-                    <Text style={styles.title}>Today</Text>
+            <ScrollView horizontal={false} style={{ paddingLeft: 10 }}>
+
+
+                <View style={styles.progress}>
+                    <View style={styles.title_box}>
+                        <Text style={styles.title}>Target Macros</Text>
+                    </View>
+                    <View style={styles.progress_container}>
+                    <View style={styles.progress_box}>
+                        <Text style={styles.progress_title}>Calories: 1200</Text>
+                        <Text style={styles.progress_title}>Protein: 130</Text>
+                        
+                    </View>
+                    <View style={styles.progress_box}>
+                        <Text style={styles.progress_title}>Fat: 40</Text>
+                        <Text style={styles.progress_title}>Carbs: 125</Text>
+                    </View>
                 </View>
 
 
-            </View>
-            <View style={styles.exercise_container}>
-
-
-
-
-                <View
-                    style={[
-                        styles.title_box,
-                        { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
-                    ]}
-                >
-                    <Text style={styles.title}>Macro Goals</Text>
                 </View>
 
-                <View style={{flex: 1, flexDirection: 'row'}}>
+
+                <View style={styles.exercise_container}>
 
 
-                    <CircularProgress
-                        radius={80}
-                        value={60}
-                        textColor='#222'
-                        fontSize={20}
-                        valueSuffix={'%'}
-                        activeStrokeColor={'tomato'}
-                        inActiveStrokeColor={'tomato'}
-                        inActiveStrokeOpacity={0.2}
-                        duration={500}
-                        title='Calories'
 
-                    />
-                    <CircularProgress
-                        radius={80}
-                        value={85}
-                        textColor='#222'
-                        fontSize={20}
-                        valueSuffix={'%'}
-                        activeStrokeColor={'skyblue'}
-                        inActiveStrokeColor={'skyblue'}
-                        inActiveStrokeOpacity={0.2}
-                        title='Fat'
-                        
-                    />
-                </View>
-                
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <CircularProgress
-                        radius={80}
-                        value={55}
-                        textColor='#222'
-                        fontSize={20}
-                        valueSuffix={'%'}
-                        activeStrokeColor={'gold'}
-                        inActiveStrokeColor={'gold'}
-                        inActiveStrokeOpacity={0.2}
-                        title='Protein'
-                        
-                    />
-                    <CircularProgress
-                        radius={80}
-                        value={20}
-                        textColor='#222'
-                        fontSize={20}
-                        valueSuffix={'%'}
-                        activeStrokeColor={'#222'}
-                        inActiveStrokeColor={'#222'}
-                        inActiveStrokeOpacity={0.2}
-                        title='Carbs'
-                        
-                    />
+
+                    <View
+                        style={[
+                            styles.title_box,
+                            { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                        ]}
+                    >
+                        <Text style={styles.title}>Today's Progress</Text>
+                    </View>
+
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+
+
+                        <CircularProgress
+                            radius={80}
+                            value={60}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'tomato'}
+                            inActiveStrokeColor={'tomato'}
+                            inActiveStrokeOpacity={0.2}
+                            duration={500}
+                            title='Calories'
+
+                        />
+                        <CircularProgress
+                            radius={80}
+                            value={85}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'skyblue'}
+                            inActiveStrokeColor={'skyblue'}
+                            inActiveStrokeOpacity={0.2}
+                            title='Fat'
+
+                        />
+                    </View>
+
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <CircularProgress
+                            radius={80}
+                            value={55}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'gold'}
+                            inActiveStrokeColor={'gold'}
+                            inActiveStrokeOpacity={0.2}
+                            title='Protein'
+
+                        />
+                        <CircularProgress
+                            radius={80}
+                            value={20}
+                            textColor='#222'
+                            fontSize={20}
+                            valueSuffix={'%'}
+                            activeStrokeColor={'#222'}
+                            inActiveStrokeColor={'#222'}
+                            inActiveStrokeOpacity={0.2}
+                            title='Carbs'
+
+                        />
+
+
+
 
                     </View>
 
 
-                {/* <View style={{flexDirection: 'column', justifyContent: 'flex-start', flexWrap: 'wrap', alignItems: 'center', top: 10, bottom: 10,}}>
-                    {donutData.map((p, i) => {
-                        return <Donut style={styles.macrosText} key={i} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} calorie={p.calorie} dataLabel={p.dataLabel} />
-                    })}
-                </View> */}
-                
-            </View>
-            <View style={styles.btn_box}>
-                <TouchableOpacity
-                    onPress={() => {
-                        navi.navigate("Meals");
-                    }}
-                    style={[styles.btn_shape, { marginHorizontal: 10 }]}
-                >
-                    <Text style={styles.btn_text}>Add Food</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => this.refresh()}
-                    style={[
-                        styles.btn_shape,
-                        { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
-                    ]}
-                >
-                    <Text style={styles.btn_text}>Refresh</Text>
-                </TouchableOpacity>
-            </View>
 
+
+
+
+                </View>
+
+
+                <View style={{ flexDirection: "row", paddingRight:30, paddingLeft: 10}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navi.navigate("Meals");
+                        }}
+                        style={[styles.btn_shape, ]}
+                    >
+                        <Text style={styles.btn_text}>Add Food</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navi.navigate("EditMacros");
+                        }}
+                        style={[
+                            styles.btn_shape,
+                            { backgroundColor: "rgba(153,50,245,1)" },
+                        ]}
+                    >
+                        <Text style={styles.btn_text}>Set Goals</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={{ paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: 135</Text>
+                <VictoryPie
+                    //padAngle={({ datum }) => datum.y}
+                    innerRadius={100}
+                    colorScale={["skyblue", "gold", "black"]}
+                    padAngle={5}
+                    data={[
+                        { x: "Fat", y: 25 },
+                        { x: "Protein", y: 35 },
+                        { x: "Carbs", y: 15 }
+                    ]}
+
+
+                />
+
+                <View style={{ padding: 50 }}>
+                    <Text></Text>
+                </View>
+
+            </ScrollView>
         </View>
+
     );
 }
 
@@ -226,6 +273,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     btn_box: {
+        paddingLeft: 100,
         flexDirection: "row",
         width: "75%",
         justifyContent: "center",

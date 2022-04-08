@@ -1,16 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector, useDispatch} from 'react-redux'
+import { updateUsername } from '../redux/actions/user';
 
 const Settings = ({navigation}) => {
 
+    const dispatch = useDispatch()
+
+
     const toLoginScreen = () => {
+      /*
       AsyncStorage.removeItem('user_token')
       .then(res => {
         console.log(res)
         navigation.navigate('Login')
       })
-
+      */
+      dispatch(updateUsername(null))
+      navigation.navigate('Login')
         
     }
 

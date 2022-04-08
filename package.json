@@ -52,7 +52,12 @@
     "react-native-table-component": "https://github.com/slice312/react-native-table-component.git",
     "react-native-web": "0.17.1",
     "react-navigation-stack": "^2.10.4",
-    "styled-components": "^5.3.3"
+    "react-redux": "^7.2.8",
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.1",
+    "styled-components": "^5.3.3",
+    "victory-native": "^36.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
