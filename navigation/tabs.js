@@ -199,21 +199,23 @@ const Tabs = ({navigation}) => {
                                 <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
                             </View>
                         ),
-                        headerStyle: {
-                            backgroundColor: '#71ebeb',
-                          },
-                        headerRight: () => (
-                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-                            <Image
-                                source={require('../assets/settings.png')}
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    right: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                        ),
+                        headerShown: false
+                        // headerStyle: {
+                        //     backgroundColor: '#71ebeb',
+                        //   },
+                        // headerRight: () => (
+                        // <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                        //     <Image
+                        //         source={require('../assets/settings.png')}
+                        //         style={{
+                        //             width: 25,
+                        //             height: 25,
+                        //             right: 20
+                        //         }}
+                        //     />
+                        // </TouchableOpacity>
+                        // ),
+
                 }}
                 />
         </Tab.Navigator>
