@@ -1,9 +1,11 @@
 
-import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import { KeyboardAvoidingView, Keyboard, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert, TouchableWithoutFeedback} from 'react-native';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 import {
     StyledContainer,
@@ -15,6 +17,12 @@ import {
 import config from '../backend/config/config.js'
 import { useDisclose } from 'native-base';
 import { updateUsername } from '../redux/actions/user';
+
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const storeData = async (value) => {
     try {
@@ -159,16 +167,19 @@ const Login = ({navigation}) => {
         navigation.navigate('Register')
     }
 
+    const passRef = useRef();
+
     return (
+        <HideKeyboard>
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
+            <KeyboardAwareScrollView bounces={false} keyboardOpeningTime={0} showsVerticalScrollIndicator={false} extraHeight={300}>
             <ImageBackground
             source={require('./../assets/back7.jpg')}
             style={{
                 height: Dimensions.get('window').height / 2.4,
             }}>
-            
             <StyledContainer>
                 <InnerContainer>
                     <PageLogo resizeMode="cover" source={require('./../assets/logo3.png')}></PageLogo>
@@ -180,10 +191,26 @@ const Login = ({navigation}) => {
                     <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Login</Text>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Username' placeholderTextColor="grey" onChangeText={e => setUser(e)}></TextInput>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Username'
+                        placeholderTextColor='grey'
+                        onChangeText={e => setUser(e)}
+                        onSubmitEditing={() => {
+                            passRef.current.focus();
+                        }}
+                    />
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Password' placeholderTextColor="grey" secureTextEntry={true} onChangeText={e => setPassword(e)}></TextInput>
+                    <TextInput
+                        ref={passRef}
+                        style={styles.input}
+                        placeholder='Password'
+                        placeholderTextColor='grey'
+                        secureTextEntry={true}
+                        onChangeText={e => setPassword(e)}
+                        onSubmitEditing={toHomeScreen}
+                    />
                 </View>
                 <TouchableOpacity
                     onPress={toHomeScreen}
@@ -218,7 +245,9 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
                 */}
             </View>
+            </KeyboardAwareScrollView>
         </View>
+        </HideKeyboard>
     );
 
 }
@@ -255,6 +284,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         fontWeight: "bold",
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        width: '100%',
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        color: "#121212",
+        backgroundColor: "#71ebeb"
     },
     
       

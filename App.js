@@ -9,6 +9,9 @@ import Login from './screens/Login'
 import Home from './screens/Home'
 import Register from './screens/Register'
 import Settings from './screens/Settings'
+import Meals from './screens/Meals'
+import Macros from './screens/Macros'
+
 import WorkoutLogNavigator from './screens/WorkoutLogNavigator'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
