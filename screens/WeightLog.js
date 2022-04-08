@@ -165,6 +165,14 @@ const WeightLog = ({navigation}) => {
                             <TouchableOpacity
                                     onPress={() => {
                                         setData(dataWeek);
+                                        setPoint(prevState => {
+                                            return { 
+                                                      x: prevState.x,
+                                                      y: prevState.y,
+                                                      visible: false,
+                                                      value: prevState.value
+                                                   }
+                                            })
                                     }}
                                     style={[styles.button, {borderTopRightRadius: 0, 
                                         borderBottomRightRadius: 0, 
@@ -180,6 +188,14 @@ const WeightLog = ({navigation}) => {
                             <TouchableOpacity
                                     onPress={() => {
                                         setData(dataMonth);
+                                        setPoint(prevState => {
+                                            return { 
+                                                      x: prevState.x,
+                                                      y: prevState.y,
+                                                      visible: false,
+                                                      value: prevState.value
+                                                   }
+                                            })
                                     }}
                                     style={[styles.button, {borderTopRightRadius: 0, 
                                         borderBottomRightRadius: 0, 
@@ -195,6 +211,14 @@ const WeightLog = ({navigation}) => {
                             <TouchableOpacity
                                     onPress={() => {
                                         setData(dataAll);
+                                        setPoint(prevState => {
+                                            return { 
+                                                      x: prevState.x,
+                                                      y: prevState.y,
+                                                      visible: false,
+                                                      value: prevState.value
+                                                   }
+                                            })
                                     }}
                                     style={[styles.button, {marginHorizontal: 0,
                                         borderColor:'black',
@@ -280,7 +304,7 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: "rgba(213,218,223,1)",
         width: "95%",
-        height: 'auto',
+        height: 125,
         borderRadius: 10,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,

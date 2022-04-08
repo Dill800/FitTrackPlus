@@ -233,6 +233,7 @@ const Meals = ({navigation}) => {
             </View>
 
         </View>
+    
     );
 }
 
