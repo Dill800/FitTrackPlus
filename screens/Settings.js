@@ -4,6 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux'
 import { updateUsername } from '../redux/actions/user';
 
+import * as themeActions from "../redux/actions/theme";
+import reducers from "../redux/state/reducers";
+
 const Settings = ({navigation}) => {
 
     const dispatch = useDispatch()
@@ -26,6 +29,9 @@ const Settings = ({navigation}) => {
         navigation.goBack()
     }
 
+    const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+
+    const [mode, setMode] = useState(false);
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -44,13 +50,30 @@ const Settings = ({navigation}) => {
                     <Text style={styles.btn_text}>Back</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                    // onPress={goBack}
                     style={[
                     styles.btn_shape,
-                    { backgroundColor: "black", marginHorizontal: 10 },
+                    { backgroundColor: themeReducer.theme ? '#fff' : '#000', marginHorizontal: 10 },
                     ]}
+                    onPress={() => {
+                      // if (!mode) {
+                      //   setMode(true);
+                      // } else {
+                      //   setMode(false);
+                      // }
+
+                      dispatch(themeActions.ToggleTheme(!themeReducer.theme));
+                      console.log(mode + ' ' + themeReducer.theme)
+                    }}
                 >
-                    <Text style={styles.btn_text}>Dark Mode</Text>
+                    <Text 
+                      style={{
+                        color: themeReducer.theme ? '#000' : '#fff',
+                        fontSize: 16,
+                        textAlign: "center",
+                        fontWeight: "bold"
+                      }}>
+                        {themeReducer.theme ? 'Light Mode' : 'Dark Mode'}
+                    </Text>
             </TouchableOpacity>
         </View>
     );
@@ -62,6 +85,7 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+      // backgroundColor: '#121212'
     },
     input_box: {
       width: "75%",
@@ -88,7 +112,6 @@ const styles = StyleSheet.create({
       justifyContent: "center",
     },
     btn_text: {
-      color: "rgba(255,255,255,1)",
       fontSize: 16,
       textAlign: "center",
       fontWeight: "bold",

@@ -133,6 +133,7 @@ const Login = ({navigation}) => {
     const toHomeScreen = () => {
 
         if(user === 'admin' && password === 'admin') {
+            dispatch(updateUsername('admin'))
             navigation.navigate('Home')
         }
         else {
