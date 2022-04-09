@@ -2,6 +2,13 @@ const User = require('../schema/UserSchema.js')
 
 module.exports = {
 
+    getUser: async (req, res, next) => {
+        
+        User.findOne({username: req.query.username}, (err, user) => {
+            res.send(user)
+        });
+    },
+
     exists: async (req, res, next) => {
         
         User.findOne({username: req.body.username}, (err, user) => {
@@ -128,6 +135,21 @@ module.exports = {
             res.send({success: 1, data: data})
         })
 
+    },
+
+    listGroupMembers: async(req, res) => {
+        //console.log(req.body.username);
+        //console.log(req.body.groupName);
+        User.find({groupName: req.query.groupName}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })
+            
+        
     },
 
     checkIn: async (req, res) => {

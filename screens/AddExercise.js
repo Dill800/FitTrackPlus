@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Text, View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +92,7 @@ const AddExercise = ({navigation}) => {
 
 
   return (
-
+  <HideKeyboard>
   <View style={styles.container}>
     <View style={styles.input_box}>
     <Text style={styles.input_title}>Date:{date.toDateString()}</Text>
@@ -149,6 +154,7 @@ const AddExercise = ({navigation}) => {
     </TouchableOpacity>
 
   </View>
+  </HideKeyboard>
   );
 }
 

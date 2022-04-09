@@ -1,17 +1,21 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { TabActions } from '@react-navigation/native';
+import { TabActions, useTheme } from '@react-navigation/native';
 import {StyleSheet, Text, View, Image, TouchableOpacity, Button} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
 
 import Home from '../screens/Home'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
-import WeightLog from '../screens/WeightLog'
+import WeightLogNavigator from '../screens/WeightLogNavigator'
 import Meals from '../screens/Meals'
+import Macros from '../screens/Macros'
 import WorkoutLogNavigator from '../screens/WorkoutLogNavigator'
-import ForumNavigator from '../screens/ForumNavigator'
+import Settings from '../screens/Settings'
+import MacrosNavigator from '../screens/MacrosNavigator'
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const CustomTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
@@ -27,14 +31,16 @@ const CustomTabBarButton = ({children, onPress}) => (
             width: 70,
             height: 70,
             borderRadius: 35,
-            backGroundColor: '#e32f45'
+            backGroundColor: '#000'
         }}>
             {children}
         </View>
     </TouchableOpacity>
 );
 
-const Tabs = () => {
+const Tabs = ({navigation}) => {
+
+    const theme = useTheme();
     return (
         <Tab.Navigator
             screenOptions={{
@@ -45,7 +51,7 @@ const Tabs = () => {
                     left: 20,
                     right: 20,
                     elevation: 0,
-                    backgroundColor: '#71ebeb',
+                    backgroundColor: theme.colors.primary,
                     borderRadius: 15,
                     height: 80,
                     ... styles.shadow
@@ -71,10 +77,10 @@ const Tabs = () => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -84,11 +90,16 @@ const Tabs = () => {
                             color: '#000',
                         },
                         headerRight: () => (
-                            <Button
-                              onPress={() => alert('This is a button!')}
-                              title="Info"
-                              color="#fff"
-                            />
+                            <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                                <Image
+                                    source={require('../assets/settings.png')}
+                                    style={{
+                                        width: 25,
+                                        height: 25,
+                                        right: 20
+                                    }}
+                                />
+                          </TouchableOpacity>
                           ),
                 }}/>
                 <Tab.Screen name="Workout Log" component={WorkoutLogNavigator} 
@@ -101,15 +112,27 @@ const Tabs = () => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
                             backgroundColor: '#71ebeb',
                           },
+                        headerRight: () => (
+                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                            <Image
+                                source={require('../assets/settings.png')}
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    right: 20
+                                }}
+                            />
+                        </TouchableOpacity>
+                        ),  
                     }}
                     // options={{
                     //     tabBarIcon: ({focused}) => (
@@ -128,28 +151,7 @@ const Tabs = () => {
                     //     )
                     // }}
                 />
-                <Tab.Screen name="Forum" component={ForumNavigator} 
-                    options={{
-                        tabBarIcon: ({focused}) => (
-                            <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
-                                <Image
-                                    source={require('../assets/forum_icon.png')}
-                                    resizeMode='contain'
-                                    style={{
-                                        width: 25,
-                                        height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
-                                    }}
-                                />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
-                            </View>
-                        ),
-                        headerStyle: {
-                            backgroundColor: '#71ebeb',
-                          },
-                }}
-                />
-                <Tab.Screen name="Meals" component={Meals} 
+                <Tab.Screen name="Macros" component={MacrosNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
@@ -159,33 +161,63 @@ const Tabs = () => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
                             backgroundColor: '#71ebeb',
                           },
+                        headerRight: () => (
+                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                            <Image
+                                source={require('../assets/settings.png')}
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    right: 20
+                                }}
+                            />
+                        </TouchableOpacity>
+                        ),
                 }}
                 />
-                <Tab.Screen name="Weight Log" component={WeightLog} 
+
+                <Tab.Screen name="Weight Log" component={WeightLogNavigator} 
                     options={{
                         tabBarIcon: ({focused}) => (
                             <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
                                 <Image
-                                    source={require('../assets/scale.png')}
+                                    source={require('../assets/weight-scale.png')}
                                     resizeMode='contain'
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#e32f45' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#e32f45' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
+                        headerShown: false
+                        // headerStyle: {
+                        //     backgroundColor: '#71ebeb',
+                        //   },
+                        // headerRight: () => (
+                        // <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                        //     <Image
+                        //         source={require('../assets/settings.png')}
+                        //         style={{
+                        //             width: 25,
+                        //             height: 25,
+                        //             right: 20
+                        //         }}
+                        //     />
+                        // </TouchableOpacity>
+                        // ),
+
                 }}
                 />
         </Tab.Navigator>

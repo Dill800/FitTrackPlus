@@ -3,6 +3,8 @@ const userRouter = new express.Router()
 const userController = require('../controllers/userController')
 
 // Creating a new account, check if its exists, then create if not exists
+userRouter.get('/get', userController.getUser)
+userRouter.get('/listGroupMembers', userController.listGroupMembers)
 userRouter.post('/register', userController.exists, userController.create)
 userRouter.post('/login', userController.authenticate)
 userRouter.post('/addFriend', userController.addFriend)

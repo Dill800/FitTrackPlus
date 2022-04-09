@@ -1,9 +1,13 @@
 
-import React, {useState, useEffect} from 'react';
-import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import { Keyboard, TouchableWithoutFeedback, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 import axios from 'axios'
 import qs from 'qs'
+
+import config from '../backend/config/config.js'
 
 import {
     StyledContainer,
@@ -12,6 +16,11 @@ import {
     PageTitle
 } from './../components/styles'
 
+const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+);
 
 const Register = ({navigation}) => {
 
@@ -27,6 +36,10 @@ const Register = ({navigation}) => {
         console.log('user: ', user)
         console.log('password: ', password)
 
+        if(user === '' || password === '') {
+            Alert.alert("Missing Fields", "Please enter a valid username and password.")
+        }
+
         var data = qs.stringify({
             'username': user,
             'passwordHash': password 
@@ -34,7 +47,7 @@ const Register = ({navigation}) => {
 
         axios({
             method: 'post',
-            url: 'http://192.168.0.190:5000/user/register',
+            url: 'http://' + config.ipv4 + ':5000/user/register',
             headers: { 
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -46,28 +59,18 @@ const Register = ({navigation}) => {
         .catch(e => {
             console.log(e)
         })
-
-        /*
-        try {
-            axios.post('http://localhost:5000/user/register',
-            {username: user,
-            password: password})
-            .then(response => {
-                console.log(response)
-            })
-        }
-        catch (e) {
-            console.log(e)
-        }
-        */
         
 
     }
 
+    const passRef = useRef();
+
     return (
+        <HideKeyboard>
         <View 
         style={{flex: 1, backgroundColor: '#f0f8ff'}}
         >
+            <KeyboardAwareScrollView bounces={false} keyboardOpeningTime={0} showsVerticalScrollIndicator={false} extraHeight={300}>
             <ImageBackground
             source={require('./../assets/back7.jpg')}
             style={{
@@ -85,10 +88,26 @@ const Register = ({navigation}) => {
                     <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Create Account</Text>
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Username' placeholderTextColor="grey" onChangeText={e => setUser(e)}></TextInput>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Username'
+                        placeholderTextColor='grey'
+                        onChangeText={e => setUser(e)}
+                        onSubmitEditing={() => {
+                            passRef.current.focus();
+                        }}
+                    />
                 </View>
                 <View style={styles.inputView}>
-                    <TextInput placeholder='Password' placeholderTextColor="grey" onChangeText={e => setPassword(e)} secureTextEntry={true}></TextInput>
+                    <TextInput
+                        ref={passRef}
+                        style={styles.input}
+                        placeholder='Password'
+                        placeholderTextColor='grey'
+                        secureTextEntry={true}
+                        onChangeText={e => setPassword(e)}
+                        onSubmitEditing={registerAccount}
+                    />
                 </View>
                 <TouchableOpacity
                     onPress={registerAccount}
@@ -110,7 +129,9 @@ const Register = ({navigation}) => {
                 </TouchableOpacity>
                 
             </View>
+            </KeyboardAwareScrollView>
         </View>
+        </HideKeyboard>
     );
 
 }
@@ -146,6 +167,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         fontWeight: "bold",
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        width: '100%',
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        color: "#121212",
+        backgroundColor: "#71ebeb"
     },
 })
 
