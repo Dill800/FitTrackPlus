@@ -4,9 +4,7 @@ import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
 import {useSelector, useDispatch} from 'react-redux'
 
-import {useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
-import { useTheme } from '@react-navigation/native';
-
+import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, Pressable, TextInput, Keyboard} from "react-native";
 
 import axios from 'axios'
 import qs from 'qs'
@@ -14,89 +12,6 @@ import config from '../backend/config/config.js'
 
 const Home = ({navigation})  => {
 
-  const theme = useTheme();
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: "column",
-      justifyContent: "flex-start",
-      alignItems: "center",
-    },
-    progress: {
-      width: "95%",
-      height: 125,
-      marginTop: 15,
-      alignItems: "center",
-    },
-    title_box: {
-      backgroundColor: "rgba(74,144,226,1)",
-      borderRadius: 10,
-      width: "95%",
-      height: 40,
-      justifyContent: "center",
-    },
-    title: {
-      color: theme.colors.text,
-      fontSize: 22,
-      alignSelf: "center",
-    },
-    progress_container: {
-      flexDirection: "row",
-      width: "100%",
-      marginTop: 20,
-      justifyContent: "center",
-    },
-    progress_box: {
-      backgroundColor: theme.colors.card,
-      width: "40%",
-      height: 55,
-      borderRadius: 10,
-      marginHorizontal: 25,
-    },
-    progress_title: {
-      color: theme.colors.text,
-      alignSelf: "center",
-      marginVertical: 4,
-    },
-    progress_value: {
-      color: theme.colors.text,
-      fontSize: 20,
-      fontWeight: "bold",
-      alignSelf: "center",
-    },
-    exercise_container: {
-      width: "95%",
-      height: 400,
-      alignItems: "center",
-    },
-    box: {
-      backgroundColor: theme.colors.card,
-      borderRadius: 10,
-      width: "95%",
-      height: 275,
-      alignSelf: "center",
-    },
-    btn_box: {
-      flexDirection: "row",
-      width: "75%",
-      justifyContent: "center",
-    },
-    btn_shape: {
-      backgroundColor: "rgba(178,108,233,1)",
-      borderRadius: 10,
-      width: "50%",
-      height: 40,
-      marginTop: 10,
-      justifyContent: "center",
-    },
-    btn_text: {
-      color: "rgba(255,255,255,1)",
-      fontSize: 16,
-      textAlign: "center",
-      fontWeight: "bold",
-    },
-  })
     const userData = useSelector(state => state.user)
 
     const [friendsList, setFriendsList] = useState([]);
@@ -136,8 +51,6 @@ const Home = ({navigation})  => {
                 "Username" : biggerDog[i].username,
                 "Streak" : biggerDog[i].streakCounter,
               };
-
-              console.log(friend);
   
               
             //console.log(friend);
@@ -154,8 +67,30 @@ const Home = ({navigation})  => {
 
         getFriendsList();
         setFriendsList(friends2);
-        console.log(friends2);
+        //console.log(friends2);
     },[])
+
+ 
+    var data = qs.stringify({
+      'username': 'bid',
+      'groupName': newGroupName 
+    });
+    var config3 = {
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/user/joinGroup',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+
+    axios(config3)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   
     let exercise = [];
@@ -289,7 +224,7 @@ const Home = ({navigation})  => {
                             <TouchableOpacity
                                 onPress={() => {
                                     Keyboard.dismiss();
-                                    setWeight('');
+                                    setGroupName('');
                                 }}
                                 style={styles.brock_button}
                             >
@@ -312,7 +247,7 @@ const Home = ({navigation})  => {
               ]}
               onPress={() => setModalVisible(true)}
             >
-              <Text style={styles.btn_text}>Show Modal</Text>
+              <Text style={styles.btn_text}>Join Group</Text>
             </Pressable>
             <TouchableOpacity
               onPress={() => this.refresh()}
@@ -352,6 +287,160 @@ const Home = ({navigation})  => {
         </View>
       );
   }
+  
+
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "center",
+    },
+    progress: {
+      width: "95%",
+      height: 125,
+      marginTop: 15,
+      alignItems: "center",
+    },
+    title_box: {
+      backgroundColor: "rgba(74,144,226,1)",
+      borderRadius: 10,
+      width: "95%",
+      height: 40,
+      justifyContent: "center",
+    },
+    title: {
+      color: "rgba(255,255,255,1)",
+      fontSize: 22,
+      alignSelf: "center",
+    },
+    progress_container: {
+      flexDirection: "row",
+      width: "100%",
+      marginTop: 20,
+      justifyContent: "center",
+    },
+    progress_box: {
+      backgroundColor: "rgba(213,218,223,1)",
+      width: "40%",
+      height: 55,
+      borderRadius: 10,
+      marginHorizontal: 25,
+    },
+    progress_title: {
+      color: "#121212",
+      alignSelf: "center",
+      marginVertical: 4,
+    },
+    progress_value: {
+      color: "#121212",
+      fontSize: 20,
+      fontWeight: "bold",
+      alignSelf: "center",
+    },
+    exercise_container: {
+      width: "95%",
+      height: 400,
+      alignItems: "center",
+    },
+    box: {
+      backgroundColor: "rgba(213,218,223,1)",
+      borderRadius: 10,
+      width: "95%",
+      height: 275,
+      alignSelf: "center",
+    },
+    btn_box: {
+      flexDirection: "row",
+      width: "75%",
+      justifyContent: "center",
+    },
+    btn_shape: {
+      backgroundColor: "rgba(178,108,233,1)",
+      borderRadius: 10,
+      width: "50%",
+      height: 40,
+      marginTop: 10,
+      justifyContent: "center",
+    },
+    btn_text: {
+      color: "rgba(255,255,255,1)",
+      fontSize: 16,
+      textAlign: "center",
+      fontWeight: "bold",
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      paddingVertical: 100,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2
+    },
+    buttonOpen: {
+      backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+      backgroundColor: "#2196F3",
+    },
+    textStyle: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center",
+      fontSize: 20
+    },
+    inputView:{
+      flexDirection: 'row',
+      borderRadius: 30,
+      height: 45,
+      marginBottom: 20,
+      marginHorizontal: 50,
+      alignItems: "center",
+  },
+  input: {
+      flex: 1,
+      height: 40,
+      paddingHorizontal: 20,
+      borderRadius: 15,
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      backgroundColor: "#f0f8ff"
+  },
+  brock_button: {
+    backgroundColor: "#71ebeb",
+    borderRadius: 15,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    height: 40,
+    margin: 10,
+    marginLeft: 0,
+    justifyContent: "center",
+    paddingHorizontal: 20
+},
+  })
 
     
 
