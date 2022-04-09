@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
 import {useSelector, useDispatch} from 'react-redux'
 
-import {useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
+import {useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
 import { useTheme } from '@react-navigation/native';
 
 
@@ -136,6 +136,8 @@ const Home = ({navigation})  => {
                 "Username" : biggerDog[i].username,
                 "Streak" : biggerDog[i].streakCounter,
               };
+
+              console.log(friend);
   
               
             //console.log(friend);
