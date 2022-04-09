@@ -140,7 +140,7 @@ module.exports = {
     listGroupMembers: async(req, res) => {
         //console.log(req.body.username);
         //console.log(req.body.groupName);
-        User.find({groupName: req.body.groupName}, (err, data) => {
+        User.find({groupName: req.query.groupName}, (err, data) => {
             if(err) {
                 console.log(err);
                 res.send({success: 0});

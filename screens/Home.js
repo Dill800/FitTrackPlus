@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
 import {useSelector, useDispatch} from 'react-redux'
 
-import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
+import {ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, Pressable, TextInput, Keyboard} from "react-native";
 
 import axios from 'axios'
 import qs from 'qs'
@@ -16,6 +16,8 @@ const Home = ({navigation})  => {
 
     const [friendsList, setFriendsList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [newGroupName, setGroupName] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
 
     let friends = [];
     let friends2 = [];
@@ -27,13 +29,14 @@ const Home = ({navigation})  => {
       'groupName': userData.username.groupName 
     });
     var config2 = {
-      method: 'post',
-      url: 'http://' + config.ipv4+ ':5000/user/listGroupMembers',
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data : data
+      method: 'get',
+      url: 'http://' + config.ipv4+ ':5000/user/listGroupMembers?username=bid&groupName=Fellow',
+      params: {
+        username: userData.username.username,
+        groupName: userData.username.groupName
+    }
     };
+
 
    
     useEffect(() => {
@@ -165,7 +168,7 @@ const Home = ({navigation})  => {
             </ScrollView>
           </View>
           <View style={styles.btn_box}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Exercise", {
                   username: this.props.navigation.state.params.username,
@@ -175,7 +178,55 @@ const Home = ({navigation})  => {
               style={[styles.btn_shape, { marginHorizontal: 10 }]}
             >
               <Text style={styles.btn_text}>Join Group</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Enter a group name</Text>
+                  <View style={styles.inputView}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Submit'
+                                placeholderTextColor='grey'
+                                onChangeText={e => setGroupName(e)}
+                                value={newGroupName}
+                            />
+                            <TouchableOpacity
+                                onPress={() => {
+                                    Keyboard.dismiss();
+                                    setGroupName('');
+                                }}
+                                style={styles.brock_button}
+                            >
+                                <Text>🔎</Text>
+                            </TouchableOpacity>
+                        </View>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </Modal>
+            <Pressable
+              style={[
+                styles.btn_shape,
+                { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+              ]}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.btn_text}>Show Modal</Text>
+            </Pressable>
             <TouchableOpacity
               onPress={() => this.refresh()}
               style={[
@@ -297,6 +348,77 @@ const Home = ({navigation})  => {
       textAlign: "center",
       fontWeight: "bold",
     },
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 100,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2
+    },
+    buttonOpen: {
+      backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+      backgroundColor: "#2196F3",
+    },
+    textStyle: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center",
+      fontSize: 20
+    },
+    inputView:{
+      flexDirection: 'row',
+      borderRadius: 30,
+      height: 45,
+      marginBottom: 20,
+      marginHorizontal: 50,
+      alignItems: "center",
+  },
+  input: {
+      flex: 1,
+      height: 40,
+      paddingHorizontal: 100,
+      borderRadius: 15,
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      color: "#121212",
+      backgroundColor: "#f0f8ff"
+  },
+  brock_button: {
+    backgroundColor: "#71ebeb",
+    borderRadius: 15,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    height: 40,
+    margin: 10,
+    marginLeft: 0,
+    justifyContent: "center",
+    paddingHorizontal: 20
+},
   })
 
     
