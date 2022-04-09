@@ -1,12 +1,80 @@
 import React, {useState, useEffect} from 'react';
 import { Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
-import {NavigationContainer, useNavigation } from '@react-navigation/native'
+import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 
 import { Logger } from './../components/styles'
 
 const WeightLogList = ({navigation}) => {
+
+    const theme = useTheme();
+
+    const styles = StyleSheet.create({
+        formView:{
+            flex: 1.5,
+            backgroundColor: '#f0f8ff',
+            bottom: 50,
+            borderTopStartRadius: 60,
+            borderTopEndRadius: 60,
+            alignItems: "center"
+        },
+        inputView:{
+            backgroundColor: theme.colors.primary,
+            borderRadius: 30,
+            width: "70%",
+            height: 45,
+            marginBottom: 20,
+            alignItems: "center",
+            justifyContent: "center"
+        },
+        button: {
+            backgroundColor: theme.colors.primary,
+            borderRadius: 15,
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            height: 40,
+            margin: 10,
+            marginLeft: 0,
+            justifyContent: "center",
+            paddingHorizontal: 20
+        },
+        header: {
+            backgroundColor: theme.colors.card,
+            borderRadius: 10,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+            width: "95%",
+            padding: "5%",
+            paddingBottom: 0,
+            height: 100,
+            alignSelf: "center",
+            justifyContent: "flex-end"
+        },
+        box: {
+            backgroundColor: theme.colors.card,
+            borderRadius: 10,
+            borderTopRightRadius: 0,
+            borderTopLeftRadius: 0,
+            width: "95%",
+            height: 425,
+            alignSelf: "center",
+            padding: '5%',
+            paddingTop: 0,
+        },
+        container: {
+            width: "100%",
+            marginTop: 20,
+            justifyContent: "center",
+        },
+        head: { 
+            height: 40, 
+            backgroundColor: '#f1f8ff' 
+        },
+        text: { 
+            margin: 6 
+        }
+    })
 
     const navi = useNavigation();
 
@@ -34,7 +102,7 @@ const WeightLogList = ({navigation}) => {
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
             <Logger>
-            <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Log List</Text>
+            <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Log List</Text>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
@@ -43,7 +111,17 @@ const WeightLogList = ({navigation}) => {
                 </View>
                 <ScrollView horizontal={false} style={styles.box} showsVerticalScrollIndicator={false}>
                     <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                        <Rows data={tableData} textStyle={{margin: 6}}/>
+                        {/* <Rows style={{color: theme.colors.primary}} data={tableData} textStyle={{color: theme.colors.text, margin: 6}}/> */}
+                        {
+                            tableData.map((rowData, index) => (
+                                <Row
+                                    key={index}
+                                    data={rowData}
+                                    style={[styles.row, index%2 && {backgroundColor: theme.colors.card}]}
+                                    textStyle={{margin: 6}}
+                                />
+                            ))
+                        }
                     </Table>
                 </ScrollView>
             </View>
@@ -52,71 +130,5 @@ const WeightLogList = ({navigation}) => {
       );
 
 }
-
-const styles = StyleSheet.create({
-    formView:{
-        flex: 1.5,
-        backgroundColor: '#f0f8ff',
-        bottom: 50,
-        borderTopStartRadius: 60,
-        borderTopEndRadius: 60,
-        alignItems: "center"
-    },
-    inputView:{
-        backgroundColor: "#71ebeb",
-        borderRadius: 30,
-        width: "70%",
-        height: 45,
-        marginBottom: 20,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    button: {
-        backgroundColor: "#71ebeb",
-        borderRadius: 15,
-        borderTopLeftRadius: 0,
-        borderBottomLeftRadius: 0,
-        height: 40,
-        margin: 10,
-        marginLeft: 0,
-        justifyContent: "center",
-        paddingHorizontal: 20
-    },
-    header: {
-        backgroundColor: "rgba(213,218,223,1)",
-        borderRadius: 10,
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-        width: "95%",
-        padding: "5%",
-        paddingBottom: 0,
-        height: 100,
-        alignSelf: "center",
-        justifyContent: "flex-end"
-    },
-    box: {
-        backgroundColor: "rgba(213,218,223,1)",
-        borderRadius: 10,
-        borderTopRightRadius: 0,
-        borderTopLeftRadius: 0,
-        width: "95%",
-        height: 425,
-        alignSelf: "center",
-        padding: '5%',
-        paddingTop: 0,
-    },
-    container: {
-        width: "100%",
-        marginTop: 20,
-        justifyContent: "center",
-    },
-    head: { 
-        height: 40, 
-        backgroundColor: '#f1f8ff' 
-    },
-    text: { 
-        margin: 6 
-    }
-})
 
 export default WeightLogList;

@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {Svg, Rect, Text as TextSVG } from 'react-native-svg';
-import {NavigationContainer, useNavigation } from '@react-navigation/native'
+import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
   
@@ -18,6 +18,82 @@ const HideKeyboard = ({ children }) => (
 );
 
 const WeightLog = ({navigation}) => {
+
+    const theme = useTheme();
+    
+    const styles = StyleSheet.create({
+        logView:{
+            height: 500,
+            width: '70%',
+            backgroundColor: '#f0f8ff',
+            borderTopStartRadius: 60,
+            borderTopEndRadius: 60,
+            borderBottomStartRadius: 60,
+            borderBottomEndRadius: 60,
+            alignItems: "center",
+        },
+        inputView:{
+            flexDirection: 'row',
+            borderRadius: 30,
+            height: 45,
+            marginBottom: 20,
+            marginHorizontal: 50,
+            alignItems: "center",
+        },
+        input: {
+            flex: 1,
+            height: 40,
+            paddingHorizontal: 20,
+            borderRadius: 15,
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+            backgroundColor: theme.colors.secondary
+        },
+        button: {
+            backgroundColor: theme.colors.primary,
+            borderRadius: 15,
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            height: 40,
+            margin: 10,
+            marginLeft: 0,
+            justifyContent: "center",
+            paddingHorizontal: 20
+        },
+        container: {
+            flexDirection: "row",
+            width: "100%",
+            marginTop: 20,
+            justifyContent: "center",
+        },
+        box: {
+            backgroundColor: theme.colors.card,
+            width: "95%",
+            height: 125,
+            borderRadius: 10,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+        },
+        title: {
+            color: theme.colors.text,
+            alignSelf: "center",
+            marginVertical: 20,
+        },
+        graph: {
+            backgroundColor: theme.colors.card,
+            width: "95%",
+            height: 400,
+            borderRadius: 10,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            alignItems: 'center',
+            paddingBottom: 20
+        },
+        bottom_buttons: {
+            flex: 1,
+            flexDirection: 'row'
+        }
+    })
 
     const navi = useNavigation();
 
@@ -57,10 +133,10 @@ const WeightLog = ({navigation}) => {
       };
 
     const chartConfig = {
-        backgroundColor: "#d5dadf",
-        backgroundGradientFrom: "#d5dadf",
-        backgroundGradientTo: "#d5dadf",
-        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        backgroundColor: theme.colors.card,
+        backgroundGradientFrom: theme.colors.card,
+        backgroundGradientTo: theme.colors.card,
+        color: (opacity = 1) => theme.colors.text,
         decimalPlaces: 1,
         useShadowColorFromDataset: false,
         propsForDots: {
@@ -75,7 +151,7 @@ const WeightLog = ({navigation}) => {
         <HideKeyboard>
         <View style={{flex: 1, alignItems: 'center'}}>
             <Logger>
-                <Text style={{color: 'black', fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Weight Log</Text>
+                <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Weight Log</Text>
                 <View style={styles.container}>
                     <View style={styles.box}>
                         <Text style={styles.title}>Add Weight</Text>
@@ -116,8 +192,8 @@ const WeightLog = ({navigation}) => {
                                 marginVertical: 10,
                                 borderRadius: 15
                             }}
-                            // withVerticalLines={false}
-                            // withHorizontalLines={false}
+                            withVerticalLines={false}
+                            withHorizontalLines={false}
                             decorator={() => {
                                 return (
                                     point.visible ? <View>
@@ -249,85 +325,5 @@ const WeightLog = ({navigation}) => {
       );
 
 }
-
-const styles = StyleSheet.create({
-    logView:{
-        height: 500,
-        width: '70%',
-        backgroundColor: '#f0f8ff',
-        borderTopStartRadius: 60,
-        borderTopEndRadius: 60,
-        borderBottomStartRadius: 60,
-        borderBottomEndRadius: 60,
-        alignItems: "center",
-    },
-    inputView:{
-        flexDirection: 'row',
-        borderRadius: 30,
-        height: 45,
-        marginBottom: 20,
-        marginHorizontal: 50,
-        alignItems: "center",
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        paddingHorizontal: 20,
-        borderRadius: 15,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        color: "#121212",
-        backgroundColor: "#f0f8ff"
-    },
-    button: {
-        backgroundColor: "#71ebeb",
-        borderRadius: 15,
-        borderTopLeftRadius: 0,
-        borderBottomLeftRadius: 0,
-        height: 40,
-        margin: 10,
-        marginLeft: 0,
-        justifyContent: "center",
-        paddingHorizontal: 20
-    },
-    title: {
-        color: "rgba(255,255,255,1)",
-        fontSize: 22,
-        alignSelf: "center",
-    },
-    container: {
-        flexDirection: "row",
-        width: "100%",
-        marginTop: 20,
-        justifyContent: "center",
-    },
-    box: {
-        backgroundColor: "rgba(213,218,223,1)",
-        width: "95%",
-        height: 125,
-        borderRadius: 10,
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-    },
-    title: {
-        color: "#121212",
-        alignSelf: "center",
-        marginVertical: 20,
-    },
-    graph: {
-        backgroundColor: "rgba(213,218,223,1)",
-        width: "95%",
-        height: 400,
-        borderRadius: 10,
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-        alignItems: 'center',
-        paddingBottom: 20
-    },
-    bottom_buttons: {
-        flex: 1,
-        flexDirection: 'row'
-    }
-})
 
 export default WeightLog;
