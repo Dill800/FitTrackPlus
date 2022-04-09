@@ -37,7 +37,7 @@ const Home = ({navigation})  => {
         justifyContent: "center",
       },
       title: {
-        color: "rgba(255,255,255,1)",
+        color: theme.colors.text,
         fontSize: 22,
         alignSelf: "center",
       },
@@ -48,19 +48,19 @@ const Home = ({navigation})  => {
         justifyContent: "center",
       },
       progress_box: {
-        backgroundColor: "rgba(213,218,223,1)",
+        backgroundColor: theme.colors.card,
         width: "40%",
         height: 55,
         borderRadius: 10,
         marginHorizontal: 25,
       },
       progress_title: {
-        color: "#121212",
-        alignSelf: "center",
+        color: theme.colors.text,
+        alignSelf: 'center',
         marginVertical: 4,
       },
       progress_value: {
-        color: "#121212",
+        color: theme.colors.text,
         fontSize: 20,
         fontWeight: "bold",
         alignSelf: "center",
@@ -71,7 +71,7 @@ const Home = ({navigation})  => {
         alignItems: "center",
       },
       box: {
-        backgroundColor: "rgba(213,218,223,1)",
+        backgroundColor: theme.colors.card,
         borderRadius: 10,
         width: "95%",
         height: 275,
@@ -104,7 +104,7 @@ const Home = ({navigation})  => {
       },
       modalView: {
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: theme.colors.background,
         borderRadius: 20,
         paddingVertical: 100,
         alignItems: "center",
@@ -156,7 +156,7 @@ const Home = ({navigation})  => {
         backgroundColor: "#f0f8ff"
     },
     brock_button: {
-      backgroundColor: "#71ebeb",
+      backgroundColor: theme.colors.primary,
       borderRadius: 15,
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0,
@@ -221,6 +221,8 @@ const Home = ({navigation})  => {
 
         getFriendsList();
         setFriendsList(friends2);
+        // hi lol xdDD easter egg :D
+        ///asdfasdf
         //console.log(friends2);
     },[])
 
@@ -268,15 +270,15 @@ const Home = ({navigation})  => {
             >
               <View
                 style={{
-                  backgroundColor: "rgba(230,230,230,1)",
+                  backgroundColor: theme.colors.secondary,
                   borderRadius: 15,
                   padding: 15,
                   width: "95%",
                   height: "95%",
                 }}
               >
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>{friendsList[i].Username}</Text>
-                <Text>{"Streak: " + friendsList[i].Streak}</Text>
+                <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{friendsList[i].Username}</Text>
+                <Text style={{color: theme.colors.text}}>{"Streak: " + friendsList[i].Streak}</Text>
               </View>
             </View>
       )
@@ -303,7 +305,7 @@ const Home = ({navigation})  => {
         dataLabel: "protein"
       }, {
         percentage: 200,
-        color: '#222',
+        color: 'forestgreen',
         max: 400,
         calorie: false,
         dataLabel: "carb"

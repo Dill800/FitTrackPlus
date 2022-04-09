@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { TabActions } from '@react-navigation/native';
+import { TabActions, useTheme } from '@react-navigation/native';
 import {StyleSheet, Text, View, Image, TouchableOpacity, Button} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
@@ -39,6 +39,8 @@ const CustomTabBarButton = ({children, onPress}) => (
 );
 
 const Tabs = ({navigation}) => {
+
+    const theme = useTheme();
     return (
         <Tab.Navigator
             screenOptions={{
@@ -49,7 +51,7 @@ const Tabs = ({navigation}) => {
                     left: 20,
                     right: 20,
                     elevation: 0,
-                    backgroundColor: '#71ebeb',
+                    backgroundColor: theme.colors.primary,
                     borderRadius: 15,
                     height: 80,
                     ... styles.shadow
@@ -75,10 +77,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -110,10 +112,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -159,10 +161,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -193,10 +195,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : '#748c94'
+                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : '#748c94', fontSize: 12}}></Text>
+                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerShown: false

@@ -30,8 +30,9 @@ const Stack = createNativeStackNavigator();
 //const Drawer = createDrawerNavigator();
 
 const DarkerTheme = {
+  dark: true,
   colors: {
-    primary: '#71ebeb',
+    primary: '#44adff',
     background: '#121212',
     secondary: '#404040',
     card: '#181818',
@@ -40,6 +41,7 @@ const DarkerTheme = {
 };
 
 const DefaulterTheme = {
+  dark: false,
   colors: {
       primary: '#71ebeb',
       background: '#f2f2f2',
