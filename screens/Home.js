@@ -202,7 +202,7 @@ const Home = ({navigation})  => {
                             <TouchableOpacity
                                 onPress={() => {
                                     Keyboard.dismiss();
-                                    setGroupName('');
+                                    setWeight('');
                                 }}
                                 style={styles.brock_button}
                             >
