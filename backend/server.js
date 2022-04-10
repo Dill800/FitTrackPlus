@@ -20,7 +20,7 @@ server.use(bodyParser.json())
 
 // Routes for backend only
 server.use('/user', userRouter)
-server.user('/workoutlog', workoutLogRouter)
+server.use('/workoutlog', workoutLogRouter)
 
 // Deployment DB URI first priority, then take config file
 mongoose.connect(process.env.MONGODB_URI || require('./config/config').db.uri, {useNewUrlParser: true, useUnifiedTopology: true}, () => {

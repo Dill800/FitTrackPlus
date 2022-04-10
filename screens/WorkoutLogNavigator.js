@@ -1,14 +1,20 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import {useSelector} from 'react-redux'
+import reducers from "../redux/state/reducers";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { BottomSheet } from 'react-native-btr';
+
+import config from '../backend/config/config.js'
+import axios from 'axios'
+import qs from 'qs'
 
 
 // For stack navigation
 import AddExercise from './AddExercise'
 import LogDetailScreen from './LogDetailScreen'
-import reducers from "../redux/state/reducers";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +38,7 @@ const DefaulterTheme = {
   }
 }
 
+// Navigate within the workout log tab
 const WorkoutLogNavigator = ({navigation}) => {
 
   const themeReducer = useSelector(({ themeReducer }) => themeReducer);
@@ -47,6 +54,7 @@ const WorkoutLogNavigator = ({navigation}) => {
   );
 }
 
+// TEMP COMPONENT
 const Exercise = ({navigation}) => {
   const theme = useTheme();
   const navi = useNavigation();
@@ -158,7 +166,55 @@ const WorkoutLogDashboard = ({navigation}) => {
       textAlign: "center",
       fontWeight: "bold",
     },
+    bottomNavigationView: {
+      borderRadius: 10,
+      height: '50%',
+      justifyContent: 'center',
+    },
   })
+
+  // Hooks
+  const userData = useSelector(state => state.user);
+  const [date, setDate] = useState(new Date(Date.now()));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(true);
+  const [visible, setVisible] = useState(false);
+
+  //Toggling the visibility state of the bottom sheet
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+    console.log(currentDate)
+  };
+
+  
+  const createWorkoutLog = () => {
+
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'datetime': date,
+    });
+
+    axios({
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/workoutlog/createWorkoutLog',
+      headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+      data : data
+    })
+    .then(reponse => {
+      console.log(JSON.stringify(reponse.data))
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -179,17 +235,27 @@ const WorkoutLogDashboard = ({navigation}) => {
             <Exercise></Exercise>
             <Exercise></Exercise>
             <Exercise></Exercise>
-            
           </ScrollView>
 
         </View>
 
-      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}
-        onPress={() => navigation.navigate("AddExercise")}
-      >
+      <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
+        <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.text, }]}>
+          
+        <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '0%', }} value={date} mode={'date'} onChange={onChange} display="inline"/>
+        <View style={{alignItems:'center', marginTop:'-7%'}}>
+          <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={createWorkoutLog}>
+            <Text style={styles.btn_text}>Done</Text>
+          </TouchableOpacity>
+        </View>
+
+        </View>
+      </BottomSheet>
+
+      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={toggleBottomNavigationView}>
           <Text style={styles.btn_text}>Add New Workout</Text>
       </TouchableOpacity>
-
+      
     </View>
 );
 }
