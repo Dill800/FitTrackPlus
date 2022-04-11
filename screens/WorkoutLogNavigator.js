@@ -55,7 +55,7 @@ const WorkoutLogNavigator = ({navigation}) => {
 }
 
 // TEMP COMPONENT
-const Exercise = ({navigation}) => {
+const Exercise = (props) => {
   const theme = useTheme();
   const navi = useNavigation();
 
@@ -72,9 +72,9 @@ const Exercise = ({navigation}) => {
       <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
         onPress={() => navi.navigate("LogDetailScreen")}
       >
-        <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>name</Text>
-        <Text style={{color: theme.colors.text}}>{"Duration: min"}</Text>
-        <Text style={{color: theme.colors.text}}>{"Duration: min"}</Text>     
+        <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{props.name}</Text>
+        <Text style={{color: theme.colors.text}}>{props.line1}</Text>     
+        <Text style={{color: theme.colors.text}}>{props.line2}</Text>     
       </TouchableOpacity>
 
     </View>
@@ -230,11 +230,10 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box}>
-            <Exercise></Exercise>
-            <Exercise></Exercise>
-            <Exercise></Exercise>
-            <Exercise></Exercise>
-            <Exercise></Exercise>
+            <Exercise name="April 9, 2022" line1="Bench Press 5x5 - 225" line2="Overhead Press 5x5 - 135"></Exercise>
+            <Exercise name="April 5, 2022" line1="Squat 5x5 - 255" line2="Leg Press 4x8 - 180"></Exercise>
+            <Exercise name="March 14, 2022 " line1="High-Low Row 4x10 - 60" line2="Lat Pulldown 4x10 - 130"></Exercise>
+            <Exercise name="February 22, 2022" line1="Deadlift 5x5 - 315" line2="Weighted Chinups 4x12 - 45"></Exercise>
           </ScrollView>
 
         </View>
