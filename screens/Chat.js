@@ -1,7 +1,5 @@
 import * as React from "react";
 import {useRef, useState, useEffect} from 'react';
-import Constants from 'expo-constants';
-import Donut from '../navigation/Donut'
 import {useSelector, useDispatch} from 'react-redux'
 
 import {Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
@@ -13,6 +11,7 @@ import config from '../backend/config/config.js'
 import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
 
+import {ChatText} from '../components/chatText'
 
 const Chat = ({navigation})  => {
     //e();
@@ -39,6 +38,8 @@ const Chat = ({navigation})  => {
         borderRadius: 10,
         width: "95%",
         height: 40,
+        marginTop: 15,
+        marginBottom: 15,
         justifyContent: "center",
       },
       title: {
@@ -72,7 +73,7 @@ const Chat = ({navigation})  => {
       },
       exercise_container: {
         width: "95%",
-        height: 400,
+        height: "75%",
         alignItems: "center",
       },
       box: {
@@ -105,13 +106,14 @@ const Chat = ({navigation})  => {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        marginTop: 40,
+        marginBottom: 40
       },
       modalView: {
         margin: 20,
         backgroundColor: theme.colors.background,
         borderRadius: 20,
-        paddingVertical: 100,
+        paddingVertical: 50,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -141,7 +143,9 @@ const Chat = ({navigation})  => {
       modalText: {
         marginBottom: 15,
         textAlign: "center",
-        fontSize: 20
+        fontSize: 20,
+        color: "rgba(255,255,255,1)",
+        marginHorizontal: 100
       },
       inputView:{
         flexDirection: 'row',
@@ -153,7 +157,7 @@ const Chat = ({navigation})  => {
     },
     input: {
         flex: 1,
-        height: 40,
+        height: 20,
         paddingHorizontal: 20,
         borderRadius: 15,
         borderTopRightRadius: 0,
@@ -177,6 +181,8 @@ const Chat = ({navigation})  => {
     const [loading, setLoading] = useState(true);
     const [newGroupName, setGroupName] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalInfo, setModalInfo] = useState(null);
+    const [comment, setComment] = useState();
 
     let chats = [];
     let chats2 = [];
@@ -201,7 +207,9 @@ const Chat = ({navigation})  => {
             let bigDog = JSON.stringify(response.data);
             let biggerDog = (JSON.parse(bigDog));
             for (var i = 0; i < biggerDog.length; i++) {
+                console.log(biggerDog[i])
               var chat  = {
+                "id" : biggerDog[i]._id,
                 "title" : biggerDog[i].title,
                 "body" : biggerDog[i].body,
                 "username" : biggerDog[i].username,
@@ -212,6 +220,7 @@ const Chat = ({navigation})  => {
 
               
             //console.log(friend);
+            console.log("Chat, ", chat)
             chats2.push(chat);
             }
             setLoading(false);
@@ -224,85 +233,146 @@ const Chat = ({navigation})  => {
         getChatsList();
         setChatList(chats2);
 
-    },[newGroupName])
+    },[])
 
-    const joinGroup = () => {
-        console.log(newGroupName);
-        var data = qs.stringify({
-          'username': userData.username.username,
-          'groupName': newGroupName 
-        });
-        var config3 = {
-          method: 'post',
-          url: 'http://' + config.ipv4 + ':5000/user/joinGroup',
-          headers: { 
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          data : data
-        };
-
-      axios(config3)
-      .then(function (response) {
-        //console.log(JSON.stringify(response.data));
-        console.log(userData.username)
-        
-        let data = userData.username;
-        data.groupName = newGroupName;
-        dispatch(updateUsername(data))
-        console.log("group name:" + userData.username.groupName);
-        setGroupName(userData.username.groupName);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
     
     for (var i = 0; i < chatList.length; i++) {
-        console.log(chatList[i].groupNamer)
+        console.log(chatList[i].groupName)
         if(chatList[i].groupName === userData.username.groupName)
       chats.push(
-            <View
-              key= {i}
-              style={{
-                alignItems: "center",
-                width: 370,
-                height: 100,
-                paddingTop: 8,
-                marginBottom: 15,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: theme.colors.secondary,
-                  borderRadius: 15,
-                  padding: 15,
-                  width: "95%",
-                  height: "95%",
-                }}
-              >
-                <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{chatList[i].title}</Text>
-                <Text style={{color: theme.colors.text}}>{chatList[i].body}</Text>
-              </View>
-            </View>
+            <ChatText setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
       )
+    }
+
+    const getComments = () => {
+
+        let x = [];
+
+        console.log("Looking for comments. Size: ", modalInfo.comments.length)
+
+        for(var i = 0; i < modalInfo.comments.length; i++) {
+            console.log(modalInfo.comments[i])
+            x.push(
+                <View
+                style={{
+                    backgroundColor: theme.colors.secondary,
+                    borderRadius: 15,
+                    padding: 15,
+                    width: 315 ,
+                    marginHorizontal: 10,
+                    alignSelf: 'flex-start',
+                    marginBottom: 10
+                }}
+                key={i}
+                >
+                    <Text style={{color: theme.colors.text}}>{modalInfo.comments[i].username}: {modalInfo.comments[i].comment}</Text>
+                </View>
+            )
+
+            
+        }
+
+        return x;
+
+    }
+
+    const uploadComment = () => {
+
+        // take in what is in modal info
+        // update add in comments
+        let newData = modalInfo
+        newData.comments.push({
+            "comment": comment,
+            "date": Date.now(),
+            "username": userData.username.username
+        })
+        console.log("newData:", newData)
+
+        // hit endpoint to add comment based on chatpost id
+        // modalInfo.id
+        axios.post('http://' + config.ipv4 + ':5000/chat/newComment', {
+            id: modalInfo.id,
+            commentData: {
+                comment: comment,
+                username: userData.username.username,
+                date: Date.now()
+            }
+        })
+        .then(res => {
+            console.log("res", res)
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+
     }
 
 
 
       return (
         <View style={styles.container}>
+            
           <View style={styles.exercise_container}>
+              
             <View
               style={[
                 styles.title_box,
                 { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
               ]}
             >
+                <Text style={styles.title}>{userData.username.groupName}'s Chatroom 💬</Text>
             </View>
             <ScrollView horizontal={false} style={styles.box}>
               <Text>{chats}</Text>
             </ScrollView>
           </View>
+          <View style={styles.btn_box}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(false);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                <Text style={styles.modalText}>Comments:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Write Comment Here'
+                    placeholderTextColor='grey'
+                    onChangeText={e => setComment(e)}
+                    value={comment}
+                />
+                <TouchableOpacity
+                    onPress={() => {
+                        Keyboard.dismiss();
+                        console.log(comment)
+                        setComment('')
+                        uploadComment();
+                    }}
+                    style={styles.brock_button}
+                >
+                    <Text>🔎</Text>
+                </TouchableOpacity>
+                <ScrollView horizontal={false} style={styles.box}>
+                    {modalInfo === null ? 'yarp' : getComments()}
+                </ScrollView>
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>Return</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+            
+          </View>
+
+
         </View>
       );
   }
