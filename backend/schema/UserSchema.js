@@ -11,10 +11,43 @@ const userSchema = new mongoose.Schema({
 	lastCheckIn: {type: Date, required: true, default: new Date(-287364287364)},
     friendList: {type: [String], required: true, default: []},
 	groupName: {type: String, required: true, default: 'Fellow'},
-	exerciseList: {type: [{name: String, sets: mongoose.Number, reps: mongoose.Number}], required: true, default: []},
+	workoutlogList: {
+		type: [{
+			date: {type: Date, required: true, default: new Date(-287364287364)},
+			exercises:[{
+				name: {type: String, required: true},
+				sets: {type: mongoose.Number, required: true},
+				reps: {type: mongoose.Number, required: true},
+				weight: {type: mongoose.Number, required: true},
+			}]
+		}],
+		required: true,
+		default: []
+	},
 	weightList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
-
+	forumPosts: {
+		type: [{
+			postid: {type: mongoose.Number, required: true},
+			date: {type: Date, required: true, default: new Date(-287364287364)},
+			title: {type: String, required: true},
+			content: {type: String, required: true},
+			votes: {type: mongoose.Number, required: true}
+		}],
+		required: true,
+		default: []
+	},
+	forumComments: {
+		type: [{
+			postid: {type: mongoose.Number, required: true},
+			date: {type: Date, required: true, default: new Date(-287364287364)},
+			content: {type: String, required: true},
+			votes: {type: mongoose.Number, required: true}
+		}],
+		required: true,
+		default: []
+	},
 }, {timestamps: true});
+
 
 // Password hashing methods
 userSchema.methods = {
