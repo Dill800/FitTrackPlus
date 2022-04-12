@@ -291,7 +291,7 @@ const Home = ({navigation})  => {
           dispatch(updateUsername(data));
           setStreak(userData.username.streakCounter);
           //console.log("Yarpins", userData.username)
-          setGroupName(userData.username.groupName);
+          //setGroupName(userData.username.groupName);
         }
         else {
           Alert.alert("Already checked in for the day.")

@@ -6,6 +6,7 @@ import { updateUsername } from '../redux/actions/user';
 import { AntDesign } from '@expo/vector-icons';
 
 import * as themeActions from "../redux/actions/theme";
+import * as ImagePicker from 'expo-image-picker';
 import reducers from "../redux/state/reducers";
 
 const Settings = ({navigation}) => {
@@ -13,7 +14,23 @@ const Settings = ({navigation}) => {
     const dispatch = useDispatch()
 
     const [image, setImage] = useState(null);
-    const addImage=()=>{}
+    const addImage = async () => {
+      let _image = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4,3],
+        quality: 1,
+      });
+
+      console.log(JSON.stringify(_image));
+
+      if (!_image.cancelled) {
+        setImage(_image.uri);
+        
+      }
+    };
+
+    
 
     const toLoginScreen = () => {
       /*
@@ -40,7 +57,7 @@ const Settings = ({navigation}) => {
 
             <View style={styles.container2}>
                           {
-                              image  &&<Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
+                              image  &&<Image source={{ uri: image }} style={{ width: 150, height: 150}} />
                           }
 
                 <View style={styles.uploadBtnContainer}>
@@ -101,7 +118,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       flexDirection: "column",
-      justifyContent: "center",
+      //justifyContent: "center",
       alignItems: "center",
       // backgroundColor: '#121212'
     },
@@ -142,6 +159,10 @@ const styles = StyleSheet.create({
       position:'relative',
       borderRadius:999,
       overflow:'hidden',
+      alignItems: 'center',
+      justifyContent: 'center', 
+      marginTop: 150,
+      marginBottom: 50
   },
   uploadBtnContainer:{
       opacity:0.7,
