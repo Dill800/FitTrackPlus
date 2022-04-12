@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import { Text, View, TextInput, StyleSheet, TouchableOpacity, Image, Platform} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux'
 import { updateUsername } from '../redux/actions/user';
+import { AntDesign } from '@expo/vector-icons';
 
 import * as themeActions from "../redux/actions/theme";
 import reducers from "../redux/state/reducers";
@@ -11,6 +12,8 @@ const Settings = ({navigation}) => {
 
     const dispatch = useDispatch()
 
+    const [image, setImage] = useState(null);
+    const addImage=()=>{}
 
     const toLoginScreen = () => {
       /*
@@ -34,6 +37,21 @@ const Settings = ({navigation}) => {
     const [mode, setMode] = useState(false);
     return (
         <View style={styles.container}>
+
+            <View style={styles.container2}>
+                          {
+                              image  &&<Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
+                          }
+
+                <View style={styles.uploadBtnContainer}>
+                <TouchableOpacity onPress={addImage} style={styles.uploadBtn} >
+                <Text>{image ? 'Edit' : 'Upload'} Image</Text>
+                <AntDesign name="camera" size={20} color="black" />
+                </TouchableOpacity>
+                </View>
+
+
+            </View>
             <TouchableOpacity
                 onPress={toLoginScreen}
                 style={[styles.btn_shape, { backgroundColor: "red" }]}
@@ -116,6 +134,29 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontWeight: "bold",
     },
+    container2:{
+      elevation:2,
+      height:150,
+      width:150,
+      backgroundColor:'#efefef',
+      position:'relative',
+      borderRadius:999,
+      overflow:'hidden',
+  },
+  uploadBtnContainer:{
+      opacity:0.7,
+      position:'absolute',
+      right:0,
+      bottom:0,
+      backgroundColor:'lightgrey',
+      width:'100%',
+      height:'25%',
+  },
+  uploadBtn:{
+      display:'flex',
+      alignItems:"center",
+      justifyContent:'center'
+  }
 });
 
 

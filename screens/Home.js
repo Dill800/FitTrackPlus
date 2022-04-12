@@ -322,21 +322,29 @@ const Home = ({navigation})  => {
                   padding: 15,
                   width: "95%",
                   height: "95%",
+                  flexDirection: "row",
                 }}
               >
-                <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{friendsList[i].Username}</Text>
-                <Text style={{color: theme.colors.text}}>{"Streak: " + friendsList[i].Streak}
-                  <Image
+                <View
+                  style={{
+                    width: 100,
+                  }}
+                >
+                  <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{friendsList[i].Username}</Text>
+                  <Text style={{color: theme.colors.text}}>{"Streak: " + friendsList[i].Streak}</Text>
+                </View>
+                <View style={{justifyContent: 'center'}}>
+                <Image
                                       source={require('../assets/home.png')}
                                       resizeMode='contain'
                                       style={{
                                           width: 25,
                                           height: 25,
                                           tintColor: '#748c94',
-                                          textAlign: 'right',                                       
+                                          marginLeft: 150,                       
                                       }}
                     />
-                </Text>
+                </View>
               </View>
             </View>
       )
