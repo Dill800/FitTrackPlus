@@ -79,10 +79,10 @@ const Tabs = ({navigation}) => {
                                         style={{
                                             width: 25,
                                             height: 25,
-                                            tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
+                                            tintColor: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                         }}
                                     />
-                                    <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
+                                    <Text style ={{color: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                                 </View>
                             ),
                             headerStyle: {
@@ -123,10 +123,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
+                                        tintColor: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
+                                <Text style ={{color: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -159,10 +159,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
+                                        tintColor: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
+                                <Text style ={{color: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerStyle: {
@@ -209,10 +209,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
+                                        tintColor: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
+                                <Text style ={{color: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerShown: false,
@@ -244,10 +244,10 @@ const Tabs = ({navigation}) => {
                                     style={{
                                         width: 25,
                                         height: 25,
-                                        tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
+                                        tintColor: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
                                     }}
                                 />
-                                <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
+                                <Text style ={{color: !focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
                         headerShown: false
