@@ -136,7 +136,8 @@ const Home = ({navigation})  => {
       modalText: {
         marginBottom: 15,
         textAlign: "center",
-        fontSize: 20
+        fontSize: 20,
+        color: theme.colors.text
       },
       inputView:{
         flexDirection: 'row',
@@ -153,7 +154,7 @@ const Home = ({navigation})  => {
         borderRadius: 15,
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
-        backgroundColor: "#f0f8ff"
+        backgroundColor: theme.colors.secondary
     },
     brock_button: {
       backgroundColor: theme.colors.primary,

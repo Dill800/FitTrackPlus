@@ -47,7 +47,7 @@ const WeightLogList = ({navigation}) => {
             width: "95%",
             padding: "5%",
             paddingBottom: 0,
-            height: 100,
+            height: 70,
             alignSelf: "center",
             justifyContent: "flex-end"
         },
@@ -57,7 +57,7 @@ const WeightLogList = ({navigation}) => {
             borderTopRightRadius: 0,
             borderTopLeftRadius: 0,
             width: "95%",
-            height: 425,
+            height: 450,
             alignSelf: "center",
             padding: '5%',
             paddingTop: 0,
@@ -69,10 +69,13 @@ const WeightLogList = ({navigation}) => {
         },
         head: { 
             height: 40, 
-            backgroundColor: '#f1f8ff' 
+            backgroundColor: theme.colors.secondary, 
         },
         text: { 
             margin: 6 
+        },
+        row: {
+            backgroundColor: theme.colors.card,
         }
     })
 
@@ -105,20 +108,20 @@ const WeightLogList = ({navigation}) => {
             <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Log List</Text>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                        <Row data={tableHead} style={styles.head} textStyle={{margin: 6}}/>
+                    <Table borderStyle={{borderWidth: 2, borderColor: theme.colors.text}}>
+                        <Row data={tableHead} style={styles.head} textStyle={{margin: 6, color: theme.colors.text}}/>
                     </Table>
                 </View>
                 <ScrollView horizontal={false} style={styles.box} showsVerticalScrollIndicator={false}>
-                    <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+                    <Table borderStyle={{borderWidth: 2, borderColor: theme.colors.text}}>
                         {/* <Rows style={{color: theme.colors.primary}} data={tableData} textStyle={{color: theme.colors.text, margin: 6}}/> */}
                         {
                             tableData.map((rowData, index) => (
                                 <Row
                                     key={index}
                                     data={rowData}
-                                    style={[styles.row, index%2 && {backgroundColor: theme.colors.card}]}
-                                    textStyle={{margin: 6}}
+                                    style={[styles.row, index%2 && {backgroundColor: theme.colors.secondary}]}
+                                    textStyle={{margin: 6, color: theme.colors.text}}
                                 />
                             ))
                         }

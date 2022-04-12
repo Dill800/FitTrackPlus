@@ -47,7 +47,8 @@ const WeightLog = ({navigation}) => {
             borderRadius: 15,
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
-            backgroundColor: theme.colors.secondary
+            backgroundColor: theme.colors.secondary,
+            color: theme.colors.text,
         },
         button: {
             backgroundColor: theme.colors.primary,

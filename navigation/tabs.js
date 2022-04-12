@@ -54,6 +54,7 @@ const Tabs = ({navigation}) => {
                     backgroundColor: theme.colors.primary,
                     borderRadius: 15,
                     height: 80,
+                    borderTopWidth: 0,
                     ... styles.shadow
                 }
             }}
@@ -84,7 +85,8 @@ const Tabs = ({navigation}) => {
                             </View>
                         ),
                         headerStyle: {
-                            backgroundColor: '#71ebeb',
+                            backgroundColor: theme.colors.primary,
+                            shadowColor: 'transparent',
                           },
                         headerTitleStyle: {
                             color: '#000',
@@ -119,7 +121,8 @@ const Tabs = ({navigation}) => {
                             </View>
                         ),
                         headerStyle: {
-                            backgroundColor: '#71ebeb',
+                            backgroundColor: theme.colors.primary,
+                            shadowColor: 'transparent',
                           },
                         headerRight: () => (
                         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
@@ -167,21 +170,22 @@ const Tabs = ({navigation}) => {
                                 <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
-                        headerStyle: {
-                            backgroundColor: '#71ebeb',
-                          },
-                        headerRight: () => (
-                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-                            <Image
-                                source={require('../assets/settings.png')}
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    right: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                        ),
+                        headerShown: false,
+                        // headerStyle: {
+                        //     backgroundColor: theme.colors.primary,
+                        //   },
+                        // headerRight: () => (
+                        // <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                        //     <Image
+                        //         source={require('../assets/settings.png')}
+                        //         style={{
+                        //             width: 25,
+                        //             height: 25,
+                        //             right: 20
+                        //         }}
+                        //     />
+                        // </TouchableOpacity>
+                        // ),
                 }}
                 />
 
