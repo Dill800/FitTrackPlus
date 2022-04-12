@@ -5,6 +5,7 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import 'react-native-console-time-polyfill'
 
 
 import {
@@ -60,7 +61,7 @@ const Login = ({navigation}) => {
                 console.log("User information retrieved, saving to store")
                 
                 dispatch(updateUsername(response.data))
-                console.log('Response: ', response.data)
+                //console.log('Response: ', response.data)
             })
             .catch(e => {
                 console.log(e)
@@ -131,6 +132,7 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     const toHomeScreen = () => {
+       //console.time();
 
         if(user === 'admin' && password === 'admin') {
             dispatch(updateUsername('admin'))
@@ -146,10 +148,12 @@ const Login = ({navigation}) => {
                     console.log('Logged in successfully')
 
                     dispatch(updateUsername(response.data.user))
-                    console.log('Response: ', response.data.user)
+                    //console.log('Response: ', response.data.user)
 
                     navigation.navigate('Home')
-                    console.log(response)
+                    //console.log(response)
+                    console.log("Time: ")
+                    //console.timeEnd();
                 }
                 else {
                     console.log("Did not log in successfully")
@@ -159,7 +163,6 @@ const Login = ({navigation}) => {
             })
         }
 
-        
 
         
     }
