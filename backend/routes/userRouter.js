@@ -14,6 +14,7 @@ userRouter.post('/checkIn', userController.checkIn)
 userRouter.post('/addExercise', userController.addExercise)
 userRouter.post('/removeExericse', userController.removeExercise)
 userRouter.post('/addWeight', userController.addWeight)
+userRouter.get('/getWeightLog', userController.getWeightLog)
 
 // Logging in as an existing user
 // userRouter.post('/login', userController.authenticate)
