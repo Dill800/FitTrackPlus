@@ -11,8 +11,9 @@ import reducers from "../redux/state/reducers";
 const Stack = createNativeStackNavigator();
 
 const DarkerTheme = {
+    dark: true,
     colors: {
-      primary: '#71ebeb',
+      primary: '#44adff',
       background: '#121212',
       secondary: '#404040',
       card: '#181818',
@@ -21,6 +22,7 @@ const DarkerTheme = {
 };
 
 const DefaulterTheme = {
+    dark: false,
     colors: {
         primary: '#71ebeb',
         background: '#f2f2f2',
@@ -38,12 +40,13 @@ const WeightLogNavigator = ({navigation}) => {
         headerShown: true, 
         gestureEnabled: true,
         headerStyle: {
-            backgroundColor: '#71ebeb',
+            backgroundColor: themeReducer.theme ? DarkerTheme.colors.primary : DefaulterTheme.colors.primary,
             shadowColor: 'transparent',
         },
         headerTitleStyle: {
             color: 'black'
         },
+        headerTintColor: 'black',
         headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
                 <Image

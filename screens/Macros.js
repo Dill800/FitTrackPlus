@@ -36,7 +36,7 @@ const Macros = ({ navigation }) => {
         dataLabel: "protein"
     }, {
         percentage: 200,
-        color: '#222',
+        color: 'forestgreen',
         max: 400,
         calorie: false,
         dataLabel: "carb"
@@ -141,11 +141,11 @@ const Macros = ({ navigation }) => {
                         <CircularProgress
                             radius={80}
                             value={20}
-                            textColor='#222'
+                            textColor='green'
                             fontSize={20}
                             valueSuffix={'%'}
-                            activeStrokeColor={'#222'}
-                            inActiveStrokeColor={'#222'}
+                            activeStrokeColor={'forestgreen'}
+                            inActiveStrokeColor={'forestgreen'}
                             inActiveStrokeOpacity={0.2}
                             title='Carbs'
 
@@ -190,7 +190,7 @@ const Macros = ({ navigation }) => {
                 <VictoryPie
                     //padAngle={({ datum }) => datum.y}
                     innerRadius={100}
-                    colorScale={["skyblue", "gold", "black"]}
+                    colorScale={["skyblue", "gold", "forestgreen"]}
                     padAngle={5}
                     data={[
                         { x: "Fat", y: 25 },

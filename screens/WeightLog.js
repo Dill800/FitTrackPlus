@@ -107,8 +107,7 @@ const WeightLog = ({navigation}) => {
         datasets: [
             {
               data: [198.3, 197.3, 197.9, 197.2, 196.9],
-              color: (opacity = 1) => `rgba(113, 235, 235, ${opacity})`
-            }
+              color: (opacity = 1) => theme.colors.primary,            }
         ],
     };
 
@@ -117,7 +116,7 @@ const WeightLog = ({navigation}) => {
         datasets: [
             {
                 data: [200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9],
-                color: (opacity = 1) => `rgba(113, 235, 235, ${opacity})`
+                color: (opacity = 1) => theme.colors.primary,
             }
         ]
     };
@@ -127,7 +126,7 @@ const WeightLog = ({navigation}) => {
         datasets: [
           {
             data: [201.2, 200.8, 200.7, 201.0, 200.3, 200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9],
-            color: (opacity = 1) => `rgba(113, 235, 235, ${opacity})`
+            color: (opacity = 1) => theme.colors.primary,
           }
         ],
       };
@@ -146,6 +145,11 @@ const WeightLog = ({navigation}) => {
       };
 
     const [data, setData] = useState(dataAll);
+
+    useEffect(() => {
+        console.log('hi')
+        setData(dataAll);
+    }, [theme.colors.primary]);
 
     return (
         <HideKeyboard>
@@ -202,12 +206,12 @@ const WeightLog = ({navigation}) => {
                                                 y={point.y + 10} 
                                                 width="40" 
                                                 height="30"
-                                                fill="#71ebeb" 
+                                                fill={theme.colors.primary} 
                                                 rx={10}/>
                                                 <TextSVG
                                                     x={point.x + 5}
                                                     y={point.y + 30}
-                                                    fill="black"
+                                                    fill='black'
                                                     fontSize="12"
                                                     fontWeight="bold"
                                                     textAnchor="middle">
