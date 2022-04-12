@@ -7,6 +7,7 @@ const collectionName = 'users' // Database table name
 const userSchema = new mongoose.Schema({
 	username : {type: String, required: true},
     passwordHash : {type: String, required: true},
+	pfpFilepath: { data: Buffer, contentType: String },
     streakCounter : {type: mongoose.Number, required: true, default: 0},
 	lastCheckIn: {type: Date, required: true, default: new Date(-287364287364)},
     friendList: {type: [String], required: true, default: []},
@@ -25,27 +26,21 @@ const userSchema = new mongoose.Schema({
 		default: []
 	},
 	weightList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
-	forumPosts: {
-		type: [{
-			postid: {type: mongoose.Number, required: true},
-			date: {type: Date, required: true, default: new Date(-287364287364)},
-			title: {type: String, required: true},
-			content: {type: String, required: true},
-			votes: {type: mongoose.Number, required: true}
-		}],
-		required: true,
-		default: []
-	},
-	forumComments: {
-		type: [{
-			postid: {type: mongoose.Number, required: true},
-			date: {type: Date, required: true, default: new Date(-287364287364)},
-			content: {type: String, required: true},
-			votes: {type: mongoose.Number, required: true}
-		}],
-		required: true,
-		default: []
-	},
+	currentWeight : {type: mongoose.Number, required: true, default: 0},
+	goalWeight : {type: mongoose.Number, required: true, default: 0},
+	calorieList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
+	currentCalorie : {type: mongoose.Number, required: true, default: 0},
+	calorieGoal : {type: mongoose.Number, required: true, default: 0},
+	proteinList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
+	currentProtein : {type: mongoose.Number, required: true, default: 0},
+	goalProtein : {type: mongoose.Number, required: true, default: 0},
+	fatList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
+	currentFat : {type: mongoose.Number, required: true, default: 0},
+	goalFat : {type: mongoose.Number, required: true, default: 0},
+	carbList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
+	currentCarb : {type: mongoose.Number, required: true, default: 0},
+	goalCarb : {type: mongoose.Number, required: true, default: 0},
+
 }, {timestamps: true});
 
 
