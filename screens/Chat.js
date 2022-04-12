@@ -207,6 +207,7 @@ const Chat = ({navigation})  => {
                 "username" : biggerDog[i].username,
                 "comments" : biggerDog[i].comments,
                 "date" : biggerDog[i].createdAt,
+                "groupName" : biggerDog[i].groupName
               };
 
               
@@ -257,6 +258,8 @@ const Chat = ({navigation})  => {
     }
     
     for (var i = 0; i < chatList.length; i++) {
+        console.log(chatList[i].groupNamer)
+        if(chatList[i].groupName === userData.username.groupName)
       chats.push(
             <View
               key= {i}
@@ -285,32 +288,7 @@ const Chat = ({navigation})  => {
     }
 
 
-    const donutData = [{
-        percentage: 1700,
-        color: 'tomato',
-        max: 2400,
-        calorie: true,
-        dataLabel: "calorie"
-      }, {
-        percentage: 76,
-        color: 'skyblue',
-        max: 92,
-        calorie: false,
-        dataLabel: "fat"
-      }, {
-        percentage: 130,
-        color: 'gold',
-        max: 150,
-        calorie: false,
-        dataLabel: "protein"
-      }, {
-        percentage: 200,
-        color: 'forestgreen',
-        max: 400,
-        calorie: false,
-        dataLabel: "carb"
-      }];
-      //console.timeEnd();
+
       return (
         <View style={styles.container}>
           <View style={styles.exercise_container}>

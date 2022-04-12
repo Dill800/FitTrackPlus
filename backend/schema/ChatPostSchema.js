@@ -12,6 +12,7 @@ const chatPostSchema = new mongoose.Schema({
         username: {type: String, required: true},
         date: {type: Date, required: true},
     }], required: true, default: []},
+    groupName: {type: String, required: true}
 }, {timestamps: true});
 
 var ChatPost = mongoose.model(collectionName, chatPostSchema);
