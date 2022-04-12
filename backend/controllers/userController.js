@@ -163,7 +163,7 @@ module.exports = {
 
             console.log(user.lastCheckIn.getTime())
 
-            // outside of day
+            // outside of day  86400000
             if(Date.now() - user.lastCheckIn.getTime() >= 86400000) {
                 
                 User.findOneAndUpdate({username: req.body.username}, {lastCheckIn: Date.now(), $inc: {streakCounter: 1}}, (err, data) => {

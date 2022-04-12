@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import Donut from '../navigation/Donut'
 import {useSelector, useDispatch} from 'react-redux'
 
-import {Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
+import {Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable, Alert, Image} from "react-native";
 import { useTheme } from '@react-navigation/native';
 
 import axios from 'axios'
@@ -177,6 +177,7 @@ const Home = ({navigation})  => {
     const [loading, setLoading] = useState(true);
     const [newGroupName, setGroupName] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const [streak, setStreak] = useState(0);
 
     let friends = [];
     let friends2 = [];
@@ -195,116 +196,13 @@ const Home = ({navigation})  => {
         groupName: userData.username.groupName
     }
     };
-
-    // useEffect(() => {
-
-    // }, [setFriendsList])
-
-    // const joinGroup = () => {
-
-    //   console.log("Trunklets")
-    //   console.log(newGroupName);
-    //     var data = qs.stringify({
-    //       'username': userData.username.username,
-    //       'groupName': newGroupName 
-    //     });
-    //     var config3 = {
-    //       method: 'post',
-    //       url: 'http://' + config.ipv4 + ':5000/user/joinGroup',
-    //       headers: { 
-    //         'Content-Type': 'application/x-www-form-urlencoded'
-    //       },
-    //       data : data
-    //     };
-
-    //   axios(config3)
-    //   .then(function (response) {
-    //     //console.log(JSON.stringify(response.data));
-    //     console.log('about to hit config2 call')
-    //     axios(config2)
-    //     .then(function (response) {
-    //       console.log('in')
-    //       //console.log(JSON.stringify(response.data.data));
-    //       let bigDog = JSON.stringify(response.data.data);
-    //       console.log(response.data)
-    //       let biggerDog = (JSON.parse(bigDog));
-    //       let x = []
-    //       for (var i = 0; i < biggerDog.length; i++) {
-    //         var friend  = {
-    //           "Username" : biggerDog[i].username,
-    //           "Streak" : biggerDog[i].streakCounter,
-    //         };
-    //         x.push(friend)
-    //         console.log("nernit")
-    //       console.log(userData.username.groupName);
-    //       console.log(friend)
-
-          
-
-    //       //console.log(friend);
-    //       //friends2.push(friend);
-    //       //setFriendsList(friendsList.concat(friend));
-    //       //setFriendsList(friendsList.concat(biggerDog[i].username));
-    //       }
-
-    //       console.log("Friends List: ", friendsList, x)
-    //       setFriendsList(friendsList.concat(x))
-
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     })
-
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-
-    // }
-
-
-   
-    // const getFriendsList2 = () => {
-    //   //console.log("YABBA")
-    //   async function getFriendsList() {
-    //     axios(config2)
-    //     .then(function (response) {
-    //       //console.log(JSON.stringify(response.data.data));
-    //       let bigDog = JSON.stringify(response.data.data);
-    //       let biggerDog = (JSON.parse(bigDog));
-    //       for (var i = 0; i < biggerDog.length; i++) {
-    //         var friend  = {
-    //           "Username" : biggerDog[i].username,
-    //           "Streak" : biggerDog[i].streakCounter,
-    //         };
-    //       //console.log(userData.username.groupName);
-
-            
-    //       console.log(friend);
-    //       friends2.push(friend);
-    //       setFriendsList(friendsList.concat(friend));
-    //       setFriendsList(friendsList.concat(biggerDog[i].username));
-    //       }
-
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     })
-    //   }
-
-    //   getFriendsList();
-    //   setFriendsList(friends2);
-    //   //console.log(friends2);
-    // }
-
-    // useEffect(() => {
-    //     getFriendsList2();
-    // },[])
+      
 
       useEffect(() => {
         async function getFriendsList() {
           axios(config2)
           .then(function (response) {
+            
             //console.log(JSON.stringify(response.data.data));
             let bigDog = JSON.stringify(response.data.data);
             let biggerDog = (JSON.parse(bigDog));
@@ -314,12 +212,15 @@ const Home = ({navigation})  => {
                 "Streak" : biggerDog[i].streakCounter,
               };
 
-              
-            //console.log(friend);
-            friends2.push(friend);
-            //setFriendsList(friendsList.concat(friend));
-            //setFriendsList(friendsList.concat(biggerDog[i].username));
+              if (biggerDog[i].username == userData.username.username) {
+                continue;
+              }
+              //console.log(friend);
+              friends2.push(friend);
+              //setFriendsList(friendsList.concat(friend));
+              //setFriendsList(friendsList.concat(biggerDog[i].username));
             }
+            //console.log("Teter", friends2)
             setLoading(false);
           })
           .catch(function (error) {
@@ -335,7 +236,7 @@ const Home = ({navigation})  => {
     },[newGroupName])
 
     const joinGroup = () => {
-        console.log(newGroupName);
+       //console.log(newGroupName);
         var data = qs.stringify({
           'username': userData.username.username,
           'groupName': newGroupName 
@@ -352,12 +253,12 @@ const Home = ({navigation})  => {
       axios(config3)
       .then(function (response) {
         //console.log(JSON.stringify(response.data));
-        console.log(userData.username)
+        //console.log(userData.username)
         
         let data = userData.username;
         data.groupName = newGroupName;
         dispatch(updateUsername(data))
-        console.log("group name:" + userData.username.groupName);
+        //console.log("group name:" + userData.username.groupName);
         setGroupName(userData.username.groupName);
       })
       .catch(function (error) {
@@ -366,18 +267,40 @@ const Home = ({navigation})  => {
     }
 
     const CheckInFunction = () => {
+      var data = qs.stringify({
+        'username': userData.username.username 
+      });
+      var config2 = {
+        method: 'post',
+        url: 'http://' + config.ipv4 + ':5000/user/checkIn',
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+      };
       
+      axios(config2)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+        if (response.data.checkIn) {
+          Alert.alert("Successfully worked out today!")
+          let data = userData.username;
+          //console.log('Pre Yarpins')
+          data.streakCounter = userData.username.streakCounter += 1;
+          dispatch(updateUsername(data));
+          setStreak(userData.username.streakCounter);
+          //console.log("Yarpins", userData.username)
+          setGroupName(userData.username.groupName);
+        }
+        else {
+          Alert.alert("Already checked in for the day.")
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
 
-    
-
-  
-    let exercise = [];
-    let activityTotal = 0.0;
-    const activities = [];
-    const widthAndHeight = 250
-    const series = [123, 321, 90]
-    const sliceColor = ['#F44336','#2196F3','#FFEB3B']
 
     for (var i = 0; i < friendsList.length; i++) {
       friends.push(
@@ -401,7 +324,18 @@ const Home = ({navigation})  => {
                 }}
               >
                 <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{friendsList[i].Username}</Text>
-                <Text style={{color: theme.colors.text}}>{"Streak: " + friendsList[i].Streak}</Text>
+                <Text style={{color: theme.colors.text}}>{"Streak: " + friendsList[i].Streak}
+                  <Image
+                                      source={require('../assets/home.png')}
+                                      resizeMode='contain'
+                                      style={{
+                                          width: 25,
+                                          height: 25,
+                                          tintColor: '#748c94',
+                                          textAlign: 'right',                                       
+                                      }}
+                    />
+                </Text>
               </View>
             </View>
       )
@@ -530,7 +464,7 @@ const Home = ({navigation})  => {
               <Text style={styles.btn_text}>Join or Create Group</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.refresh()}
+              onPress={() => CheckInFunction()}
               style={[
                 styles.btn_shape,
                 { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
