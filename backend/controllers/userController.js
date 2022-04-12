@@ -226,15 +226,28 @@ module.exports = {
 
     },
 
+    getWeightLog: async (req, res) => {
+        User.findOne({username: req.query.username}, (err, user) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+
+            console.log(user.weightList);
+            res.send({success: 1, data: user.weightList})
+        })
+    }, 
+    
     addPfp: async (req, res) => {
         User.findOneAndUpdate({username: req.body.username}, {pfpFilepath: req.file}, (err, data) => { 
             if(err) {
                 console.log(err);
                 res.send({success: 0});
             }
-            
+
+             
             res.send({success: 1, data: data})
-        })        
-    }
+        })      
+    },
 
 }

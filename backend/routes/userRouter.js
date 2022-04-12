@@ -36,6 +36,7 @@ userRouter.post('/checkIn', userController.checkIn)
 userRouter.post('/addExercise', userController.addExercise)
 userRouter.post('/removeExericse', userController.removeExercise)
 userRouter.post('/addWeight', userController.addWeight)
+userRouter.get('/getWeightLog', userController.getWeightLog)
 userRouter.post('/addPfp', upload.single('photo'), userController.addPfp)
 
 // Logging in as an existing user
