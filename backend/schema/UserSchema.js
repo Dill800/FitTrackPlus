@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
 	lastCheckIn: {type: Date, required: true, default: new Date(-287364287364)},
     friendList: {type: [String], required: true, default: []},
 	groupName: {type: String, required: true, default: 'Fellow'},
-	exerciseList: {type: [String], required: true, default: []},
+	exerciseList: {type: [{name: String, sets: mongoose.Number, reps: mongoose.Number}], required: true, default: []},
 	weightList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 
 }, {timestamps: true});
