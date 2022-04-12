@@ -137,6 +137,20 @@ module.exports = {
 
     },
 
+    updateGoalWeight: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {groupName: req.body.goalWeight}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })
+
+    },
+
+
     listGroupMembers: async(req, res) => {
         //console.log(req.body.username);
         //console.log(req.body.groupName);

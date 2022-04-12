@@ -178,6 +178,8 @@ const Home = ({navigation})  => {
     const [loading, setLoading] = useState(true);
     const [newGroupName, setGroupName] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const [goalModal, setGoalModal] = useState(false);
+    const [goalWeight, setGoalWeight] = useState(0);
     const [streak, setStreak] = useState(0);
 
     let friends = [];
@@ -418,12 +420,53 @@ const Home = ({navigation})  => {
                   {"155 lbs 🔼"}
                 </Text>
               </View>
-              <View style={styles.progress_box}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={goalModal}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setGoalModal(!goalModal);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Update goal weight</Text>
+                    <View style={styles.inputView}>
+                              <TextInput
+                                  style={styles.input}
+                                  keyboardType='numeric'
+                                  placeholder='Submit'
+                                  placeholderTextColor='grey'
+                                  onChangeText={e => setGoalWeight(e)}
+                                  value={goalWeight}
+                              />
+                              <TouchableOpacity
+                                  onPress={() => {
+                                      Keyboard.dismiss();
+                                      updateGoalWeight();
+                                      setGoalWeight(0);
+                                  }}
+                                  style={styles.brock_button}
+                              >
+                                  <Text>☑️</Text>
+                              </TouchableOpacity>
+                          </View>
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setGoalModal(!goalModal)}
+                    >
+                      <Text style={styles.textStyle}>Return</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            </Modal>
+              <TouchableOpacity style={styles.progress_box} onPress={() => setGoalModal(true)}>
                 <Text style={styles.progress_title}>Goal Weight</Text>
                 <Text style={styles.progress_value}>
-                  {"160 lbs 🥅"}
+                  {userData.username.goalWeight}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.exercise_container}>
