@@ -3,14 +3,12 @@ import { useSelector } from 'react-redux'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
-import reducers from "../redux/state/reducers";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BottomSheet } from 'react-native-btr';
 
 import config from '../backend/config/config.js'
 import axios from 'axios'
 import qs from 'qs'
-
 
 // For stack navigation
 import AddExercise from './AddExercise'
@@ -176,18 +174,17 @@ const WorkoutLogDashboard = ({navigation}) => {
   // Hooks
   const userData = useSelector(state => state.user);
   const [date, setDate] = useState(new Date(Date.now()));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(true);
+  // const [mode, setMode] = useState('date');
+  // const [show, setShow] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  //Toggling the visibility state of the bottom sheet
+  // Toggling the visibility state of the bottom sheet
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
   };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
-    setShow(false);
     setDate(currentDate);
     console.log(currentDate)
   };
@@ -195,25 +192,14 @@ const WorkoutLogDashboard = ({navigation}) => {
   
   const createWorkoutLog = () => {
 
+    // Append new workout log to store
+    console.log(userData.username)
+    console.log(userData.username.workoutlogList)
+
     var data = qs.stringify({
       'username': userData.username.username,
       'datetime': date,
     });
-
-    axios({
-      method: 'post',
-      url: 'http://' + config.ipv4 + ':5000/workoutlog/createWorkoutLog',
-      headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-      data : data
-    })
-    .then(reponse => {
-      console.log(JSON.stringify(reponse.data))
-    })
-    .catch(e => {
-      console.log(e)
-    })
   }
 
   return (
