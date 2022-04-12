@@ -25,4 +25,24 @@ module.exports = {
 
     },
 
+    addComment: async (req, res) => {
+
+        ChatPost.findOneAndUpdate({_id: req.body.id}, {$push: {comments: req.body.commentData}}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+                return;
+            }
+
+            if(data == null) {
+                console.log('nothing happened...')
+                res.send({success: 0});
+                return;
+            }
+            
+            res.send({success: 1, data: data})
+        })  
+
+    }
+
 }
