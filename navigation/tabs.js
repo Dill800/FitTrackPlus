@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 
 
 import Home from '../screens/Home'
+import Chat from '../screens/Chat'
 import Login from '../screens/Login'
 import Register from '../screens/Register'
 import WeightLogNavigator from '../screens/WeightLogNavigator'
@@ -54,10 +55,55 @@ const Tabs = ({navigation}) => {
                     backgroundColor: theme.colors.primary,
                     borderRadius: 15,
                     height: 80,
+                    borderTopWidth: 0,
                     ... styles.shadow
                 }
             }}
         >
+                <Tab.Screen name="Chat" component={Chat}
+                        listeners={({ navigation }) => ({
+                            tabPress: (e) => {
+                            // Prevent default action
+                            e.preventDefault();
+                    
+                            // Do something with the `navigation` object
+                            navigation.navigate("Chat"); // Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            },
+                        })} 
+                        options={{
+                            tabBarIcon: ({focused}) => (
+                                <View style={{alignItems: 'center', justifyContent: 'center', top: 20}}>
+                                    <Image
+                                        source={require('../assets/home.png')}
+                                        resizeMode='contain'
+                                        style={{
+                                            width: 25,
+                                            height: 25,
+                                            tintColor: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94')
+                                        }}
+                                    />
+                                    <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
+                                </View>
+                            ),
+                            headerStyle: {
+                                backgroundColor: '#71ebeb',
+                            },
+                            headerTitleStyle: {
+                                color: '#000',
+                            },
+                            headerRight: () => (
+                                <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                                    <Image
+                                        source={require('../assets/settings.png')}
+                                        style={{
+                                            width: 25,
+                                            height: 25,
+                                            right: 20
+                                        }}
+                                    />
+                            </TouchableOpacity>
+                            ),
+                }}/>
                 <Tab.Screen name="Home" component={Home}
                     listeners={({ navigation }) => ({
                         tabPress: (e) => {
@@ -84,7 +130,8 @@ const Tabs = ({navigation}) => {
                             </View>
                         ),
                         headerStyle: {
-                            backgroundColor: '#71ebeb',
+                            backgroundColor: theme.colors.primary,
+                            shadowColor: 'transparent',
                           },
                         headerTitleStyle: {
                             color: '#000',
@@ -119,7 +166,8 @@ const Tabs = ({navigation}) => {
                             </View>
                         ),
                         headerStyle: {
-                            backgroundColor: '#71ebeb',
+                            backgroundColor: theme.colors.primary,
+                            shadowColor: 'transparent',
                           },
                         headerRight: () => (
                         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
@@ -167,21 +215,22 @@ const Tabs = ({navigation}) => {
                                 <Text style ={{color: focused ? '#000' : ((theme.dark) ? 'ivory' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
-                        headerStyle: {
-                            backgroundColor: '#71ebeb',
-                          },
-                        headerRight: () => (
-                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-                            <Image
-                                source={require('../assets/settings.png')}
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    right: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                        ),
+                        headerShown: false,
+                        // headerStyle: {
+                        //     backgroundColor: theme.colors.primary,
+                        //   },
+                        // headerRight: () => (
+                        // <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                        //     <Image
+                        //         source={require('../assets/settings.png')}
+                        //         style={{
+                        //             width: 25,
+                        //             height: 25,
+                        //             right: 20
+                        //         }}
+                        //     />
+                        // </TouchableOpacity>
+                        // ),
                 }}
                 />
 

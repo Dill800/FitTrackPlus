@@ -42,3 +42,10 @@ export const Logger = styled.View`
     margin-top: ${StatusBarHeight + 30}px;
     align-items: center;
 `
+
+export const Macros = styled.View`
+    width: 95%;
+    height: auto;
+    margin-top: ${StatusBarHeight + 30}px;
+    align-items: center;
+`
