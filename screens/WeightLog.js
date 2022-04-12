@@ -1,4 +1,3 @@
-
 import { keyboardDismissHandlerManager, Row } from 'native-base';
 import React, {useState, useEffect} from 'react';
 import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity, MaskedViewComponent, TouchableWithoutFeedbackBase } from 'react-native';
@@ -8,9 +7,9 @@ import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/n
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-native-responsive-linechart'
 import { format } from 'date-fns'
+import {useSelector, useDispatch} from 'react-redux'
 
-
-  
+import config from '../backend/config/config.js'
 import { Logger } from './../components/styles'
 import WeightLogList from './WeightLogList'
 
@@ -21,6 +20,9 @@ const HideKeyboard = ({ children }) => (
 );
 
 const WeightLog = ({navigation}) => {
+
+    const userData = useSelector(state => state.user);
+    const dispatch = useDispatch();
 
     const theme = useTheme();
     
@@ -168,13 +170,61 @@ const WeightLog = ({navigation}) => {
     //     }
     //   };
 
+    const submitWeight = (weight) => {
+        var axios = require('axios');
+        var qs = require('qs');
+        var data = qs.stringify({
+            'username': userData.username.username,
+            'weight': weight 
+        });
+        var config2 = {
+            method: 'post',
+            url: 'http://' + config.ipv4 + ':5000/user/addWeight',
+            headers: { 
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data : data
+        };
+
+        axios(config2)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
     const [data, setData] = useState(all);
-    const [dataSize, setDataSize] = useState(dataAll.length);
+    // const [dataSize, setDataSize] = useState(dataAll.length);
 
     useEffect(() => {
-        console.log('hi')
+        var axios = require('axios');
+        var qs = require('qs');
+
+        var config2 = {
+            method: 'get',
+            url: 'http://' + config.ipv4 + ':5000/user/getWeightLog?username=bid',
+            headers: { },
+            data : data
+        };
+
+        axios(config2)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+                let data = userData.username;
+                data.weightList = newGroupName;
+                dispatch(updateUsername(data))
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        console.log('got da loot');
+
         setData(all);
-    }, [theme.colors.primary]);
+    }, []);
 
     return (
         <HideKeyboard>
@@ -197,6 +247,7 @@ const WeightLog = ({navigation}) => {
                                 onPress={() => {
                                     Keyboard.dismiss();
                                     setWeight('');
+                                    submitWeight(weight);
                                 }}
                                 style={styles.button}
                             >
