@@ -224,6 +224,17 @@ module.exports = {
             res.send({success: 1, data: data})
         })        
 
+    },
+
+    addPfp: async (req, res) => {
+        User.findOneAndUpdate({username: req.body.username}, {pfpFilepath: req.file}, (err, data) => { 
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })        
     }
 
 }
