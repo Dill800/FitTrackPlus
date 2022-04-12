@@ -18,6 +18,7 @@ const Home = ({navigation})  => {
     //e();
 
     const userData = useSelector(state => state.user);
+    const dispatch = useDispatch();
     const theme = useTheme();
 
     const styles = StyleSheet.create({
