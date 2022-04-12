@@ -1,11 +1,14 @@
 
 import { keyboardDismissHandlerManager, Row } from 'native-base';
 import React, {useState, useEffect} from 'react';
-import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity } from 'react-native';
+import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity, MaskedViewComponent, TouchableWithoutFeedbackBase } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {Svg, Rect, Text as TextSVG } from 'react-native-svg';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-native-responsive-linechart'
+import { format } from 'date-fns'
+
 
   
 import { Logger } from './../components/styles'
@@ -104,52 +107,73 @@ const WeightLog = ({navigation}) => {
     const screenWidth = Dimensions.get("window").width;
 
     const dataWeek = {
-        labels: ["3/11", "3/12", "3/13", "3/14", "3/15"],
-        datasets: [
-            {
-              data: [198.3, 197.3, 197.9, 197.2, 196.9],
-              color: (opacity = 1) => theme.colors.primary,            }
-        ],
+        x: ["3/11", "3/12", "3/13", "3/14", "3/15"],
+        y: [198.3, 197.3, 197.9, 197.2, 196.9]
     };
 
     const dataMonth = {
-        labels: ["3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15"],
-        datasets: [
-            {
-                data: [200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9],
-                color: (opacity = 1) => theme.colors.primary,
-            }
-        ]
+        x: ["3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15"],
+        y: [200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9]
     };
 
     const dataAll = {
-        labels: ["3/1", "3/2", "3/3", "3/4", "3/5", "3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15"],
-        datasets: [
-          {
-            data: [201.2, 200.8, 200.7, 201.0, 200.3, 200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9],
-            color: (opacity = 1) => theme.colors.primary,
-          }
-        ],
-      };
+        x: ["3/1", "3/2", "3/3", "3/4", "3/5", "3/6", "3/7", "3/8", "3/9", "3/10", "3/11", "3/12", "3/13", "3/14", "3/15", "3/16", "3/17", "3/18", "3/19", "3/20", "3/21", "3/22", "3/23", "3/24", "3/25", "3/26", "3/27", "3/28", "3/29", "3/30", "3/31", "4/1", "4/2", "4/3", "4/4", "4/5", "4/5", "4/6", "4/7", "4/8", "4/9", "4/10", "4/11", "4/12", "4/13"],
+        y: [201.2, 200.8, 200.7, 201.0, 200.3, 200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9, 201.2, 200.8, 200.7, 201.0, 200.3, 200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9, 201.2, 200.8, 200.7, 201.0, 200.3, 200.1, 199.6, 199.2, 200.4, 199.1, 198.3, 197.3, 197.9, 197.2, 196.9]
+    };
 
-    const chartConfig = {
-        backgroundColor: theme.colors.card,
-        backgroundGradientFrom: theme.colors.card,
-        backgroundGradientTo: theme.colors.card,
-        color: (opacity = 1) => theme.colors.text,
-        decimalPlaces: 1,
-        useShadowColorFromDataset: false,
-        propsForDots: {
-            r: "5",
-            stroke: "black"
-        }
-      };
+    const week = [];
+    const month = [];
+    const all = [];
 
-    const [data, setData] = useState(dataAll);
+    for (let i = 0; i < dataWeek.x.length; i++) {
+        // console.log(dataWeek.x[i] + "/22");
+        week.push({x: i.toString(), y: dataWeek.y[i], meta: format(new Date(dataWeek.x[i] + "/22"), 'MMM-dd')});
+        // console.log(week[i].x);
+    }
+
+    for (let i = 0; i < dataMonth.x.length; i++) {
+        // console.log(dataWeek.x[i] + "/22");
+        month.push({x: i.toString(), y: dataMonth.y[i], meta: format(new Date(dataMonth.x[i] + "/22"), 'MMM-dd')});
+        // console.log(week[i].x);
+    }
+
+    for (let i = 0; i < dataAll.x.length; i++) {
+        // console.log(dataWeek.x[i] + "/22");
+        all.push({x: i.toString(), y: dataAll.y[i], meta: format(new Date(dataAll.x[i] + "/22"), 'MMM-dd')});
+        // console.log(week[i].x);
+    }
+
+    // for (let i = 0; i < dataMonth.x.length; i++) {
+    //     month.push({x: dataMonth.x[i], y: dataMonth.y[i]});
+    // }
+
+    // for (let i = 0; i < dataAll.x.length; i++) {
+    //     all.push({x: dataAll.x[i], y: dataAll.y[i]});
+    // }
+
+    // const chartConfig = {
+    //     backgroundColor: theme.colors.card,
+    //     backgroundGradientFrom: theme.colors.card,
+    //     backgroundGradientTo: theme.colors.card,
+    //     color: (opacity = 1) => theme.colors.text,
+    //     decimalPlaces: 1,
+    //     useShadowColorFromDataset: false,
+    //     propsForDots: {
+    //         r: "5",
+    //         stroke: "black"
+    //     },
+    //     propsForVerticalLabels: {
+    //         dy: 10,
+    //         dx: -10
+    //     }
+    //   };
+
+    const [data, setData] = useState(all);
+    const [dataSize, setDataSize] = useState(dataAll.length);
 
     useEffect(() => {
         console.log('hi')
-        setData(dataAll);
+        setData(all);
     }, [theme.colors.primary]);
 
     return (
@@ -187,30 +211,56 @@ const WeightLog = ({navigation}) => {
                         showsHorizontalScrollIndicator={false} // to hide scroll bar
                         style={{height: 500}}
                     > */}
-                        <LineChart
+                        {/* <LineChart
                             data={data}
-                            width={screenWidth * 0.8}
+                            width={screenWidth * 0.75}
                             height={250}
+                            verticalLabelRotation={90}
                             chartConfig={chartConfig}
                             bezier
                             style={{
                                 marginVertical: 10,
-                                borderRadius: 15
+                                borderRadius: 15,
+                                marginLeft: -15
                             }}
                             withVerticalLines={false}
                             withHorizontalLines={false}
+                            hidePointsAtIndex={
+                                Array.from({length: data.datasets[0].data.length},
+                                    (v, k) => (
+                                        ((k === 0) ||
+                                        (k === Math.floor(data.datasets[0].data.length / 4)) ||
+                                        (k === data.datasets[0].data.length - 1) ||
+                                        (k === Math.floor(data.datasets[0].data.length / 2)) ||
+                                        (k === Math.floor(data.datasets[0].data.length * 3 / 4)))
+                                        ? null
+                                        : k
+                                    ))
+                            }
+                            formatXLabel={
+                                value =>
+                                    data.labels.length > 5
+                                    ? data.labels[0] == value ||
+                                    data.labels[Math.floor(data.labels.length / 4)] == value ||
+                                    data.labels[data.labels.length - 1] == value ||
+                                    data.labels[Math.floor(data.labels.length / 2)] == value ||
+                                    data.labels[Math.floor(data.labels.length * 3 / 4)] == value
+                                    ? value
+                                    : ""
+                                  : value
+                            }
                             decorator={() => {
                                 return (
                                     point.visible ? <View>
                                         <Svg>
-                                            <Rect x={point.x - 15} 
+                                            <Rect x={point.x - 35} 
                                                 y={point.y + 10} 
                                                 width="40" 
                                                 height="30"
                                                 fill={theme.colors.primary} 
                                                 rx={10}/>
                                                 <TextSVG
-                                                    x={point.x + 5}
+                                                    x={point.x - 15}
                                                     y={point.y + 30}
                                                     fill='black'
                                                     fontSize="12"
@@ -241,11 +291,67 @@ const WeightLog = ({navigation}) => {
                                     });
                                 }
                             }}
-                        />
+                        /> */}
+                        <Chart
+                            style={{ height: 250, width: '90%' }}
+                            data={data}
+                            padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
+                            xDomain={{ min: 0, max: data.length }}
+                            yDomain={{ min: 180, max: 250 }}
+                            viewport={{ size: { width: 5 } }}
+                            >
+                            <VerticalAxis
+                                tickCount={5}
+                                theme={{
+                                axis: { stroke: { color: theme.colors.text, width: 2 } },
+                                ticks: { stroke: { color: theme.colors.text, width: 2 } },
+                                labels: {
+                                    label: {
+                                        color: theme.colors.text
+                                    },  
+                                    formatter: (v) => v.toFixed(2) 
+                                },
+                                }}
+                            />
+                            <HorizontalAxis
+                                tickValues={Array.from({length: data.length}, (v, i) => i)}
+                                theme={{
+                                axis: { stroke: { color: '#aaa', width: 2 } },
+                                ticks: { stroke: { color: '#aaa', width: 2 } },
+                                labels: {
+                                    label: {
+                                        color: theme.colors.text
+                                    }, 
+                                    formatter: (v) => data[v].meta
+                                },
+                                }}
+                            />
+                            <Area theme={{ gradient: { from: { color: theme.colors.primary, opacity: 0.4 }, to: { color: theme.colors.primary, opacity: 0.4 } } }} smoothing="cubic-spline" />
+                            <Line
+                                smoothing={"cubic-spline"}
+                                tooltipComponent={
+                                    <Tooltip
+                                        theme={{
+                                            label: {color: theme.colors.text},
+                                            shape: { width: 100, color: theme.colors.primary },
+                                            formatter: (v) => 
+                                                v.y.toString() + " (" + v.meta + ")"
+                                        }}
+                                    />
+                                }
+                                theme={{                                    
+                                    stroke: { color: theme.colors.primary, width: 5 },
+                                    // scatter: {
+                                    //   selected: { width: 4, height: 4, rx: 4, color: "white" },
+                                    // }
+                                    scatter: { default: { width: 8, height: 8, rx: 4, color: theme.colors.primary }, selected: { color: 'white' } }
+                                }}
+                            />
+                        </Chart>
                         <View style={styles.bottom_buttons}>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(dataWeek);
+                                        setData(week);
                                         setPoint(prevState => {
                                             return { 
                                                       x: prevState.x,
@@ -268,7 +374,7 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(dataMonth);
+                                        setData(month);
                                         setPoint(prevState => {
                                             return { 
                                                       x: prevState.x,
@@ -291,7 +397,7 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(dataAll);
+                                        setData(all);
                                         setPoint(prevState => {
                                             return { 
                                                       x: prevState.x,
