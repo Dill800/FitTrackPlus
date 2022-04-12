@@ -248,7 +248,7 @@ const Chat = ({navigation})  => {
         console.log(chatList[i].groupName)
         if(chatList[i].groupName === userData.username.groupName)
       chats.push(
-            <ChatText setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
+            <ChatText style={{alignSelf: 'center'}} setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
       )
     }
 
@@ -269,6 +269,7 @@ const Chat = ({navigation})  => {
                     width: 315 ,
                     marginHorizontal: 10,
                     alignSelf: 'flex-start',
+                    alignItems: 'center',
                     marginBottom: 10
                 }}
                 key={i}
@@ -325,12 +326,13 @@ const Chat = ({navigation})  => {
             <View
               style={[
                 styles.title_box,
-                { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10,
+              },
               ]}
             >
                 <Text style={styles.title}>{userData.username.groupName}'s Chatroom 💬</Text>
             </View>
-            <ScrollView horizontal={false} style={styles.box}>
+            <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}>
               <Text>{chats}</Text>
             </ScrollView>
           </View>
