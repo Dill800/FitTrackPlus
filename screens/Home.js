@@ -376,6 +376,34 @@ const Home = ({navigation})  => {
         calorie: false,
         dataLabel: "carb"
       }];
+
+      let streakImageURL = "";
+      let streakDayCounter = userData.username.streakCounter;
+
+      switch(true){
+        case 5 <= streakDayCounter < 10:
+          streakImageURL = require("../assets/badge2.png");
+        case 10 <= streakDayCounter < 25:
+          streakImageURL = require("../assets/badge3.png");
+        case 25 <= streakDayCounter < 50:
+          streakImageURL = require("../assets/badge4.png");
+        case 50 <= streakDayCounter < 75:
+          streakImageURL = require("../assets/badge5.png");
+        case 75 <= streakDayCounter < 100:
+          streakImageURL = require("../assets/badge6.png");
+        case streakDayCounter > 100:
+          streakImageURL = require("../assets/badge7.png");
+        default:
+          streakImageURL = require("../assets/badge1.png");
+      }
+
+      // if(userData.username.streakCounter < 5){
+      //   streakImageURL = require("../assets/badge1.png");
+      // }
+      // else{
+      //   streakImageURL = require("../assets/pasta.png");
+      // }
+
       //console.timeEnd();
       return (
         <View style={styles.container}>
@@ -403,9 +431,18 @@ const Home = ({navigation})  => {
               style={[
                 styles.title_box,
                 { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                {flex: 1},
               ]}
             >
               <Text style={styles.title}>Workout Streak: {userData.username.streakCounter} 🔥</Text>
+              <Image
+                source={streakImageURL}
+                resizeMode='contain'
+                style={{
+                    flex: 1,
+                    width: '100%',
+                }}
+              />
             </View>
             <ScrollView horizontal={false} style={styles.box}>
               <Text>{friends}</Text>
