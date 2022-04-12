@@ -10,10 +10,15 @@ import { useTheme } from '@react-navigation/native';
 import axios from 'axios'
 import qs from 'qs'
 import config from '../backend/config/config.js'
+import { UPDATE_USERNAME } from "../redux/actions/user";
+import { updateUsername } from '../redux/actions/user';
+
 
 const Home = ({navigation})  => {
+    //e();
 
     const userData = useSelector(state => state.user);
+    const dispatch = useDispatch();
     const theme = useTheme();
 
     const styles = StyleSheet.create({
@@ -184,16 +189,119 @@ const Home = ({navigation})  => {
     });
     var config2 = {
       method: 'get',
-      url: 'http://' + config.ipv4+ ':5000/user/listGroupMembers?username=bid&groupName=Fellow',
+      url: 'http://' + config.ipv4 + ':5000/user/listGroupMembers',
       params: {
         username: userData.username.username,
         groupName: userData.username.groupName
     }
     };
 
+    // useEffect(() => {
+
+    // }, [setFriendsList])
+
+    // const joinGroup = () => {
+
+    //   console.log("Trunklets")
+    //   console.log(newGroupName);
+    //     var data = qs.stringify({
+    //       'username': userData.username.username,
+    //       'groupName': newGroupName 
+    //     });
+    //     var config3 = {
+    //       method: 'post',
+    //       url: 'http://' + config.ipv4 + ':5000/user/joinGroup',
+    //       headers: { 
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //       },
+    //       data : data
+    //     };
+
+    //   axios(config3)
+    //   .then(function (response) {
+    //     //console.log(JSON.stringify(response.data));
+    //     console.log('about to hit config2 call')
+    //     axios(config2)
+    //     .then(function (response) {
+    //       console.log('in')
+    //       //console.log(JSON.stringify(response.data.data));
+    //       let bigDog = JSON.stringify(response.data.data);
+    //       console.log(response.data)
+    //       let biggerDog = (JSON.parse(bigDog));
+    //       let x = []
+    //       for (var i = 0; i < biggerDog.length; i++) {
+    //         var friend  = {
+    //           "Username" : biggerDog[i].username,
+    //           "Streak" : biggerDog[i].streakCounter,
+    //         };
+    //         x.push(friend)
+    //         console.log("nernit")
+    //       console.log(userData.username.groupName);
+    //       console.log(friend)
+
+          
+
+    //       //console.log(friend);
+    //       //friends2.push(friend);
+    //       //setFriendsList(friendsList.concat(friend));
+    //       //setFriendsList(friendsList.concat(biggerDog[i].username));
+    //       }
+
+    //       console.log("Friends List: ", friendsList, x)
+    //       setFriendsList(friendsList.concat(x))
+
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     })
+
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    // }
+
 
    
-    useEffect(() => {
+    // const getFriendsList2 = () => {
+    //   //console.log("YABBA")
+    //   async function getFriendsList() {
+    //     axios(config2)
+    //     .then(function (response) {
+    //       //console.log(JSON.stringify(response.data.data));
+    //       let bigDog = JSON.stringify(response.data.data);
+    //       let biggerDog = (JSON.parse(bigDog));
+    //       for (var i = 0; i < biggerDog.length; i++) {
+    //         var friend  = {
+    //           "Username" : biggerDog[i].username,
+    //           "Streak" : biggerDog[i].streakCounter,
+    //         };
+    //       //console.log(userData.username.groupName);
+
+            
+    //       console.log(friend);
+    //       friends2.push(friend);
+    //       setFriendsList(friendsList.concat(friend));
+    //       setFriendsList(friendsList.concat(biggerDog[i].username));
+    //       }
+
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     })
+    //   }
+
+    //   getFriendsList();
+    //   setFriendsList(friends2);
+    //   //console.log(friends2);
+    // }
+
+    // useEffect(() => {
+    //     getFriendsList2();
+    // },[])
+
+      useEffect(() => {
         async function getFriendsList() {
           axios(config2)
           .then(function (response) {
@@ -205,7 +313,7 @@ const Home = ({navigation})  => {
                 "Username" : biggerDog[i].username,
                 "Streak" : biggerDog[i].streakCounter,
               };
-  
+
               
             //console.log(friend);
             friends2.push(friend);
@@ -224,29 +332,44 @@ const Home = ({navigation})  => {
         // hi lol xdDD easter egg :D
         ///asdfasdf
         //console.log(friends2);
-    },[])
+    },[newGroupName])
 
- 
-    var data = qs.stringify({
-      'username': 'bid',
-      'groupName': newGroupName 
-    });
-    var config3 = {
-      method: 'post',
-      url: 'http://' + config.ipv4 + ':5000/user/joinGroup',
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data : data
-    };
+    const joinGroup = () => {
+        console.log(newGroupName);
+        var data = qs.stringify({
+          'username': userData.username.username,
+          'groupName': newGroupName 
+        });
+        var config3 = {
+          method: 'post',
+          url: 'http://' + config.ipv4 + ':5000/user/joinGroup',
+          headers: { 
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data : data
+        };
 
-    axios(config3)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      axios(config3)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+        console.log(userData.username)
+        
+        let data = userData.username;
+        data.groupName = newGroupName;
+        dispatch(updateUsername(data))
+        console.log("group name:" + userData.username.groupName);
+        setGroupName(userData.username.groupName);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+    const CheckInFunction = () => {
+      
+    }
+
+    
 
   
     let exercise = [];
@@ -310,7 +433,7 @@ const Home = ({navigation})  => {
         calorie: false,
         dataLabel: "carb"
       }];
-
+      //console.timeEnd();
       return (
         <View style={styles.container}>
           <View style={styles.progress}>
@@ -380,6 +503,7 @@ const Home = ({navigation})  => {
                             <TouchableOpacity
                                 onPress={() => {
                                     Keyboard.dismiss();
+                                    joinGroup();
                                     setGroupName('');
                                 }}
                                 style={styles.brock_button}
@@ -387,24 +511,24 @@ const Home = ({navigation})  => {
                                 <Text>🔎</Text>
                             </TouchableOpacity>
                         </View>
-                  <Pressable
+                  <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
-                    <Text style={styles.textStyle}>Cancel</Text>
-                  </Pressable>
+                    <Text style={styles.textStyle}>Return</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </Modal>
-            <Pressable
+            <TouchableOpacity
               style={[
                 styles.btn_shape,
                 { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
               ]}
               onPress={() => setModalVisible(true)}
             >
-              <Text style={styles.btn_text}>Join Group</Text>
-            </Pressable>
+              <Text style={styles.btn_text}>Join or Create Group</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.refresh()}
               style={[
@@ -412,7 +536,7 @@ const Home = ({navigation})  => {
                 { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
               ]}
             >
-              <Text style={styles.btn_text}>Create Group</Text>
+              <Text style={styles.btn_text}>Check In</Text>
             </TouchableOpacity>
           </View>
           {/* <TouchableOpacity

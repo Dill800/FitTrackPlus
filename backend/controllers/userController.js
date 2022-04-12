@@ -172,13 +172,13 @@ module.exports = {
                     }
                 });
 
-                res.send({success: 1, message: "streak should be incremented"})
+                res.send({success: 1, checkIn: true, message: "streak should be incremented"})
                 // add to streak
 
             }
             else {
                 // within a day
-                res.send({success: 1, message: "within a day so nothing happens"})
+                res.send({success: 1, checkIn: false, message: "within a day so nothing happens"})
             }
 
 

@@ -2,6 +2,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { Keyboard, TouchableWithoutFeedback, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import 'react-native-console-time-polyfill'
 
 
 import axios from 'axios'
@@ -32,7 +33,8 @@ const Register = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     const registerAccount = () => {
-        
+
+       // console.time();
         console.log('user: ', user)
         console.log('password: ', password)
 
@@ -54,7 +56,8 @@ const Register = ({navigation}) => {
             data : data
         })
         .then(reponse => {
-            console.log(JSON.stringify(reponse.data))
+            //console.log(JSON.stringify(reponse.data))
+           // console.timeEnd();
         })
         .catch(e => {
             console.log(e)
