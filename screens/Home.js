@@ -499,7 +499,7 @@ const Home = ({navigation})  => {
 
               </View>
               
-              <View style={styles.progress_box}>
+              <TouchableOpacity style={styles.progress_box}>
                 <Text style={styles.progress_title}>Goal Weight</Text>
                 <Text style={styles.progress_value}>
                   {userData.username.goalWeight + " lbs 🔜"}
