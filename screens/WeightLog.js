@@ -1,4 +1,4 @@
-import { keyboardDismissHandlerManager, Row } from 'native-base';
+import { ArrowBackIcon, keyboardDismissHandlerManager, Row } from 'native-base';
 import React, {useState, useEffect} from 'react';
 import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity, MaskedViewComponent, TouchableWithoutFeedbackBase } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
@@ -170,9 +170,15 @@ const WeightLog = ({navigation}) => {
     //     }
     //   };
 
+    var axios = require('axios');
+    var qs = require('qs');
+
     const submitWeight = (weight) => {
-        var axios = require('axios');
-        var qs = require('qs');
+
+        if (weight == '') {
+            return;
+        }
+
         var data = qs.stringify({
             'username': userData.username.username,
             'weight': weight 
@@ -189,6 +195,9 @@ const WeightLog = ({navigation}) => {
         axios(config2)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
+                // let data = userData.username;
+                // data.groupName = newGroupName;
+                // dispatch(updateUsername(data))
             })
             .catch(function (error) {
                 console.log(error);
@@ -196,35 +205,80 @@ const WeightLog = ({navigation}) => {
 
     }
 
-    const [data, setData] = useState(all);
+    const [data, setData] = useState(dater);
+    const [allData, setAllData] = useState(dater);
+    const [loading, setLoading] = useState(true);
+    const [render, setRender] = useState(true);
+    const [submitted, setSubmitted] = useState(false);
+    const [min, setMin] = useState(99999);
+    const [max, setMax] = useState(-99999);
+    const [val, setVal] = useState(dater);
     // const [dataSize, setDataSize] = useState(dataAll.length);
 
+    // let min = 9999
+    // let max = -9999
+    const dater = [];
+    const valer = [];
+
     useEffect(() => {
-        var axios = require('axios');
-        var qs = require('qs');
+        async function getLogList() {
 
-        var config2 = {
-            method: 'get',
-            url: 'http://' + config.ipv4 + ':5000/user/getWeightLog?username=bid',
-            headers: { },
-            data : data
-        };
+            var config2 = {
+                method: 'get',
+                url: 'http://' + config.ipv4 + ':5000/user/getWeightLog?username=' + userData.username.username,
+                headers: { },
+            };
 
-        axios(config2)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                let data = userData.username;
-                data.weightList = newGroupName;
-                dispatch(updateUsername(data))
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            axios(config2)
+                .then(function (response) {
+                    let bigDog = JSON.stringify(response.data.data);
+                    let biggerDog = (JSON.parse(bigDog));
+                    // console.log(JSON.stringify(response.data));
+                    for (var i = 0; i < biggerDog.length; i++) {
+                        // console.log(biggerDog[i]);
+                        // console.log(diff);
+                        dater.push({x: i.toString(), y: biggerDog[i].weight, meta: format(new Date(biggerDog[i].date), "MMM-dd").toString()});
+                        valer.push(biggerDog[i].weight)
+                        // console.log(typeof(biggerDog[i].weight));
+                        //setFriendsList(friendsList.concat(friend));
+                        //setFriendsList(friendsList.concat(biggerDog[i].username));
+                        // console.log('weidht text ' + dater[i]);
+                        // console.log('big tester ' + i + ' ' + dater[i].x + ' ' + dater[i].y + ' ' + dater[i].meta)
+                        
+                        // console.log(biggerDog[i].weight + ' ' + min + ' ' + max)
+                        // if (biggerDog[i].weight <= min) {
+                        //     min = biggerDog[i].weight
+                        //     console.log('minminmin')
+                        // } 
+                        
+                        // if (biggerDog[i].weight >= max) {
+                        //     max = biggerDog[i].weight
+                        // }
+                        console.log('uses effect like a boss')
+                      }
+                    
+                      setData(dater);
+                      setLoading(false);
+                      setAllData(dater);
+                      setMin(Math.min(...valer));
+                      setMax(Math.max(...valer));
+                      setSubmitted(false);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
-        console.log('got da loot');
+        if (loading || submitted) {
+            getLogList();
+        }
+    }, [render]);
 
-        setData(all);
-    }, []);
+    if (loading) {
+        return (
+            <Text>Loading...</Text>
+        )
+    }
 
     return (
         <HideKeyboard>
@@ -247,6 +301,8 @@ const WeightLog = ({navigation}) => {
                                 onPress={() => {
                                     Keyboard.dismiss();
                                     setWeight('');
+                                    setSubmitted(true);
+                                    setRender(!render);
                                     submitWeight(weight);
                                 }}
                                 style={styles.button}
@@ -343,14 +399,14 @@ const WeightLog = ({navigation}) => {
                                 }
                             }}
                         /> */}
-                        <Chart
+                        {data.length > 0  ? <Chart
                             style={{ height: 250, width: '90%' }}
                             data={data}
                             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-                            xDomain={{ min: 0, max: data.length }}
-                            yDomain={{ min: 180, max: 250 }}
-                            viewport={{ size: { width: 5 } }}
-                            >
+                            xDomain={{ min: data[0].x, max: data.length }}
+                            yDomain={{ min: min - 10, max: max + 10}}
+                            viewport={{ size: { width: 5 }, initialOrigin: {x: 0} }}
+                        >
                             <VerticalAxis
                                 tickCount={5}
                                 theme={{
@@ -399,10 +455,22 @@ const WeightLog = ({navigation}) => {
                                 }}
                             />
                         </Chart>
+                        :
+                        <Text>Enter Weight</Text>}
+                        {/* <Text>{'hi ' + data.length}</Text> */}
                         <View style={styles.bottom_buttons}>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(week);
+                                        if (allData.length > 7) {
+                                            console.log('poggers')
+                                            let arr = Array.from({length: 7}, (v, i) => allData[allData.length - 7 + i])
+                                            setData(arr)
+                                        } else {
+                                            setData(allData);
+                                        }
+
+                                        setRender(!render);
+
                                         setPoint(prevState => {
                                             return { 
                                                       x: prevState.x,
@@ -425,7 +493,14 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(month);
+                                        if (allData.length > 30) {
+                                            setData(Array.from({length: 30}, (v, i) => allData[allData.length - 30 + i]))
+                                        } else {
+                                            setData(allData);
+                                        }
+
+                                        setRender(!render);
+
                                         setPoint(prevState => {
                                             return { 
                                                       x: prevState.x,
@@ -448,7 +523,8 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(all);
+                                        setData(allData);
+                                        setRender(!render);
                                         setPoint(prevState => {
                                             return { 
                                                       x: prevState.x,
