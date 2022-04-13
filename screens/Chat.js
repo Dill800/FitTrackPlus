@@ -2,8 +2,8 @@ import * as React from "react";
 import {useRef, useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 
-import {Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
-import { useTheme } from '@react-navigation/native';
+import {RefreshControl, Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
+import { useLinkBuilder, useTheme } from '@react-navigation/native';
 
 import axios from 'axios'
 import qs from 'qs'
@@ -198,6 +198,7 @@ const Chat = ({navigation})  => {
     const [postBody, setPostBody] = useState();
     
     const [wormhole, setWormhole] = useState(0);
+    const [wormhole2, setWormhole2] = useState(0);
 
     let chats = [];
     let chats2 = [];
@@ -247,19 +248,20 @@ const Chat = ({navigation})  => {
 
     },[wormhole])
 
-    for (var i = 0; i < chatList.length; i++) {
-        if(chatList[i].groupName === userData.username.groupName)
-        chats.push(
-            <ChatText setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
-        )
+    let please = () => {
+
+        for (var i = 0; i < chatList.length; i++) {
+            if(chatList[i].groupName === userData.username.groupName)
+            chats.push(
+                <ChatText setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
+            )
+        }
     }
-    
+    please()
 
     
  
     const post = () => {
-
-        console.log(postTitle, postBody)
 
         axios.post('http://' + config.ipv4 + ':5000/chat/create', {
             title: postTitle,
@@ -270,6 +272,10 @@ const Chat = ({navigation})  => {
         .then(res => {
             
             setWormhole(wormhole+1)
+            setPostBody("")
+            setPostTitle("")
+            setPostModal(false)
+            setTimeout(() => {  setWormhole2(wormhole2+1) }, 200);
 
 
         })
@@ -299,7 +305,7 @@ const Chat = ({navigation})  => {
                 }}
                 key={i}
                 >
-                    <Text style={{color: theme.colors.text}}>{modalInfo.comments[i].username}: {modalInfo.comments[i].comment}</Text>
+                    <Text style={{fontSize: 18, color: theme.colors.text}}>{modalInfo.comments[i].username}: {modalInfo.comments[i].comment}</Text>
                 </View>
             )
 
@@ -340,7 +346,8 @@ const Chat = ({navigation})  => {
 
     }
 
-
+    
+    
 
       return (
           
@@ -356,8 +363,16 @@ const Chat = ({navigation})  => {
             >
                 <Text style={styles.title}>{userData.username.groupName}'s Chatroom 💬</Text>
             </View>
-            <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}>
-              <Text>{chats}</Text>
+            <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+            refreshControl={
+                <RefreshControl onRefresh={() => {
+                    setWormhole(wormhole+1)
+                    setTimeout(() => {  setWormhole2(wormhole2+1); }, 200);
+                }}/>
+                }
+            >
+                    <Text>{chats}</Text>
+              
             </ScrollView>
           </View>
           <View style={styles.btn_box}>
@@ -409,6 +424,7 @@ const Chat = ({navigation})  => {
                   >
                     <Text style={styles.textStyle}>Return</Text>
                   </TouchableOpacity>
+                  
                 </View>
               </View>
             </Modal>
@@ -458,12 +474,11 @@ const Chat = ({navigation})  => {
                 </View>
               </View>
             </Modal>
-
             <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => setPostModal(true)}
                   >
-                    <Text style={styles.textStyle}>Return</Text>
+                    <Text style={styles.textStyle}>Create Post</Text>
             </TouchableOpacity>
 
           </View>
