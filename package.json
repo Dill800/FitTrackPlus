@@ -65,6 +65,7 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-svg": "^12.3.0",
+    "react-native-swipeout": "^2.3.6",
     "react-native-table-component": "https://github.com/slice312/react-native-table-component.git",
     "react-native-web": "0.17.1",
     "react-native-wheel-scrollview-picker": "^2.0.1",
