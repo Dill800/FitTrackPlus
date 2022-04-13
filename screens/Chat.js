@@ -13,12 +13,14 @@ import { updateUsername } from '../redux/actions/user';
 
 import {ChatText} from '../components/chatText'
 
+
 const Chat = ({navigation})  => {
     //e();
 
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
     const theme = useTheme();
+
 
     const styles = StyleSheet.create({
       container: {
@@ -191,6 +193,11 @@ const Chat = ({navigation})  => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalInfo, setModalInfo] = useState(null);
     const [comment, setComment] = useState();
+    const [postModal, setPostModal] = useState(false);
+    const [postTitle, setPostTitle] = useState();
+    const [postBody, setPostBody] = useState();
+    
+    const [wormhole, setWormhole] = useState(0);
 
     let chats = [];
     let chats2 = [];
@@ -211,11 +218,9 @@ const Chat = ({navigation})  => {
           axios(config2)
           .then(function (response) {
             //console.log(JSON.stringify(response.data.data));
-            console.log('Yarp', response.data)
             let bigDog = JSON.stringify(response.data);
             let biggerDog = (JSON.parse(bigDog));
             for (var i = 0; i < biggerDog.length; i++) {
-                console.log(biggerDog[i])
               var chat  = {
                 "id" : biggerDog[i]._id,
                 "title" : biggerDog[i].title,
@@ -227,8 +232,6 @@ const Chat = ({navigation})  => {
               };
 
               
-            //console.log(friend);
-            console.log("Chat, ", chat)
             chats2.push(chat);
             }
             setLoading(false);
@@ -241,25 +244,48 @@ const Chat = ({navigation})  => {
         getChatsList();
         setChatList(chats2);
 
-    },[])
+
+    },[wormhole])
+
+    for (var i = 0; i < chatList.length; i++) {
+        if(chatList[i].groupName === userData.username.groupName)
+        chats.push(
+            <ChatText setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
+        )
+    }
+    
 
     
-    for (var i = 0; i < chatList.length; i++) {
-        console.log(chatList[i].groupName)
-        if(chatList[i].groupName === userData.username.groupName)
-      chats.push(
-            <ChatText style={{alignSelf: 'center'}} setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
-      )
+ 
+    const post = () => {
+
+        console.log(postTitle, postBody)
+
+        axios.post('http://' + config.ipv4 + ':5000/chat/create', {
+            title: postTitle,
+            body: postBody,
+            username: userData.username.username,
+            groupName: userData.username.groupName
+        })
+        .then(res => {
+            
+            setWormhole(wormhole+1)
+
+
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+
+        setWormhole(wormhole+1)
+
     }
 
     const getComments = () => {
 
         let x = [];
 
-        console.log("Looking for comments. Size: ", modalInfo.comments.length)
-
         for(var i = 0; i < modalInfo.comments.length; i++) {
-            console.log(modalInfo.comments[i])
             x.push(
                 <View
                 style={{
@@ -269,7 +295,6 @@ const Chat = ({navigation})  => {
                     width: 315 ,
                     marginHorizontal: 10,
                     alignSelf: 'flex-start',
-                    alignItems: 'center',
                     marginBottom: 10
                 }}
                 key={i}
@@ -295,7 +320,6 @@ const Chat = ({navigation})  => {
             "date": Date.now(),
             "username": userData.username.username
         })
-        console.log("newData:", newData)
 
         // hit endpoint to add comment based on chatpost id
         // modalInfo.id
@@ -308,7 +332,7 @@ const Chat = ({navigation})  => {
             }
         })
         .then(res => {
-            console.log("res", res)
+
         })
         .catch(e => {
             console.log("error", e)
@@ -319,8 +343,8 @@ const Chat = ({navigation})  => {
 
 
       return (
+          
         <View style={styles.container}>
-            
           <View style={styles.exercise_container}>
               
             <View
@@ -337,6 +361,60 @@ const Chat = ({navigation})  => {
             </ScrollView>
           </View>
           <View style={styles.btn_box}>
+
+
+
+
+          <Modal
+              animationType="slide"
+              transparent={true}
+              visible={postModal}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setPostModal(false);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Enter a group name</Text>
+                  <View style={styles.inputView}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Title'
+                                placeholderTextColor='grey'
+                                onChangeText={e => setPostTitle(e)}
+                                value={postTitle}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Body'
+                                placeholderTextColor='grey'
+                                onChangeText={e => setPostBody(e)}
+                                value={postBody}
+                            />
+
+
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => post()}
+                            >
+                                <Text style={styles.textStyle}>Post</Text>
+                            </TouchableOpacity>
+
+
+                        </View>
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setPostModal(false)}
+                  >
+                    <Text style={styles.textStyle}>Return</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+
+              
             <Modal
               animationType="slide"
               transparent={true}
@@ -360,7 +438,6 @@ const Chat = ({navigation})  => {
                   <TouchableOpacity
                       onPress={() => {
                           Keyboard.dismiss();
-                          console.log(comment)
                           setComment('')
                           uploadComment();
                       }}
@@ -381,7 +458,14 @@ const Chat = ({navigation})  => {
                 </View>
               </View>
             </Modal>
-            
+
+            <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setPostModal(true)}
+                  >
+                    <Text style={styles.textStyle}>Return</Text>
+            </TouchableOpacity>
+
           </View>
 
 

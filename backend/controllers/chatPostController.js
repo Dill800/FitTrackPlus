@@ -10,7 +10,7 @@ module.exports = {
     },
     create: async (req, res) => {
 
-        ChatPost.create(req.body, (err, newUser) => {
+        ChatPost.create(req.body, (err, newPost) => {
 
             if(err){
                 console.log(err);
@@ -18,8 +18,8 @@ module.exports = {
             }
 
             // If newUser not null, the new user was successfully added to database 
-            if(newUser){
-                res.send({success: 1, message: "SUCCESS: added new chatpost to db"})
+            if(newPost){
+                res.send({success: 1, message: "SUCCESS: added new chatpost to db", data: newPost})
             }
         })
 
@@ -42,6 +42,14 @@ module.exports = {
             
             res.send({success: 1, data: data})
         })  
+
+    },
+
+    youch: async (req, res) => {
+
+        ChatPost.remove({}, (err, data) => {
+            res.send({message: "Goodbye everything"})
+        })
 
     }
 

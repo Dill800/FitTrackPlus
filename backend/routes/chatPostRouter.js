@@ -6,5 +6,6 @@ const chatPostController = require('../controllers/chatPostController')
 chatPostRouter.get('/getPosts', chatPostController.getPosts)
 chatPostRouter.post('/create', chatPostController.create)
 chatPostRouter.post('/newComment', chatPostController.addComment)
+chatPostRouter.delete('/youch', chatPostController.youch)
 
 module.exports = chatPostRouter
