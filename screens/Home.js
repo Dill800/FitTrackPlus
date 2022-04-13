@@ -53,8 +53,11 @@ const Home = ({navigation})  => {
         justifyContent: "center",
       },
       progress_box: {
-        width: "27%",
+        backgroundColor: theme.colors.card,
+        width: "40%",
         height: 55,
+        borderRadius: 10,
+        marginHorizontal: 25,
       },
       progress_title: {
         color: theme.colors.text,
@@ -329,31 +332,6 @@ const Home = ({navigation})  => {
       });
     }
 
-    let friendStreakURL = (streakNumber) => {
-      switch(true){
-        case streakNumber < 5:
-          return require("../assets/badge1.png");
-          break;
-        case streakNumber < 10:
-          return require("../assets/badge2.png");
-          break;
-        case streakNumber < 25:
-          return require("../assets/badge3.png");
-          break;
-        case streakNumber < 50:
-          return require("../assets/badge4.png");
-          break;
-        case streakNumber < 75:
-          return require("../assets/badge5.png");
-          break;
-        case streakNumber < 100:
-          return require("../assets/badge6.png");
-          break;
-        default:
-          return require("../assets/badge7.png");
-          break;
-      }
-    }
 
     for (var i = 0; i < friendsList.length; i++) {
       friends.push(
@@ -386,22 +364,14 @@ const Home = ({navigation})  => {
                   <Text style={{color: theme.colors.text}}>{"Streak: " + friendsList[i].Streak}</Text>
                 </View>
                 <View style={{justifyContent: 'center'}}>
-                {/* <Image
-                  source={require('../assets/badge1.png')}
-                  resizeMode='contain'
-                  style={{
-                      flex: 1,
-                      width: '100%',
-                  }}
-                /> */}
                 <Image
-                                      source={friendStreakURL(friendsList[i].Streak)}
+                                      source={require('../assets/home.png')}
                                       resizeMode='contain'
                                       style={{
-                                          flex: 1,
-                                          width: '100%',
+                                          width: 25,
                                           height: 25,
-                                          marginLeft: 100,                       
+                                          tintColor: '#748c94',
+                                          marginLeft: 150,                       
                                       }}
                     />
                 </View>
@@ -441,29 +411,21 @@ const Home = ({navigation})  => {
       let streakDayCounter = userData.username.streakCounter;
 
       switch(true){
-        case streakDayCounter < 5:
-          streakImageURL = require("../assets/badge1.png");
-          break;
-        case streakDayCounter < 10:
+        case 5 <= streakDayCounter < 10:
           streakImageURL = require("../assets/badge2.png");
-          break;
-        case streakDayCounter < 25:
+        case 10 <= streakDayCounter < 25:
           streakImageURL = require("../assets/badge3.png");
-          break;
-        case streakDayCounter < 50:
+        case 25 <= streakDayCounter < 50:
           streakImageURL = require("../assets/badge4.png");
-          break;
-        case streakDayCounter < 75:
+        case 50 <= streakDayCounter < 75:
           streakImageURL = require("../assets/badge5.png");
-          break;
-        case streakDayCounter < 100:
+        case 75 <= streakDayCounter < 100:
           streakImageURL = require("../assets/badge6.png");
-          break;
-        default:
+        case streakDayCounter > 100:
           streakImageURL = require("../assets/badge7.png");
-          break;
+        default:
+          streakImageURL = require("../assets/badge1.png");
       }
-      
 
       // if(userData.username.streakCounter < 5){
       //   streakImageURL = require("../assets/badge1.png");
@@ -486,19 +448,49 @@ const Home = ({navigation})  => {
                   {userData.username.currentWeight < userData.username.goalWeight ? userData.username.currentWeight + " lbs 🔼" : userData.username.currentWeight + " lbs 🔽"}
                 </Text>
               </View>
-              <View style={styles.progress_box}>
-                <Image
-                  source={streakImageURL}
-                  resizeMode='contain'
-                  style={{
-                      flex: 1,
-                      width: '100%',
-                  }}
-                />
-
-              </View>
-              
-              <TouchableOpacity style={styles.progress_box}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={goalModal}
+                onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");
+                  setGoalModal(!goalModal);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Update goal weight</Text>
+                    <View style={styles.inputView}>
+                              <TextInput
+                                  style={styles.input}
+                                  keyboardType='numeric'
+                                  placeholder='Submit'
+                                  placeholderTextColor='grey'
+                                  onChangeText={e => setGoalWeight(e)}
+                                  value={goalWeight}
+                              />
+                              <TouchableOpacity
+                                  onPress={() => {
+                                      Keyboard.dismiss();
+                                      //console.log("hit");
+                                      updateGoalWeight();
+                                      setGoalWeight('');
+                                  }}
+                                  style={styles.brock_button}
+                              >
+                                  <Text>☑️</Text>
+                              </TouchableOpacity>
+                          </View>
+                    <TouchableOpacity
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setGoalModal(!goalModal)}
+                    >
+                      <Text style={styles.textStyle}>Return</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            </Modal>
+              <TouchableOpacity style={styles.progress_box} onPress={() => setGoalModal(true)}>
                 <Text style={styles.progress_title}>Goal Weight</Text>
                 <Text style={styles.progress_value}>
                   {userData.username.goalWeight + " lbs 🔜"}
@@ -515,14 +507,14 @@ const Home = ({navigation})  => {
               ]}
             >
               <Text style={styles.title}>Workout Streak: {userData.username.streakCounter} 🔥</Text>
-              {/* <Image
+              <Image
                 source={streakImageURL}
                 resizeMode='contain'
                 style={{
                     flex: 1,
                     width: '100%',
                 }}
-              /> */}
+              />
             </View>
             <ScrollView horizontal={false} style={styles.box}>
               <Text>{friends}</Text>
