@@ -90,7 +90,8 @@ const ChatText = (props) => {
           }}
         >
           <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{props.title}</Text>
-          <Text style={{color: theme.colors.text}}>{props.body}</Text>
+          <Text style={{color: theme.colors.text, fontStyle: "italic", marginBottom: 5}}>{props.username}</Text>
+          <Text style={{fontSize: 18, color: theme.colors.text}}>{props.body}</Text>
         </View>
       
       </TouchableOpacity>
