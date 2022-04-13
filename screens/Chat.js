@@ -431,6 +431,7 @@ rightArrowOverlap: {
     
     
     const passRef = useRef();
+    const scrollViewRef = useRef();
 
       return (
           
@@ -562,8 +563,12 @@ rightArrowOverlap: {
                     <Text>🔎</Text>
                   </TouchableOpacity>
                 </View>
-                <ScrollView horizontal={false} style={styles.box}>
-                    {modalInfo === null ? 'yarp' : getComments()}
+                <ScrollView extraScrollHeight={300} horizontal={false} style={styles.box}
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })}>
+                    <View style={{paddingBottom: 30}}>
+                      {modalInfo === null ? 'yarp' : getComments()}
+                    </View>
                 </ScrollView>
                   <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
