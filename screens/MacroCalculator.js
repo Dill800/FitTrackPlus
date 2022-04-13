@@ -67,6 +67,7 @@ const MacroCalculator = ({navigation}) => {
         borderRadius: 15,
         backgroundColor: theme.colors.secondary,
         color: theme.colors.text,
+        textAlign: 'center'
       },
       btn_shape: {
         backgroundColor: "rgba(99,206,237,1)",
@@ -212,6 +213,7 @@ const MacroCalculator = ({navigation}) => {
     const [checked, setChecked] = React.useState('');
     const [selectedFoot, setSelectedFoot] = useState('5');
     const [selectedInch, setSelectedInch] = useState('5');
+    const [getWeight, setWeight] = useState('');
 
 
     let ageArray = [];
@@ -244,7 +246,7 @@ const MacroCalculator = ({navigation}) => {
         <ScrollView>
         <View style={{flex: 1, alignItems: 'center'}}>
           <Macros>
-          <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Edit Macros</Text>
+          <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Macro Calculator</Text>
           <View style={styles.container}>
             <View style={styles.box}>
                 <View style = {styles.input_box2}>
@@ -313,24 +315,18 @@ const MacroCalculator = ({navigation}) => {
 
                 <View style = {styles.input_box2}>
                     <Text style={styles.input_title}>
-                        Gender
+                        Weight
                     </Text>
-                    <View style = {{flexDirection: 'row', padding:5, justifyContent:"space-between", alignItems: "center", marginLeft: 50}}>
-                        <RadioButton.Android
-                            value=""
-                            uncheckedColor={theme.colors.text}
-                            status={ checked === 'Male' ? 'checked' : 'unchecked' }
-                            onPress={() => setChecked('Male')}
+                    <View style = {{flexDirection: 'row', padding:5, justifyContent:"space-between", alignItems: "center", marginLeft: 60, marginRight: 60}}>
+                        <TextInput
+                        style={styles.input_placeholder}
+                        keyboardType="numeric"
+                        returnKeyType={ 'done' }
+                        placeholder={"0"}
+                        placeholderTextColor='grey'
+                        onChangeText={e => setWeight(e)}
+                        value={getWeight}
                         />
-                        <Text style={styles.input_title}>Male</Text>
-                        <RadioButton.Android
-                            value="Female"
-                            uncheckedColor={theme.colors.text}
-                            color='#eb28d7'
-                            status={ checked === 'Female' ? 'checked' : 'unchecked' }
-                            onPress={() => setChecked('Female')}
-                        />
-                        <Text style={styles.input_title}>Female</Text>
                     </View>
                 </View>
 
@@ -367,7 +363,7 @@ const MacroCalculator = ({navigation}) => {
                     }}
                     style={styles.btn_shape}
                 >
-                    <Text style={styles.btn_text}>Save Changes</Text>
+                    <Text style={styles.btn_text}>Calculate</Text>
                 </TouchableOpacity>
                 
 
