@@ -44,6 +44,7 @@ const Home = ({ navigation }) => {
     title: {
       color: theme.colors.text,
       fontSize: 22,
+      fontWeight: "bold",
       alignSelf: "center",
     },
     progress_container: {
@@ -104,7 +105,7 @@ const Home = ({ navigation }) => {
       justifyContent: "center",
     },
     btn_text: {
-      color: "rgba(255,255,255,1)",
+      color: theme.colors.text,
       fontSize: 16,
       textAlign: "center",
       fontWeight: "bold",
