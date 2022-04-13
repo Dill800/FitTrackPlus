@@ -53,7 +53,6 @@ const Home = ({navigation})  => {
         justifyContent: "center",
       },
       progress_box: {
-        backgroundColor: theme.colors.card,
         width: "27%",
         height: 55,
       },
