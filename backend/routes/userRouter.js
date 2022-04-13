@@ -12,6 +12,12 @@ userRouter.post('/removeFriend', userController.removeFriend)
 userRouter.post('/joinGroup', userController.joinGroup)
 userRouter.post('/checkIn', userController.checkIn)
 
+// Add/remove a new workout log, add/edit/remove exercises from a specific workout log
+// userRouter.get('/getUserWorkoutLogs', userController.getUserWorkoutLogs)
+
+// userRouter.post('/createWorkoutLog', workoutLogController.createWorkoutLog)
+// userRouter.delete('/deleteWorkoutLog', workoutLogController.deleteWorkoutLog)
+
 // Logging in as an existing user
 // userRouter.post('/login', userController.authenticate)
 

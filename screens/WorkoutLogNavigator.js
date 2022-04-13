@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BottomSheet } from 'react-native-btr';
+import { updateUsername } from '../redux/actions/user';
+import dateformat from "dateformat";
 
-import config from '../backend/config/config.js'
 import axios from 'axios'
-import qs from 'qs'
+import config from '../backend/config/config.js'
 
 // For stack navigation
 import AddExercise from './AddExercise'
@@ -57,22 +58,24 @@ const Exercise = (props) => {
   const theme = useTheme();
   const navi = useNavigation();
 
+  const date_clean = new Date(props.name)
+
   return (
     <View
       style={{
         alignItems: "center",
         width: 340,
-        height: 100,
-        paddingTop: 8,
-        marginBottom: 15,
+        height: "38%",
+        marginTop: 8,
       }}
     >
       <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
         onPress={() => navi.navigate("LogDetailScreen")}
       >
-        <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{props.name}</Text>
-        <Text style={{color: theme.colors.text}}>{props.line1}</Text>     
-        <Text style={{color: theme.colors.text}}>{props.line2}</Text>     
+        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "bold" }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
+        {props.exercises.map((exercise) =>
+          <Text style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+        )}
       </TouchableOpacity>
 
     </View>
@@ -81,7 +84,8 @@ const Exercise = (props) => {
 
 
 const WorkoutLogDashboard = ({navigation}) => {
-
+  
+  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
   const theme = useTheme();
 
   const styles = StyleSheet.create({
@@ -171,11 +175,12 @@ const WorkoutLogDashboard = ({navigation}) => {
     },
   })
 
-  // Hooks
+  // Redux
   const userData = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  
+  // Hooks
   const [date, setDate] = useState(new Date(Date.now()));
-  // const [mode, setMode] = useState('date');
-  // const [show, setShow] = useState(true);
   const [visible, setVisible] = useState(false);
 
   // Toggling the visibility state of the bottom sheet
@@ -183,24 +188,75 @@ const WorkoutLogDashboard = ({navigation}) => {
     setVisible(!visible);
   };
 
+  // DEBUG ON DATESELECTOR CHANGE
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
     console.log(currentDate)
   };
 
-  
+  // Retrieve all logs from Redux on renders
+  const getAllLogs = () => {
+    const allLogs = userData.username.workoutlogList;
+    console.log(allLogs)
+  }
+
+  const debugUser = () => {
+    console.log(userData.username)
+  } 
+
   const createWorkoutLog = () => {
 
     // Append new workout log to store
-    console.log(userData.username)
-    console.log(userData.username.workoutlogList)
+    const data = userData.username;
+    let ex1 = {
+      name: "bid is goat",
+      sets: 5,
+      reps: 7,
+      weight: 20
+    }
 
-    var data = qs.stringify({
-      'username': userData.username.username,
-      'datetime': date,
-    });
+    // const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]    
+    // months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
+    let newlog = {
+      date: date,
+      // exercises: new Array(ex1, ex1)
+      exercises: new Array()
+    }
+    console.log(newlog)
+    // data.workoutlogList = newlog
+    data.workoutlogList.push(newlog);
+
+    // Update the store after writing the new workout log
+    // TODO ALSO SAVE TO DATABASE
+    dispatch(updateUsername(data))
   }
+
+//   // Update on every component render
+//   useEffect(() => {
+
+// // Function definition
+// async function getWorkoutLogList() {
+//   axios.get('http://' + config.ipv4 + ':5000/user/get', {
+//     params: {
+//       username: userData.username.username
+//     }
+//   })
+//   .then(function (response) {
+//     // console.log("raeeched")
+//     // console.log(response.data)
+//   	let jsonrep = (JSON.parse(JSON.stringify(response.data)))
+//     console.log(jsonrep.workoutlogList)
+//   })
+//   .catch(function (err) {
+// 	  console.log(err);
+//   })
+// }    
+
+// // Function call
+// getWorkoutLogList();
+  
+//   });
 
   return (
     <View style={styles.container}>
@@ -216,18 +272,17 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box}>
-            <Exercise name="April 9, 2022" line1="Bench Press 5x5 - 225" line2="Overhead Press 5x5 - 135"></Exercise>
-            <Exercise name="April 5, 2022" line1="Squat 5x5 - 255" line2="Leg Press 4x8 - 180"></Exercise>
-            <Exercise name="March 14, 2022 " line1="High-Low Row 4x10 - 60" line2="Lat Pulldown 4x10 - 130"></Exercise>
-            <Exercise name="February 22, 2022" line1="Deadlift 5x5 - 315" line2="Weighted Chinups 4x12 - 45"></Exercise>
-          </ScrollView>
+            {userData.username.workoutlogList.map((workoutlog) =>
+                <Exercise name={workoutlog.date.toString()} exercises={workoutlog.exercises}></Exercise>
+            )}
+          </ScrollView> 
 
         </View>
 
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
         <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.text, }]}>
-          
-        <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '0%', }} value={date} mode={'date'} onChange={onChange} display="inline"/>
+        
+        <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '0%', }} themeVariant={themeReducer.theme ? "light" : "dark"} value={date} mode={'date'} onChange={onChange} display="inline"/>
         <View style={{alignItems:'center', marginTop:'-7%'}}>
           <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={createWorkoutLog}>
             <Text style={styles.btn_text}>Done</Text>
@@ -239,6 +294,10 @@ const WorkoutLogDashboard = ({navigation}) => {
 
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={toggleBottomNavigationView}>
           <Text style={styles.btn_text}>Add New Workout</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={debugUser}>
+          <Text style={styles.btn_text}>DEBUG USER</Text>
       </TouchableOpacity>
       
     </View>

@@ -6,7 +6,6 @@ const bodyParser = require('body-parser')
 
 // Imports for routing (controllers inside routes, only need router import here)
 const userRouter = require('./routes/userRouter')
-const workoutLogRouter = require('./routes/workoutLogRouter')
 
 // Use env port or default
 const port = process.env.PORT || 5000;
@@ -20,7 +19,6 @@ server.use(bodyParser.json())
 
 // Routes for backend only
 server.use('/user', userRouter)
-server.use('/workoutlog', workoutLogRouter)
 
 // Deployment DB URI first priority, then take config file
 mongoose.connect(process.env.MONGODB_URI || require('./config/config').db.uri, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
