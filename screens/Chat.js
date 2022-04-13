@@ -350,12 +350,13 @@ const Chat = ({navigation})  => {
             <View
               style={[
                 styles.title_box,
-                { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10,
+              },
               ]}
             >
                 <Text style={styles.title}>{userData.username.groupName}'s Chatroom 💬</Text>
             </View>
-            <ScrollView horizontal={false} style={styles.box}>
+            <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}>
               <Text>{chats}</Text>
             </ScrollView>
           </View>

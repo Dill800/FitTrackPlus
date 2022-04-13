@@ -73,7 +73,7 @@ const ChatText = (props) => {
         key= {props.i}
         style={{
           alignItems: "center",
-          width: 370,
+          width: 350,
           height: 'auto',
           paddingTop: 8,
           marginBottom: 15,
@@ -86,7 +86,7 @@ const ChatText = (props) => {
             borderRadius: 15,
             padding: 15,
             width: "95%",
-            alignSelf: 'flex-start'
+            alignSelf: 'flex-start',
           }}
         >
           <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text}}>{props.title}</Text>
