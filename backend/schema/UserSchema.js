@@ -30,16 +30,16 @@ const userSchema = new mongoose.Schema({
 	goalWeight : {type: mongoose.Number, required: true, default: 0},
 	calorieList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 	currentCalorie : {type: mongoose.Number, required: true, default: 0},
-	calorieGoal : {type: mongoose.Number, required: true, default: 0},
+	calorieGoal : {type: mongoose.Number, required: true, default: 2000},
 	proteinList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 	currentProtein : {type: mongoose.Number, required: true, default: 0},
-	goalProtein : {type: mongoose.Number, required: true, default: 0},
+	goalProtein : {type: mongoose.Number, required: true, default: 112},
 	fatList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 	currentFat : {type: mongoose.Number, required: true, default: 0},
-	goalFat : {type: mongoose.Number, required: true, default: 0},
+	goalFat : {type: mongoose.Number, required: true, default: 51},
 	carbList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 	currentCarb : {type: mongoose.Number, required: true, default: 0},
-	goalCarb : {type: mongoose.Number, required: true, default: 0},
+	goalCarb : {type: mongoose.Number, required: true, default: 275},
 
 }, {timestamps: true});
 

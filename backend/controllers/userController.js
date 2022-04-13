@@ -139,7 +139,20 @@ module.exports = {
 
     updateGoalWeight: async (req, res) => {
 
-        User.findOneAndUpdate({username: req.body.username}, {groupName: req.body.goalWeight}, (err, data) => {
+        User.findOneAndUpdate({username: req.body.username}, {goalWeight: req.body.goalWeight}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })
+
+    },
+
+    updateMacros: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {$set: {calorieGoal: req.body.calorieGoal, goalFat: req.body.goalFat, goalProtein: req.body.goalProtein, goalCarb: req.body.goalCarb}}, (err, data) => {
             if(err) {
                 console.log(err);
                 res.send({success: 0});
@@ -178,7 +191,7 @@ module.exports = {
             console.log(user.lastCheckIn.getTime())
 
             // outside of day  86400000
-            if(Date.now() - user.lastCheckIn.getTime() >= 86400000) {
+            if(Date.now() - user.lastCheckIn.getTime() >= 10) {
                 
                 User.findOneAndUpdate({username: req.body.username}, {lastCheckIn: Date.now(), $inc: {streakCounter: 1}}, (err, data) => {
                     if(err) {

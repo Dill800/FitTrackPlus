@@ -11,7 +11,15 @@ import { NavigationContainer, useNavigation, useTheme } from '@react-navigation/
 import { VictoryPie } from "victory-native";
 import { Center } from "native-base";
 
+import {useSelector, useDispatch} from 'react-redux'
+import { UPDATE_USERNAME } from "../redux/actions/user";
+import { updateUsername } from '../redux/actions/user';
+import { useDrawerStatus } from "@react-navigation/drawer";
+
 const Macros = ({ navigation }) => {
+
+    const userData = useSelector(state => state.user);
+    const dispatch = useDispatch();
 
     const theme = useTheme();
 
@@ -146,6 +154,10 @@ const Macros = ({ navigation }) => {
 
 
     </View>);
+    
+    let fatPie = Math.round((userData.username.currentFat * 9) / userData.username.currentCalorie) * 100;
+    let proteinPie = Math.round((userData.username.currentProtein * 4) / userData.username.currentCalorie) * 100;
+    let carbPie = Math.round((userData.username.currentCarb * 4) / userData.username.currentCalorie) * 100;
 
     return (
         <View style={styles.container}>
@@ -158,13 +170,13 @@ const Macros = ({ navigation }) => {
                     </View>
                     <View style={styles.progress_container}>
                     <View style={styles.progress_box}>
-                        <Text style={styles.progress_title}>Calories: 1200</Text>
-                        <Text style={styles.progress_title}>Protein: 130</Text>
+                        <Text style={styles.progress_title}>Calories: {userData.username.calorieGoal}</Text>
+                        <Text style={styles.progress_title}>Protein: {userData.username.goalProtein} g</Text>
                         
                     </View>
                     <View style={styles.progress_box}>
-                        <Text style={styles.progress_title}>Fat: 40</Text>
-                        <Text style={styles.progress_title}>Carbs: 125</Text>
+                        <Text style={styles.progress_title}>Fat: {userData.username.goalFat} g</Text>
+                        <Text style={styles.progress_title}>Carbs: {userData.username.goalCarb} g</Text>
                     </View>
                 </View>
 
@@ -191,7 +203,7 @@ const Macros = ({ navigation }) => {
 
                         <CircularProgress
                             radius={80}
-                            value={60}
+                            value={Math.round(userData.username.currentCalorie / userData.username.calorieGoal)}
                             textColor='#222'
                             fontSize={20}
                             valueSuffix={'%'}
@@ -204,7 +216,7 @@ const Macros = ({ navigation }) => {
                         />
                         <CircularProgress
                             radius={80}
-                            value={85}
+                            value={Math.round(userData.username.currentFat / userData.username.goalFat)}
                             textColor='#222'
                             fontSize={20}
                             valueSuffix={'%'}
@@ -219,7 +231,7 @@ const Macros = ({ navigation }) => {
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <CircularProgress
                             radius={80}
-                            value={55}
+                            value={Math.round(userData.username.currentProtein / userData.username.goalProtein)}
                             textColor='#222'
                             fontSize={20}
                             valueSuffix={'%'}
@@ -231,7 +243,7 @@ const Macros = ({ navigation }) => {
                         />
                         <CircularProgress
                             radius={80}
-                            value={20}
+                            value={Math.round(userData.username.currentCarb / userData.username.goalCarb)}
                             textColor='green'
                             fontSize={20}
                             valueSuffix={'%'}
@@ -242,15 +254,7 @@ const Macros = ({ navigation }) => {
 
                         />
 
-
-
-
                     </View>
-
-
-
-
-
 
                 </View>
 
@@ -276,20 +280,20 @@ const Macros = ({ navigation }) => {
                             { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
                         ]}
                     >
-                        <Text style={styles.btn_text}>Set Goals</Text>
+                        <Text style={styles.btn_text}>Adjust Macros</Text>
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ color: theme.colors.text, paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: 135</Text>
+                <Text style={{ color: theme.colors.text, paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: {userData.username.currentCalorie}</Text>
                 <VictoryPie
                     //padAngle={({ datum }) => datum.y}
                     // innerRadius={0}
                     colorScale={["skyblue", "gold", "forestgreen"]}
                     // padAngle={0}
                     data={[
-                        { x: 1, y: 25, label: "Fat" },
-                        { x: 2, y: 35, label: "Protein"},
-                        { x: 3, y: 15, label: "Carbs" }
+                        { x: 1, y: {fatPie}, label: "Fat" },
+                        { x: 2, y: {proteinPie}, label: "Protein"},
+                        { x: 3, y: {carbPie}, label: "Carbs" }
                     ]}
                     style={{
                         labels: {
