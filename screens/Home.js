@@ -53,11 +53,12 @@ const Home = ({navigation})  => {
         justifyContent: "center",
       },
       progress_box: {
-        backgroundColor: theme.colors.card,
-        width: "40%",
-        height: 55,
+        backgroundColor: "rgba(74,144,226,1)",
+        width: "30%",
+        height: 60,
         borderRadius: 10,
-        marginHorizontal: 25,
+        marginHorizontal: 5,
+        
       },
       progress_title: {
         color: theme.colors.text,
@@ -185,6 +186,32 @@ const Home = ({navigation})  => {
     let friends = [];
     let friends2 = [];
 
+    let friendStreakURL = (streakNumber) => {
+      switch(true){
+        case streakNumber < 5:
+          return require("../assets/badge1.png");
+          break;
+        case streakNumber < 10:
+          return require("../assets/badge2.png");
+          break;
+        case streakNumber < 25:
+          return require("../assets/badge3.png");
+          break;
+        case streakNumber < 50:
+          return require("../assets/badge4.png");
+          break;
+        case streakNumber < 75:
+          return require("../assets/badge5.png");
+          break;
+        case streakNumber < 100:
+          return require("../assets/badge6.png");
+          break;
+        default:
+          return require("../assets/badge7.png");
+          break;
+      }
+    }
+
 
    
     var data = qs.stringify({
@@ -309,6 +336,7 @@ const Home = ({navigation})  => {
         },
         data : data
       };
+
       
       axios(config2)
       .then(function (response) {
@@ -365,13 +393,13 @@ const Home = ({navigation})  => {
                 </View>
                 <View style={{justifyContent: 'center'}}>
                 <Image
-                                      source={require('../assets/home.png')}
+                                      source={friendStreakURL(friendsList[i].Streak)}
                                       resizeMode='contain'
                                       style={{
-                                          width: 25,
+                                          flex: 1,
+                                          width: '100%',
                                           height: 25,
-                                          tintColor: '#748c94',
-                                          marginLeft: 150,                       
+                                          marginLeft: 100,                       
                                       }}
                     />
                 </View>
@@ -411,20 +439,27 @@ const Home = ({navigation})  => {
       let streakDayCounter = userData.username.streakCounter;
 
       switch(true){
-        case 5 <= streakDayCounter < 10:
-          streakImageURL = require("../assets/badge2.png");
-        case 10 <= streakDayCounter < 25:
-          streakImageURL = require("../assets/badge3.png");
-        case 25 <= streakDayCounter < 50:
-          streakImageURL = require("../assets/badge4.png");
-        case 50 <= streakDayCounter < 75:
-          streakImageURL = require("../assets/badge5.png");
-        case 75 <= streakDayCounter < 100:
-          streakImageURL = require("../assets/badge6.png");
-        case streakDayCounter > 100:
-          streakImageURL = require("../assets/badge7.png");
-        default:
+        case streakDayCounter < 5:
           streakImageURL = require("../assets/badge1.png");
+          break;
+        case streakDayCounter < 10:
+          streakImageURL = require("../assets/badge2.png");
+          break;
+        case streakDayCounter < 25:
+          streakImageURL = require("../assets/badge3.png");
+          break;
+        case streakDayCounter < 50:
+          streakImageURL = require("../assets/badge4.png");
+          break;
+        case streakDayCounter < 75:
+          streakImageURL = require("../assets/badge5.png");
+          break;
+        case streakDayCounter < 100:
+          streakImageURL = require("../assets/badge6.png");
+          break;
+        default:
+          streakImageURL = require("../assets/badge7.png");
+          break;
       }
 
       // if(userData.username.streakCounter < 5){
@@ -490,6 +525,17 @@ const Home = ({navigation})  => {
                   </View>
                 </View>
             </Modal>
+            <View style={styles.progress_box}>
+                <Image
+                  source={streakImageURL}
+                  resizeMode='contain'
+                  style={{
+                      flex: 1,
+                      width: '100%',
+                  }}
+                />
+
+            </View>
               <TouchableOpacity style={styles.progress_box} onPress={() => setGoalModal(true)}>
                 <Text style={styles.progress_title}>Goal Weight</Text>
                 <Text style={styles.progress_value}>
@@ -507,14 +553,14 @@ const Home = ({navigation})  => {
               ]}
             >
               <Text style={styles.title}>Workout Streak: {userData.username.streakCounter} 🔥</Text>
-              <Image
+              {/* <Image
                 source={streakImageURL}
                 resizeMode='contain'
                 style={{
                     flex: 1,
                     width: '100%',
                 }}
-              />
+              /> */}
             </View>
             <ScrollView horizontal={false} style={styles.box}>
               <Text>{friends}</Text>
