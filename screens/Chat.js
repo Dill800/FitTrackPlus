@@ -80,7 +80,8 @@ const Chat = ({navigation})  => {
         backgroundColor: theme.colors.card,
         borderRadius: 10,
         width: "95%",
-        height: 275,
+        height: 400,
+        padding: '5%',
         alignSelf: "center",
       },
       btn_box: {
@@ -107,7 +108,7 @@ const Chat = ({navigation})  => {
         justifyContent: "center",
         alignItems: "center",
         marginTop: 40,
-        marginBottom: 40
+        marginBottom: 40,
       },
       modalView: {
         margin: 20,
@@ -122,12 +123,14 @@ const Chat = ({navigation})  => {
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 5,
+        width: '95%'
       },
       button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2
+        elevation: 2,
+        marginTop: 10
       },
       buttonOpen: {
         backgroundColor: "#F194FF",
@@ -144,7 +147,7 @@ const Chat = ({navigation})  => {
         marginBottom: 15,
         textAlign: "center",
         fontSize: 20,
-        color: "rgba(255,255,255,1)",
+        color: theme.colors.text,
         marginHorizontal: 100
       },
       inputView:{
@@ -157,12 +160,12 @@ const Chat = ({navigation})  => {
     },
     input: {
         flex: 1,
-        height: 20,
+        height: 40,
         paddingHorizontal: 20,
         borderRadius: 15,
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
-        backgroundColor: "#f0f8ff"
+        backgroundColor: "#f0f8ff",
     },
     brock_button: {
       backgroundColor: theme.colors.primary,
@@ -174,7 +177,12 @@ const Chat = ({navigation})  => {
       marginLeft: 0,
       justifyContent: "center",
       paddingHorizontal: 20
-  },
+    },
+    comment_input: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '90%'
+    }
     })
 
     const [chatList, setChatList] = useState([]);
@@ -240,7 +248,7 @@ const Chat = ({navigation})  => {
         console.log(chatList[i].groupName)
         if(chatList[i].groupName === userData.username.groupName)
       chats.push(
-            <ChatText setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
+            <ChatText style={{alignSelf: 'center'}} setModalInfo={setModalInfo} setModalVisible={setModalVisible} key={i} i={i} body={chatList[i].body} title={chatList[i].title} username={chatList[i].username} comments={chatList[i].comments} id={chatList[i].id}/>
       )
     }
 
@@ -261,6 +269,7 @@ const Chat = ({navigation})  => {
                     width: 315 ,
                     marginHorizontal: 10,
                     alignSelf: 'flex-start',
+                    alignItems: 'center',
                     marginBottom: 10
                 }}
                 key={i}
@@ -317,12 +326,13 @@ const Chat = ({navigation})  => {
             <View
               style={[
                 styles.title_box,
-                { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10,
+              },
               ]}
             >
                 <Text style={styles.title}>{userData.username.groupName}'s Chatroom 💬</Text>
             </View>
-            <ScrollView horizontal={false} style={styles.box}>
+            <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}>
               <Text>{chats}</Text>
             </ScrollView>
           </View>
@@ -339,24 +349,26 @@ const Chat = ({navigation})  => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                 <Text style={styles.modalText}>Comments:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Write Comment Here'
-                    placeholderTextColor='grey'
-                    onChangeText={e => setComment(e)}
-                    value={comment}
-                />
-                <TouchableOpacity
-                    onPress={() => {
-                        Keyboard.dismiss();
-                        console.log(comment)
-                        setComment('')
-                        uploadComment();
-                    }}
-                    style={styles.brock_button}
-                >
+                <View style={styles.comment_input}>
+                  <TextInput
+                      style={styles.input}
+                      placeholder='Write Comment Here'
+                      placeholderTextColor='grey'
+                      onChangeText={e => setComment(e)}
+                      value={comment}
+                  />
+                  <TouchableOpacity
+                      onPress={() => {
+                          Keyboard.dismiss();
+                          console.log(comment)
+                          setComment('')
+                          uploadComment();
+                      }}
+                      style={styles.brock_button}
+                  >
                     <Text>🔎</Text>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
                 <ScrollView horizontal={false} style={styles.box}>
                     {modalInfo === null ? 'yarp' : getComments()}
                 </ScrollView>
