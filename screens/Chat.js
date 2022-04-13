@@ -394,7 +394,7 @@ rightArrowOverlap: {
 
     }
 
-    const uploadComment = () => {
+    const uploadComment = (comment) => {
 
         // take in what is in modal info
         // update add in comments
@@ -457,8 +457,9 @@ rightArrowOverlap: {
                 }}/>
                 }
             >
+                  <View style={{paddingBottom: 30}}>
                     <Text>{chats}</Text>
-              
+                  </View>
             </ScrollView>
           </View>
           <View style={styles.btn_box}>
@@ -538,8 +539,8 @@ rightArrowOverlap: {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                <Text style={styles.modalText}>Comments:</Text>
-                <View style={styles.comment_input}>
+                <Text style={[styles.modalText, {marginBottom: 0}]}>Comments:</Text>
+                <View style={[styles.comment_input, {marginBottom: 10}]}>
                   <TextInput
                       style={styles.input}
                       placeholder='Write Comment Here'
@@ -549,14 +550,14 @@ rightArrowOverlap: {
                       onSubmitEditing={() => {
                         Keyboard.dismiss();
                         setComment('')
-                        uploadComment();
+                        uploadComment(comment);
                       }}
                   />
                   <TouchableOpacity
                       onPress={() => {
                           Keyboard.dismiss();
                           setComment('')
-                          uploadComment();
+                          uploadComment(comment);
                       }}
                       style={styles.brock_button}
                   >

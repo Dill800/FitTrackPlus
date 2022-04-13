@@ -182,7 +182,7 @@ const Tabs = ({navigation}) => {
                                 </View>
                             ),
                             headerStyle: {
-                                backgroundColor: '#71ebeb',
+                                backgroundColor: theme.colors.primary,
                             },
                             headerTitleStyle: {
                                 color: '#000',
