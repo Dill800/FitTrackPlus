@@ -64,15 +64,16 @@ const Exercise = (props) => {
     <View
       style={{
         alignItems: "center",
-        width: 340,
-        height: "38%",
+        alignSelf: "center",
+        width: 350,
+        height: 110,
         marginTop: 8,
       }}
     >
       <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
         onPress={() => navi.navigate("LogDetailScreen")}
       >
-        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "bold" }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
+        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600" }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
         {props.exercises.map((exercise) =>
           <Text style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
         )}
@@ -144,10 +145,11 @@ const WorkoutLogDashboard = ({navigation}) => {
     },	    
     box: {
       backgroundColor: theme.colors.card,
-      borderRadius: 10,
-      width: "95%",
+      borderRadius: 15,
+      width: "98%",
       height: 275,
       alignSelf: "center",
+      paddingTop: 5
     },
     btn_box: {
       flexDirection: "row",
@@ -216,8 +218,6 @@ const WorkoutLogDashboard = ({navigation}) => {
       weight: 20
     }
 
-    // const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]    
-    // months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
     let newlog = {
       date: date,
       // exercises: new Array(ex1, ex1)
@@ -272,8 +272,8 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box}>
-            {userData.username.workoutlogList.map((workoutlog) =>
-                <Exercise name={workoutlog.date.toString()} exercises={workoutlog.exercises}></Exercise>
+            {userData.username.workoutlogList.map((workoutlog, key) =>
+                <Exercise id={key} name={workoutlog.date.toString()} exercises={workoutlog.exercises}></Exercise>
             )}
           </ScrollView> 
 
