@@ -40,11 +40,17 @@ const styles = StyleSheet.create({
     },
 });
 
-const LogDetailScreen = ({navigation}) => {
+const LogDetailScreen = ({navigation, route}) => {
 
+    // console.log(route)
     return (
         <View style={styles.container}>
             <Text style={styles.input_title}>Details of workout</Text>
+            <Text>{route.params.name}</Text>
+            {route.params.exercises.map((exercise, key) =>
+              <Text>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+            )}
+            {/* <Text>{route.params.exercises}</Text> */}
         </View>
     );
 }
