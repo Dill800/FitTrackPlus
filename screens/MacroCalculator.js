@@ -9,8 +9,8 @@ import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
 import {useSelector, useDispatch} from 'react-redux'
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
-import { RadioButton } from 'react-native-paper';
 
+import { RadioButton } from 'react-native-paper';
 import axios from 'axios'
 import qs from 'qs'
 import config from '../backend/config/config.js'
@@ -59,15 +59,22 @@ const MacroCalculator = ({navigation}) => {
         color: theme.colors.text,
         fontSize: 18
       },
+      input_title2: {
+        color: theme.colors.text,
+        fontSize: 18,
+        marginTop: 30,
+      },
       input_placeholder: {
         flex: 1,
         height: 40,
-        marginTop: 10,
+        marginTop: 0,
         paddingHorizontal: 20,
         borderRadius: 15,
         backgroundColor: theme.colors.secondary,
         color: theme.colors.text,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 18,
+        alignSelf: 'center'
       },
       btn_shape: {
         backgroundColor: "rgba(99,206,237,1)",
@@ -111,6 +118,7 @@ const MacroCalculator = ({navigation}) => {
         alignSelf: "center",
       },
       pickerAge: {
+          marginTop: 30,
           width: 75,
           height: 40,
           alignSelf: 'center', 
@@ -164,7 +172,29 @@ const MacroCalculator = ({navigation}) => {
         borderBottomRightRadius: 10,
         color: theme.colors.text,
         overflow: 'hidden',
-    }
+    },
+    pickerActivity: {
+        width: 240,
+        height: 40,
+        alignSelf: 'center', 
+        backgroundColor: theme.colors.sec,
+        color: theme.colors.card,
+        marginLeft: 10,
+        marginRight: 3,
+        overflow: 'hidden',
+    },
+    pickerActivityItem : {
+        height: 40,
+        width: 240,
+        backgroundColor: theme.colors.secondary,
+        alignSelf: 'center', 
+        borderRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        color: theme.colors.text,
+        overflow: 'hidden',
+        fontSize: 17,
+    },
   });
 
     const [name, setName] = useState('');
@@ -213,12 +243,14 @@ const MacroCalculator = ({navigation}) => {
     const [checked, setChecked] = React.useState('');
     const [selectedFoot, setSelectedFoot] = useState('5');
     const [selectedInch, setSelectedInch] = useState('5');
-    const [getWeight, setWeight] = useState('');
+    const [selectedWeight, setSelectedWeight] = useState('');
+    const [selectedActivity, setSelectedActivity] = useState('');
 
 
     let ageArray = [];
     let footArray = [];
     let inchArray = [];
+    let activityArray = [];
 
     for (let i = 0; i < 101; i++) {
         let age = String(i);
@@ -241,16 +273,31 @@ const MacroCalculator = ({navigation}) => {
         )
     }
 
+    activityArray.push(<Picker.Item key= {1} label= {"Exercise 0-1 times/week"} value={1} />);
+    activityArray.push(<Picker.Item key= {2} label= {"Exercise 1-3 times/week"} value={2} />);
+    activityArray.push(<Picker.Item key= {3} label= {"Exercise 4-5 times/week"} value={3} />);
+    activityArray.push(<Picker.Item key= {4} label= {"Exercise 3-4 times/week"} value={4} />);
+    activityArray.push(<Picker.Item key= {5} label= {"Exercise 6-7 times/week"} value={5} />);
+    activityArray.push(<Picker.Item key= {6} label= {"Daily intense exercise"} value={6} />);
+    // let activityArray = [
+    //     {value: "Sedentary: little or no exercse"},
+    //     {value: "Light: exercise 1-3 times/week"},
+    //     {value: "Moderate: exercise 4-5 times/week"},
+    //     {value: "Active: daily exercise or intense exercise 3-4 times/week"},
+    //     {value: "Very Active: intense exercise 6-7 times/week"},
+    //     {value: "Extra Active: very intense exercise daily, or physical job"}
+    // ];
+
     return (
         <HideKeyboard>
-        <ScrollView>
+        {/* <ScrollView> */}
         <View style={{flex: 1, alignItems: 'center'}}>
           <Macros>
           <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Macro Calculator</Text>
           <View style={styles.container}>
             <View style={styles.box}>
                 <View style = {styles.input_box2}>
-                    <Text style={styles.input_title}>
+                    <Text style={styles.input_title2}>
                         Age
                     </Text>
                     <Picker
@@ -273,7 +320,10 @@ const MacroCalculator = ({navigation}) => {
                             value=""
                             uncheckedColor={theme.colors.text}
                             status={ checked === 'Male' ? 'checked' : 'unchecked' }
-                            onPress={() => setChecked('Male')}
+                            onPress={() => {
+                              setChecked('Male');
+                              console.log(checked);
+                            }}
                         />
                         <Text style={styles.input_title}>Male</Text>
                         <RadioButton.Android
@@ -281,7 +331,10 @@ const MacroCalculator = ({navigation}) => {
                             uncheckedColor={theme.colors.text}
                             color='#eb28d7'
                             status={ checked === 'Female' ? 'checked' : 'unchecked' }
-                            onPress={() => setChecked('Female')}
+                            onPress={() => {
+                              setChecked('Female');
+                              console.log(checked);
+                            }}
                         />
                         <Text style={styles.input_title}>Female</Text>
                     </View>
@@ -324,28 +377,33 @@ const MacroCalculator = ({navigation}) => {
                         returnKeyType={ 'done' }
                         placeholder={"0"}
                         placeholderTextColor='grey'
-                        onChangeText={e => setWeight(e)}
-                        value={getWeight}
+                        onChangeText={e => {
+                          setSelectedWeight(e);
+                          //console.log(selectedWeight);
+                        }}
+                        value={selectedWeight}
                         />
                     </View>
                 </View>
 
+                <View style = {styles.input_box2}>
+                    <Text style={styles.input_title}>
+                        Activity
+                    </Text>
+                    <View style= {{flexDirection: 'row', alignSelf:'center'}}>
+                        <Picker
+                                selectedValue={selectedActivity}
+                                style = {styles.pickerActivity}
+                                itemStyle = {styles.pickerActivityItem}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setSelectedActivity(itemValue); 
+                                    //console.log(selectedActivity);
+                                  }}>
+                                {activityArray}
+                        </Picker>
+                </View>
+                </View>
 
-              <View style={styles.input_box}>
-                  <Text style={styles.input_title}>Target Carbs (g):</Text>
-                  <TextInput
-                  style={styles.input_placeholder}
-                  keyboardType="numeric"
-                  returnKeyType={ 'done' }
-                  placeholder={"0"}
-                  placeholderTextColor='grey'
-                  onChangeText={e => {setCarbCount(e); setCalorieCount((fatCount * 9) + (proteinCount * 4) + (e * 4));}}
-                  value={carbCount}
-                  />
-              </View>
-                  <View style={styles.title_box}>
-                    <Text style={styles.title}>Total Calories: {calorieCount}</Text>
-                  </View>
               </View>
 
               {/* BOTTOM BUTTONS */}
@@ -377,7 +435,7 @@ const MacroCalculator = ({navigation}) => {
             </View>
           </Macros>
         </View>
-        </ScrollView>
+        {/* </ScrollView> */}
         </HideKeyboard>
     );
 }
