@@ -175,6 +175,8 @@ const Home = ({navigation})  => {
     const [loading, setLoading] = useState(true);
     const [newGroupName, setGroupName] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const [goalModal, setGoalModal] = useState(false);
+    const [goalWeight, setGoalWeight] = useState(0);
     const [streak, setStreak] = useState(0);
 
     let friends = [];
@@ -258,6 +260,34 @@ const Home = ({navigation})  => {
         dispatch(updateUsername(data))
         //console.log("group name:" + userData.username.groupName);
         setGroupName(userData.username.groupName);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+    const updateGoalWeight = () => {
+      var data = qs.stringify({
+        'username': userData.username.username,
+        'goalWeight': goalWeight, 
+      });
+      var config2 = {
+        method: 'post',
+        url: 'http://' + config.ipv4 + ':5000/user/updateGoalWeight',
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : data
+      };
+      
+      axios(config2)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+        let data = userData.username;
+        data.goalWeight = goalWeight;
+        dispatch(updateUsername(data));
+        setGoalWeight(userData.username.goalWeight);
+        //.username.goalWeight);
       })
       .catch(function (error) {
         console.log(error);
@@ -453,7 +483,7 @@ const Home = ({navigation})  => {
               <View style={styles.progress_box}>
                 <Text style={styles.progress_title}>Current Weight:</Text>
                 <Text style={styles.progress_value}>
-                  {"155 lbs 🔼"}
+                  {userData.username.currentWeight < userData.username.goalWeight ? userData.username.currentWeight + " lbs 🔼" : userData.username.currentWeight + " lbs 🔽"}
                 </Text>
               </View>
               <View style={styles.progress_box}>
@@ -468,12 +498,12 @@ const Home = ({navigation})  => {
 
               </View>
               
-              <View style={styles.progress_box}>
+              <TouchableOpacity style={styles.progress_box}>
                 <Text style={styles.progress_title}>Goal Weight</Text>
                 <Text style={styles.progress_value}>
-                  {"160 lbs 🥅"}
+                  {userData.username.goalWeight + " lbs 🔜"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.exercise_container}>
