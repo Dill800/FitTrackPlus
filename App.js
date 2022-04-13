@@ -37,7 +37,7 @@ const DarkerTheme = {
     secondary: '#404040',
     card: '#181818',
     text: 'white',
-    third: '#BCDAC8',
+    third: '#60C287',
   },
 };
 
