@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 
 import { Macros } from './../components/styles'
@@ -29,7 +29,6 @@ const EditMacros = ({navigation}) => {
         borderRadius: 15,
         flexDirection: "column",
         width: "95%",
-        marginTop: 20,
         justifyContent: "center",
         alignItems: "center"
       },
@@ -137,6 +136,7 @@ const EditMacros = ({navigation}) => {
 
     return (
         <HideKeyboard>
+        <ScrollView>
         <View style={{flex: 1, alignItems: 'center'}}>
           <Macros>
           <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Edit Macros</Text>
@@ -221,6 +221,7 @@ const EditMacros = ({navigation}) => {
             </View>
           </Macros>
         </View>
+        </ScrollView>
         </HideKeyboard>
     );
 }

@@ -99,21 +99,7 @@ const Settings = ({navigation}) => {
 
 
             </View>
-            <TouchableOpacity
-                onPress={toLoginScreen}
-                style={[styles.btn_shape, { backgroundColor: "red" }]}
-                >
-                <Text style={styles.btn_text}>Log Out</Text>
-            </TouchableOpacity> 
-            <TouchableOpacity
-                    onPress={goBack}
-                    style={[
-                    styles.btn_shape,
-                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
-                    ]}
-                >
-                    <Text style={styles.btn_text}>Back</Text>
-            </TouchableOpacity>
+          
             <TouchableOpacity
                     style={[
                     styles.btn_shape,
@@ -140,6 +126,23 @@ const Settings = ({navigation}) => {
                         {themeReducer.theme ? 'Light Mode' : 'Dark Mode'}
                     </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+                    onPress={goBack}
+                    style={[
+                    styles.btn_shape,
+                    { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                    ]}
+                >
+                    <Text style={styles.btn_text}>Back</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={toLoginScreen}
+                style={[styles.btn_shape, { backgroundColor: "red" }]}
+                >
+                <Text style={styles.btn_text}>Log Out</Text>
+            </TouchableOpacity> 
         </View>
     );
 }

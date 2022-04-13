@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import RadioGroup from 'react-native-radio-buttons-group';
+import {Picker} from '@react-native-picker/picker';;
 
 import { Macros } from './../components/styles'
 import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
 import {useSelector, useDispatch} from 'react-redux'
+import ScrollPicker from 'react-native-wheel-scrollview-picker';
+import { RadioButton } from 'react-native-paper';
 
 import axios from 'axios'
 import qs from 'qs'
@@ -25,6 +28,12 @@ const MacroCalculator = ({navigation}) => {
     const theme = useTheme();
 
     const styles = StyleSheet.create({
+        container2: {
+            flex: 1,
+            paddingTop: 40,
+            alignItems: "center"
+        },
+        
       container: {
         backgroundColor: theme.colors.card,
         borderRadius: 15,
@@ -39,8 +48,16 @@ const MacroCalculator = ({navigation}) => {
         height: 65,
         marginBottom: 20,
       },
+      input_box2: {
+        width: "75%",
+        height: 65,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+      },
       input_title: {
         color: theme.colors.text,
+        fontSize: 18
       },
       input_placeholder: {
         flex: 1,
@@ -92,6 +109,61 @@ const MacroCalculator = ({navigation}) => {
         fontSize: 22,
         alignSelf: "center",
       },
+      pickerAge: {
+          width: 75,
+          height: 40,
+          alignSelf: 'center', 
+          backgroundColor: theme.colors.sec,
+          color: theme.colors.card,
+          marginLeft: 130
+      },
+      pickerAgeItem : {
+          height: 40,
+          width: 75,
+          backgroundColor: theme.colors.secondary,
+          alignSelf: 'center', 
+          borderRadius: 10,
+          color: theme.colors.text
+      },
+    pickerHeight: {
+        width: 70,
+        height: 40,
+        alignSelf: 'center', 
+        backgroundColor: theme.colors.sec,
+        color: theme.colors.card,
+        marginLeft: 75,
+        overflow: 'hidden',
+    },
+    pickerHeightItem : {
+        height: 40,
+        width: 60,
+        backgroundColor: theme.colors.secondary,
+        alignSelf: 'center', 
+        borderRadius: 10,
+        color: theme.colors.text,
+        overflow: 'hidden',
+    },
+    pickerHeightInch: {
+        width: 70,
+        height: 40,
+        alignSelf: 'center', 
+        backgroundColor: theme.colors.sec,
+        color: theme.colors.card,
+        //marginLeft: 10
+        left: -20,
+        //overflow: 'hidden',
+    },
+    pickerHeightInchItem : {
+        height: 40,
+        width: 75,
+        backgroundColor: theme.colors.secondary,
+        alignSelf: 'center', 
+        borderRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        color: theme.colors.text,
+        overflow: 'hidden',
+    }
   });
 
     const [name, setName] = useState('');
@@ -136,39 +208,132 @@ const MacroCalculator = ({navigation}) => {
         });
     };
 
+    const [selectedAge, setSelectedAge] = useState('18');
+    const [checked, setChecked] = React.useState('');
+    const [selectedFoot, setSelectedFoot] = useState('5');
+    const [selectedInch, setSelectedInch] = useState('5');
+
+
+    let ageArray = [];
+    let footArray = [];
+    let inchArray = [];
+
+    for (let i = 0; i < 101; i++) {
+        let age = String(i);
+        ageArray.push(
+            <Picker.Item key= {i} label= {age} value={i} />
+        )
+    }
+
+    for (let i = 0; i < 9; i++) {
+        let foot = String(i);
+        footArray.push(
+            <Picker.Item key= {i} label= {foot + "'"} value={i} />
+        )
+    }
+
+    for (let i = 0; i < 12; i++) {
+        let inch = String(i);
+        inchArray.push(
+            <Picker.Item key= {i} label= {inch + "\""} value={i} />
+        )
+    }
+
     return (
         <HideKeyboard>
+        <ScrollView>
         <View style={{flex: 1, alignItems: 'center'}}>
           <Macros>
-          <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}> Macro Calculator</Text>
+          <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Edit Macros</Text>
           <View style={styles.container}>
             <View style={styles.box}>
+                <View style = {styles.input_box2}>
+                    <Text style={styles.input_title}>
+                        Age
+                    </Text>
+                    <Picker
+                            selectedValue={selectedAge}
+                            style = {styles.pickerAge}
+                            itemStyle = {styles.pickerAgeItem}
+                            onValueChange={(itemValue, itemIndex) =>
+                            setSelectedAge(itemValue)
+                            }>
+                            {ageArray}
+                    </Picker>
+                </View>
 
-              <View style={styles.input_box}>
-                  <Text style={styles.input_title}>Target Fat (g):</Text>
-                  <TextInput
-                  placeholder={"0"}
-                  placeholderTextColor='grey'
-                  returnKeyType={ 'done' }
-                  style={styles.input_placeholder}
-                  keyboardType="numeric"
-                  onChangeText={e => {setFatCount(e); setCalorieCount((e * 9) + (proteinCount * 4) + (carbCount * 4));}}
-                  value={fatCount}
-                  />
-              </View>
-              
-              <View style={styles.input_box}>
-                  <Text style={styles.input_title}>Target Protein (g):</Text>
-                  <TextInput
-                  style={styles.input_placeholder}
-                  keyboardType="numeric"
-                  placeholder={"0"}
-                  returnKeyType={ 'done' }
-                  placeholderTextColor='grey'
-                  onChangeText={e => {setProteinCount(e); setCalorieCount((fatCount * 9) + (e * 4) + (carbCount * 4));}}
-                  value={proteinCount}
-                  />
-              </View>
+                <View style = {styles.input_box2}>
+                    <Text style={styles.input_title}>
+                        Gender
+                    </Text>
+                    <View style = {{flexDirection: 'row', padding:5, justifyContent:"space-between", alignItems: "center", marginLeft: 50}}>
+                        <RadioButton.Android
+                            value=""
+                            uncheckedColor={theme.colors.text}
+                            status={ checked === 'Male' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('Male')}
+                        />
+                        <Text style={styles.input_title}>Male</Text>
+                        <RadioButton.Android
+                            value="Female"
+                            uncheckedColor={theme.colors.text}
+                            color='#eb28d7'
+                            status={ checked === 'Female' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('Female')}
+                        />
+                        <Text style={styles.input_title}>Female</Text>
+                    </View>
+                </View>
+
+                <View style = {styles.input_box2}>
+                    <Text style={styles.input_title}>
+                        Height
+                    </Text>
+                    <View style= {{flexDirection: 'row', alignSelf:'center'}}>
+                        <Picker
+                                selectedValue={selectedFoot}
+                                style = {styles.pickerHeight}
+                                itemStyle = {styles.pickerHeightItem}
+                                onValueChange={(itemValue, itemIndex) =>
+                                setSelectedFoot(itemValue)
+                                }>
+                                {footArray}
+                        </Picker>
+                        <Picker
+                                selectedValue={selectedInch}
+                                style = {styles.pickerHeightInch}
+                                itemStyle = {styles.pickerHeightInchItem}
+                                onValueChange={(itemValue, itemIndex) =>
+                                setSelectedInch(itemValue)
+                                }>
+                                {inchArray}
+                        </Picker>
+                    </View>
+                </View>
+
+                <View style = {styles.input_box2}>
+                    <Text style={styles.input_title}>
+                        Gender
+                    </Text>
+                    <View style = {{flexDirection: 'row', padding:5, justifyContent:"space-between", alignItems: "center", marginLeft: 50}}>
+                        <RadioButton.Android
+                            value=""
+                            uncheckedColor={theme.colors.text}
+                            status={ checked === 'Male' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('Male')}
+                        />
+                        <Text style={styles.input_title}>Male</Text>
+                        <RadioButton.Android
+                            value="Female"
+                            uncheckedColor={theme.colors.text}
+                            color='#eb28d7'
+                            status={ checked === 'Female' ? 'checked' : 'unchecked' }
+                            onPress={() => setChecked('Female')}
+                        />
+                        <Text style={styles.input_title}>Female</Text>
+                    </View>
+                </View>
+
 
               <View style={styles.input_box}>
                   <Text style={styles.input_title}>Target Carbs (g):</Text>
@@ -205,12 +370,6 @@ const MacroCalculator = ({navigation}) => {
                     <Text style={styles.btn_text}>Save Changes</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Macros")}
-                    style={[styles.btn_shape, { backgroundColor: "purple" }]}
-                >
-                    <Text style={styles.btn_text}>Macro Calculator</Text>
-                </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Macros")}
@@ -222,8 +381,10 @@ const MacroCalculator = ({navigation}) => {
             </View>
           </Macros>
         </View>
+        </ScrollView>
         </HideKeyboard>
     );
 }
 
 export default MacroCalculator;
+
