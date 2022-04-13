@@ -37,6 +37,7 @@ const DarkerTheme = {
     secondary: '#404040',
     card: '#181818',
     text: 'white',
+    third: '#BCDAC8',
   },
 };
 
@@ -47,7 +48,8 @@ const DefaulterTheme = {
       background: '#f2f2f2',
       secondary: 'white',
       card: '#d5dadf',
-      text: 'black'
+      text: 'black',
+      third: '#BCDAC8',
   }
 }
 
