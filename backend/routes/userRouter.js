@@ -33,20 +33,11 @@ userRouter.post('/addFriend', userController.addFriend)
 userRouter.post('/removeFriend', userController.removeFriend)
 userRouter.post('/joinGroup', userController.joinGroup)
 userRouter.post('/checkIn', userController.checkIn)
-<<<<<<< HEAD
-
-// Add/remove a new workout log, add/edit/remove exercises from a specific workout log
-// userRouter.get('/getUserWorkoutLogs', userController.getUserWorkoutLogs)
-
-// userRouter.post('/createWorkoutLog', workoutLogController.createWorkoutLog)
-// userRouter.delete('/deleteWorkoutLog', workoutLogController.deleteWorkoutLog)
-=======
 userRouter.post('/addExercise', userController.addExercise)
 userRouter.post('/removeExericse', userController.removeExercise)
 userRouter.post('/addWeight', userController.addWeight)
 userRouter.get('/getWeightLog', userController.getWeightLog)
 userRouter.post('/addPfp', upload.single('photo'), userController.addPfp)
->>>>>>> backend_dev
 
 // Logging in as an existing user
 // userRouter.post('/login', userController.authenticate)
