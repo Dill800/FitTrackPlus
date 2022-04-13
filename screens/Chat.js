@@ -398,6 +398,10 @@ rightArrowOverlap: {
 
         // take in what is in modal info
         // update add in comments
+        if (comment == '') {
+          return;
+        }
+
         let newData = modalInfo
         newData.comments.push({
             "comment": comment,
@@ -531,7 +535,6 @@ rightArrowOverlap: {
                 setModalVisible(false);
               }}
             >
-              <HideKeyboard>
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                 <Text style={styles.modalText}>Comments:</Text>
@@ -542,6 +545,11 @@ rightArrowOverlap: {
                       placeholderTextColor='grey'
                       onChangeText={e => setComment(e)}
                       value={comment}
+                      onSubmitEditing={() => {
+                        Keyboard.dismiss();
+                        setComment('')
+                        uploadComment();
+                      }}
                   />
                   <TouchableOpacity
                       onPress={() => {
@@ -565,7 +573,6 @@ rightArrowOverlap: {
                   </TouchableOpacity>
                 </View>
               </View>
-              </HideKeyboard>
             </Modal>
             <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
