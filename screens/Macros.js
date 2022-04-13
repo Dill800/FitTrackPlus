@@ -7,12 +7,103 @@ import Svg from "react-native-svg";
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Donut from '../navigation/Donut'
 import CircularProgress from "react-native-circular-progress-indicator";
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { VictoryPie } from "victory-native";
 import { Center } from "native-base";
 
 const Macros = ({ navigation }) => {
 
+    const theme = useTheme();
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        scroll: {
+            width: "100%",
+            alignItems: "center"
+        },
+        progress: {
+            width: "95%",
+            height: 125,
+            marginTop: 15,
+            alignItems: "center",
+        },
+        title_box: {
+            backgroundColor: "rgba(74,144,226,1)",
+            borderRadius: 10,
+            width: "95%",
+            height: 40,
+            justifyContent: "center",
+        },
+        title: {
+            color: "rgba(255,255,255,1)",
+            fontSize: 22,
+            alignSelf: "center",
+        },
+        progress_container: {
+            flexDirection: "row",
+            width: "100%",
+            marginTop: 20,
+            justifyContent: "center",
+        },
+        progress_box: {
+            backgroundColor: theme.colors.card,
+            width: "40%",
+            height: 55,
+            borderRadius: 10,
+            marginHorizontal: 25,
+        },
+        progress_title: {
+            color: theme.colors.text,
+            alignSelf: "center",
+            marginVertical: 4,
+        },
+        progress_value: {
+            color: "#121212",
+            fontSize: 20,
+            fontWeight: "bold",
+            alignSelf: "center",
+        },
+        exercise_container: {
+            width: "95%",
+            height: 400,
+            alignItems: "center",
+        },
+        box: {
+            backgroundColor: "rgba(213,218,223,1)",
+            borderRadius: 10,
+            width: "95%",
+            height: 275,
+            alignSelf: "center",
+        },
+        btn_box: {
+            flexDirection: "row",
+            width: "75%",
+            alignSelf: "center",
+            justifyContent: "center",
+        },
+        btn_shape: {
+            backgroundColor: "rgba(178,108,233,1)",
+            borderRadius: 10,
+            width: "50%",
+            height: 40,
+            marginTop: 10,
+            justifyContent: "center",
+        },
+        btn_text: {
+            color: "rgba(255,255,255,1)",
+            fontSize: 16,
+            textAlign: "center",
+            fontWeight: "bold",
+        },
+        macrosText: {
+            padding: 100,
+        },
+    })
 
     const navi = useNavigation();
     let foodList = [];
@@ -58,7 +149,7 @@ const Macros = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView horizontal={false} style={{ paddingLeft: 10 }}>
+            <ScrollView horizontal={false} contentContainerStyle={{alignItems: "center"}}>
 
 
                 <View style={styles.progress}>
@@ -164,39 +255,47 @@ const Macros = ({ navigation }) => {
                 </View>
 
 
-                <View style={{ flexDirection: "row", paddingRight:30, paddingLeft: 10}}>
+                <View style={styles.btn_box}>
                     <TouchableOpacity
                         onPress={() => {
                             navi.navigate("Meals");
                         }}
-                        style={[styles.btn_shape, ]}
+                        style={[
+                            styles.btn_shape,
+                            { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }, 
+                        ]}
                     >
                         <Text style={styles.btn_text}>Add Food</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
-                            navi.navigate("EditMacros");
+                            navi.navigate("Edit Macros");
                         }}
                         style={[
                             styles.btn_shape,
-                            { backgroundColor: "rgba(153,50,245,1)" },
+                            { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
                         ]}
                     >
                         <Text style={styles.btn_text}>Set Goals</Text>
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: 135</Text>
+                <Text style={{ color: theme.colors.text, paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: 135</Text>
                 <VictoryPie
                     //padAngle={({ datum }) => datum.y}
-                    innerRadius={100}
+                    // innerRadius={0}
                     colorScale={["skyblue", "gold", "forestgreen"]}
-                    padAngle={5}
+                    // padAngle={0}
                     data={[
-                        { x: "Fat", y: 25 },
-                        { x: "Protein", y: 35 },
-                        { x: "Carbs", y: 15 }
+                        { x: 1, y: 25, label: "Fat" },
+                        { x: 2, y: 35, label: "Protein"},
+                        { x: 3, y: 15, label: "Carbs" }
                     ]}
+                    style={{
+                        labels: {
+                            fill: theme.colors.text
+                        }
+                    }}
 
 
                 />
@@ -210,92 +309,6 @@ const Macros = ({ navigation }) => {
 
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "center",
-    },
-    progress: {
-        width: "95%",
-        height: 125,
-        marginTop: 15,
-        alignItems: "center",
-    },
-    title_box: {
-        backgroundColor: "rgba(74,144,226,1)",
-        borderRadius: 10,
-        width: "95%",
-        height: 40,
-        justifyContent: "center",
-    },
-    title: {
-        color: "rgba(255,255,255,1)",
-        fontSize: 22,
-        alignSelf: "center",
-    },
-    progress_container: {
-        flexDirection: "row",
-        width: "100%",
-        marginTop: 20,
-        justifyContent: "center",
-    },
-    progress_box: {
-        backgroundColor: "rgba(213,218,223,1)",
-        width: "40%",
-        height: 55,
-        borderRadius: 10,
-        marginHorizontal: 25,
-    },
-    progress_title: {
-        color: "#121212",
-        alignSelf: "center",
-        marginVertical: 4,
-    },
-    progress_value: {
-        color: "#121212",
-        fontSize: 20,
-        fontWeight: "bold",
-        alignSelf: "center",
-    },
-    exercise_container: {
-        width: "95%",
-        height: 400,
-        alignItems: "center",
-    },
-    box: {
-        backgroundColor: "rgba(213,218,223,1)",
-        borderRadius: 10,
-        width: "95%",
-        height: 275,
-        alignSelf: "center",
-    },
-    btn_box: {
-        paddingLeft: 100,
-        flexDirection: "row",
-        width: "75%",
-        justifyContent: "center",
-    },
-    btn_shape: {
-        backgroundColor: "rgba(178,108,233,1)",
-        borderRadius: 10,
-        width: "50%",
-        height: 40,
-        marginTop: 10,
-        justifyContent: "center",
-    },
-    btn_text: {
-        color: "rgba(255,255,255,1)",
-        fontSize: 16,
-        textAlign: "center",
-        fontWeight: "bold",
-    },
-    macrosText: {
-        padding: 100,
-    },
-})
 
 
 
