@@ -13,7 +13,7 @@ import config from '../backend/config/config.js'
 
 // For stack navigation
 import AddExercise from './AddExercise'
-import LogDetailScreen from './LogDetailScreen'
+import WorkoutLogDetail from './WorkoutLogDetail'
 
 const Stack = createNativeStackNavigator();
 
@@ -47,15 +47,18 @@ const WorkoutLogNavigator = ({navigation}) => {
       <Stack.Navigator initialRouteName='WorkoutLog'>
         <Stack.Screen name='WorkoutLog' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDashboard}/>
         <Stack.Screen name='AddExercise' options={{headerShown: false, gestureEnabled: true}} component={AddExercise}/>
-        <Stack.Screen name='LogDetailScreen' options={{headerShown: false, gestureEnabled: true}} component={LogDetailScreen}/>
+        <Stack.Screen name='WorkoutLogDetail' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDetail}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const ExerciseCard = (props) => {
+const WorkoutLogCard = (props) => {
+  
   const theme = useTheme();
   const navi = useNavigation();
+  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+
 
   const date_clean = new Date(props.name)
   return (
@@ -69,13 +72,13 @@ const ExerciseCard = (props) => {
       }}
     >
       <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
-        onPress={() => navi.navigate("LogDetailScreen", props)}
+        onPress={() => navi.navigate("WorkoutLogDetail", props)}
       >
         <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
-        <View style={{marginBottom: 5, borderBottomColor: 'black', borderBottomWidth: 1,}}/>
-
-        {props.exercises.map((exercise) =>
-          <Text style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+        <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
+        
+        {props.exercises.map((exercise, index) =>
+          <Text key={""+exercise+index} style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
         )}
       </TouchableOpacity>
 
@@ -196,12 +199,6 @@ const WorkoutLogDashboard = ({navigation}) => {
     console.log(currentDate)
   };
 
-  // Retrieve all logs from Redux on renders
-  const getAllLogs = () => {
-    const allLogs = userData.username.workoutlogList;
-    console.log(allLogs)
-  }
-
   const debugUser = () => {
     console.log(userData.username)
   } 
@@ -222,7 +219,7 @@ const WorkoutLogDashboard = ({navigation}) => {
       exercises: new Array(ex1, ex1)
       // exercises: new Array()
     }
-    console.log(newlog)
+    // console.log(newlog)
     // data.workoutlogList = newlog
     data.workoutlogList.push(newlog);
 
@@ -260,7 +257,7 @@ const WorkoutLogDashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-        <View style={styles.exercise_container}>
+        <View style={[styles.exercise_container, {marginBottom: 10}]}>
           <View
             style={[
               styles.title_box,
@@ -271,8 +268,8 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}>
-            {userData.username.workoutlogList.map((workoutlog, key) =>
-                <ExerciseCard name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
+            {userData.username.workoutlogList.map(workoutlog =>
+                <WorkoutLogCard key={workoutlog.date.toString()} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
             )}
           </ScrollView> 
 
@@ -281,9 +278,9 @@ const WorkoutLogDashboard = ({navigation}) => {
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
         <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
         
-        <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '0%', }} themeVariant={themeReducer.theme ? "dark" : "light"} value={date} mode={'date'} onChange={onChange} display="inline"/>
-        <View style={{alignItems:'center', marginTop:'-7%'}}>
-          <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={createWorkoutLog}>
+        <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={themeReducer.theme ? "dark" : "light"} value={date} mode={'date'} onChange={onChange} display="inline"/>
+        <View style={{alignItems:'center', }}>
+          <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={createWorkoutLog}>
             <Text style={styles.btn_text}>Done</Text>
           </TouchableOpacity>
         </View>
