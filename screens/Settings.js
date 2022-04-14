@@ -112,7 +112,7 @@ const Settings = ({ navigation }) => {
   return (
     <View style={styles.container}>
 
-      <View style={styles.container2}>
+      <View style={[styles.container2, {backgroundColor: themeReducer.theme ? '#121212' : '#f2f2f2'},]}>
         {
           image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
         }
