@@ -112,6 +112,7 @@ const Meals = ({navigation}) => {
         }}
     >
         <View
+            key = {i}
             style={{
                 backgroundColor: theme.colors.secondary,
                 borderRadius: 15,

@@ -8,6 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-native-responsive-linechart'
 import { format } from 'date-fns'
 import {useSelector, useDispatch} from 'react-redux'
+import { updateUsername } from '../redux/actions/user';
 
 import config from '../backend/config/config.js'
 import { Logger } from './../components/styles'
@@ -195,9 +196,14 @@ const WeightLog = ({navigation}) => {
         axios(config2)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                // let data = userData.username;
+                let data = userData.username;
+                data.weightList.push({
+                    'weight': weight,
+                    'date': Date.now(),
+                })
+
                 // data.groupName = newGroupName;
-                // dispatch(updateUsername(data))
+                dispatch(updateUsername(data))
             })
             .catch(function (error) {
                 console.log(error);
