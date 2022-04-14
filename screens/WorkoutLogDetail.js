@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { BottomSheet } from 'react-native-btr';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { updateUsername } from '../redux/actions/user';
+import dateformat from "dateformat";
 import { v4 as uuid } from 'uuid';
 
 import axios from 'axios'
@@ -13,6 +14,24 @@ const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
+);
+
+const CircleButton = props => (
+  <TouchableOpacity
+    style={{
+      margin: props.margin,
+      height: props.size,
+      width: props.size,
+      backgroundColor: props.color,
+      // alignItems: 'center',
+      // justifyContent: 'center',
+      borderRadius: props.size * 2,
+    }}
+    onPress={props.onPress}>
+    <Text style={{color: props.textColor, fontSize: props.fontSize, alignSelf: 'center'}}>
+      {props.text}
+    </Text>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -40,9 +59,10 @@ const styles = StyleSheet.create({
     btn_shape: {
       backgroundColor: "rgba(99,206,237,1)",
       borderRadius: 10,
-      width: "30%",
-      height: 40,
+      width: "45%",
+      height: 50,
       marginBottom: 15,
+      marginHorizontal: 15,
       justifyContent: "center",
     },
     btn_text: {
@@ -57,6 +77,12 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       paddingTop: "15%"
     },
+    btn_box: {
+      flexDirection: "row",
+      width: "95%",
+      alignSelf: "center",
+      justifyContent: "center",
+  },
 });
 
 const WorkoutLogDetail = ({navigation, route}) => {
@@ -154,21 +180,80 @@ const WorkoutLogDetail = ({navigation, route}) => {
     // Navigate back to dashboard automatically after deletion
     navi.goBack()  }
 
+  const deleteExerciseAlert = (ex_id, ex_name,) => {
+    Alert.alert(
+      "Delete exericse",
+      "Are you sure you want to remove \nthe exercise \"" + ex_name + "\" from this workout log?",
+      [{
+          text: "Cancel",
+          // onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { 
+          text: "Yes", 
+          onPress: () => deleteExercise(ex_id)
+        }]);
+  }
+
+  const deleteExercise = (ex_id) => {
+
+    // Get log and remove exercise
+    const data = userData.username; 
+    const workoutloglist = data.workoutlogList
+
+    // Iterate and find the workout log we want
+    for(let i = 0; i < workoutloglist.length; i++){
+
+      // Workout log match
+      if(workoutloglist[i].id  == route.params.id){
+
+        // Iterate through all exercises
+        for(let j = 0; j < workoutloglist[i].exercises.length; j++){
+          if(workoutloglist[i].exercises[j].exid == ex_id){
+            workoutloglist[i].exercises.splice(j, 1)
+          }
+        }
+      }
+    }
+    
+    // Save to Redux and DB
+    axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
+      username: userData.username.username,
+      workoutlogList : data.workoutlogList
+    })
+    .then(res => {
+      // console.log("---------- POST Called to db")
+    })
+    .catch(e => {
+      console.log("error", e)
+    })
+
+    dispatch(updateUsername(data))
+  }
+
   return (
     <HideKeyboard>
     <View style={styles.container}>
       <View style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
-        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>Workout Details</Text>
+        <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "600", marginTop: -5, }}>{dateformat(route.params.name, 'm/d/yyyy')}: Workout Details</Text>
         <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
 
-        <Text>{route.params.name}</Text>
+        {/* <Text>{route.params.name}</Text> */}
+        <Text></Text>
         
         {
         route.params.exercises.map(exercise =>
-        <Text key={exercise.exid}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight} - {exercise.exid}</Text>     
+        // <View key={exercise.exid} style={{flex: 1}}>
+        <View key={exercise.exid} style={{flexDirection: "row"}}>
+        <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start"}}>
+          <Text style={{color: theme.colors.text, fontSize: 18, fontWeight: "600", marginTop: -5, }}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+          <CircleButton text="" size={20} color="#979c9c" textColor="white" margin={10} fontSize={20} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}/>
+        </View>
+        </View>
         )}
 
       {/* Button to add exercises */}
+      <View style={styles.btn_box}>
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]}onPress={toggleBottomNavigationView}>
         <Text style={styles.btn_text}>Add Exercise to Log</Text>
       </TouchableOpacity>
@@ -177,12 +262,12 @@ const WorkoutLogDetail = ({navigation, route}) => {
         <Text style={styles.btn_text}>Delete Workout Log</Text>
       </TouchableOpacity>
       </View>
+      </View>
 
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
         <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, alignItems:'center'}]}>
         
-          {/* reuse bottomview as quick way to add exercisese */}
-          {/* Form to fill add exercise */}
+          {/* Form to add exercise */}
           <View style={styles.input_box}>
             <Text style={styles.input_title}>Exercise Name</Text>
             <TextInput placeholder={"Exercise Name"} style={styles.input_placeholder} value={name + ""} onChangeText={e => setName(e)} />
