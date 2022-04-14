@@ -248,16 +248,22 @@ const ManualMeal = ({navigation}) => {
           console.log(fatLog);
           console.log(calorieLog);
 
-          let proteinContent = proteinLog.value;
-          let carbContent = carbLog.value;
-          let fatContent = fatLog.value;
-          let calorieContent = calorieLog.value;
+          let proteinContent = proteinLog.value * (getPortion / 100);
+          let carbContent = carbLog.value * (getPortion / 100);
+          let fatContent = fatLog.value * (getPortion / 100);
+          let calorieContent = calorieLog.value * (getPortion / 100);
           let myCalorieContent = Math.round((proteinContent * 4) + (carbContent * 4) + (fatContent * 9));
 
           console.log(proteinContent);
           console.log(carbContent);
           console.log(fatContent);
           console.log(calorieContent);
+
+          setProteinCount(String(Math.round(proteinContent)));
+          setCarbCount(String(Math.round(carbContent)));
+          setFatCount(String(Math.round(fatContent)));
+          setCalorieCount(myCalorieContent);
+          setMealName(getFoodSearch);
 
           console.log("My calorie: " + myCalorieContent);
         })
@@ -387,7 +393,11 @@ const ManualMeal = ({navigation}) => {
 
                             <TouchableOpacity
                               style={[styles.button, styles.buttonClose, { marginTop: 0, width: '20%' }]}
-                              onPress={() => findFood()}
+                              onPress={() => {
+                                findFood();
+                                setModalVisible(false);
+                                setPortion('');
+                                setFoodSearch('');                              }}
                             >
                               <Text style={styles.textStyle}>Search</Text>
                             </TouchableOpacity>
