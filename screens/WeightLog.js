@@ -197,9 +197,11 @@ const WeightLog = ({navigation}) => {
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
                 let data = userData.username;
+                let goodDate = new Date();
+                goodDate.setHours(goodDate.getHours() - 4);
                 data.weightList.push({
                     'weight': weight,
-                    'date': Date.now(),
+                    'date': goodDate,
                 })
 
                 // data.groupName = newGroupName;
