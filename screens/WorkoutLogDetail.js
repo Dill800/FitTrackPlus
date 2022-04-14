@@ -113,7 +113,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
     // Update the store after writing the new workout log
     // TODO ALSO SAVE TO DATABASE
-    dispatch(updateUsername(data))
+    // dispatch(updateUsername(data))
   }
 
   return (

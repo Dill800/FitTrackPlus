@@ -246,7 +246,8 @@ const WorkoutLogDashboard = ({navigation}) => {
     let newlog = {
       id: wol_id,
       date: date_with_timestamp,
-      exercises: new Array()
+      // exercises: new Array()
+      exercises: new Array(ex1, ex2, ex3, ex4)
     }
     // console.log(newlog)
     // data.workoutlogList = newlog
@@ -254,6 +255,17 @@ const WorkoutLogDashboard = ({navigation}) => {
 
     // Update the store after writing the new workout log
     // TODO ALSO SAVE TO DATABASE
+    axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
+      username: userData.username.username,
+      workoutlogList : data.workoutlogList
+    })
+    .then(res => {
+      console.log("---------- POST Called to db")
+    })
+    .catch(e => {
+      console.log("error", e)
+    })
+
     dispatch(updateUsername(data))
   }
 
