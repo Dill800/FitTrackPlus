@@ -2,8 +2,10 @@ import * as React from "react";
 import {useRef, useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 
-import {RefreshControl, Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable} from "react-native";
+import {RefreshControl, Keyboard, useColorScheme, ScrollView, StyleSheet, Text, View, TouchableOpacity, StatusBar, Modal, TextInput, Pressable, TouchableWithoutFeedback} from "react-native";
 import { useLinkBuilder, useTheme } from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 
 import axios from 'axios'
 import qs from 'qs'
@@ -13,6 +15,11 @@ import { updateUsername } from '../redux/actions/user';
 
 import {ChatText} from '../components/chatText'
 
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const Chat = ({navigation})  => {
     //e();
@@ -184,7 +191,50 @@ const Chat = ({navigation})  => {
       flexDirection: 'row',
       alignItems: 'center',
       width: '90%'
-    }
+    },
+    leftArrow: {
+      position: "absolute",
+      backgroundColor: theme.colors.secondary,
+      //backgroundColor:"red",
+      width: 20,
+      height: 25,
+      bottom: 0,
+      borderBottomRightRadius: 25,
+      left: -10
+  },
+  leftArrowOverlap: {
+      position: "absolute",
+      backgroundColor: theme.colors.card,
+      //backgroundColor:"green",
+      width: 20,
+      height: 35,
+      bottom: -6,
+      borderBottomRightRadius: 18,
+      left: -20
+  
+  },
+  rightArrow: {
+  position: "absolute",
+  backgroundColor: '#0078fe',
+  //backgroundColor:"red",
+  width: 20,
+  height: 25,
+  bottom: 0,
+  borderBottomLeftRadius: 25,
+  right: -10
+},
+
+rightArrowOverlap: {
+  position: "absolute",
+  backgroundColor: theme.colors.card,
+  //backgroundColor:"green",
+  width: 20,
+  height: 35,
+  bottom: -6,
+  borderBottomLeftRadius: 18,
+  right: -20
+
+},
     })
 
     const [chatList, setChatList] = useState([]);
@@ -294,19 +344,47 @@ const Chat = ({navigation})  => {
 
         for(var i = 0; i < modalInfo.comments.length; i++) {
             x.push(
+                modalInfo.comments[i].username != userData.username.username ?
+                <View>
+                <Text style={{paddingHorizontal: 15, marginBottom: 5, fontSize: 14, color: theme.colors.text, fontStyle: 'italic'}}>{modalInfo.comments[i].username}</Text>
                 <View
                 style={{
                     backgroundColor: theme.colors.secondary,
                     borderRadius: 15,
                     padding: 15,
-                    width: 315 ,
+                    maxWidth: 250 ,
                     marginHorizontal: 10,
                     alignSelf: 'flex-start',
                     marginBottom: 10
                 }}
                 key={i}
                 >
-                    <Text style={{fontSize: 18, color: theme.colors.text}}>{modalInfo.comments[i].username}: {modalInfo.comments[i].comment}</Text>
+                    <Text style={{fontSize: 18, color: theme.colors.text}}>{modalInfo.comments[i].comment}</Text>
+                    <View style={styles.leftArrow}>
+  
+                      </View>
+                      <View style={styles.leftArrowOverlap}></View>
+                </View>
+                </View>
+              :
+              <View
+                style={{
+                    backgroundColor: '#0078fe',
+                    borderRadius: 15,
+                    padding: 15,
+                    maxWidth: 250 ,
+                    flexGrow: 1,
+                    marginHorizontal: 10,
+                    alignSelf: 'flex-end',
+                    marginBottom: 10
+                }}
+                key={i}
+                >
+                    <Text style={{fontSize: 18, color: theme.colors.text}}>{modalInfo.comments[i].comment}</Text>
+                    <View style={styles.rightArrow}>
+  
+                      </View>
+                      <View style={styles.rightArrowOverlap}></View>
                 </View>
             )
 
@@ -317,10 +395,14 @@ const Chat = ({navigation})  => {
 
     }
 
-    const uploadComment = () => {
+    const uploadComment = (comment) => {
 
         // take in what is in modal info
         // update add in comments
+        if (comment == '') {
+          return;
+        }
+
         let newData = modalInfo
         newData.comments.push({
             "comment": comment,
@@ -349,6 +431,8 @@ const Chat = ({navigation})  => {
 
     
     
+    const passRef = useRef();
+    const scrollViewRef = useRef();
 
       return (
           
@@ -366,21 +450,24 @@ const Chat = ({navigation})  => {
             </View>
             <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
             refreshControl={
-                <RefreshControl onRefresh={() => {
+                <RefreshControl title="Pull to refresh"
+                tintColor={theme.colors.text}
+                titleColor={theme.colors.text} onRefresh={() => {
                     setWormhole(wormhole+1)
                     setTimeout(() => {  setWormhole2(wormhole2+1); }, 200);
                 }}/>
                 }
             >
+                  <View style={{paddingBottom: 30}}>
                     <Text>{chats}</Text>
-              
+                  </View>
             </ScrollView>
           </View>
           <View style={styles.btn_box}>
 
 
 
-
+              
           <Modal
               animationType="slide"
               transparent={true}
@@ -390,28 +477,37 @@ const Chat = ({navigation})  => {
                 setPostModal(false);
               }}
             >
+              <HideKeyboard>
+              <KeyboardAwareScrollView bounces={false} keyboardOpeningTime={0} showsVerticalScrollIndicator={false} extraHeight={150} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={styles.modalText}>Enter a group name</Text>
-                  <View style={styles.inputView}>
+                  <Text style={styles.modalText}>Create Post</Text>
+                  <View style={[styles.inputView, {flexDirection: 'column', height: 250, width: '100%', marginBottom: 0}]}>
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, 
+                                        {flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%'}]}
                                 placeholder='Title'
                                 placeholderTextColor='grey'
                                 onChangeText={e => setPostTitle(e)}
                                 value={postTitle}
+                                onSubmitEditing={() => {
+                                  passRef.current.focus();
+                              }}
                             />
                             <TextInput
-                                style={styles.input}
+                                ref={passRef}
+                                style={[styles.input, {borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%', paddingTop: 15, paddingBottom: 15}]}
                                 placeholder='Body'
                                 placeholderTextColor='grey'
                                 onChangeText={e => setPostBody(e)}
                                 value={postBody}
+                                multiline={true}
+                                onSubmitEditing={() => post()}
                             />
 
 
                             <TouchableOpacity
-                                style={[styles.button, styles.buttonClose]}
+                                style={[styles.button, styles.buttonClose, {marginTop: 0, width: '20%'}]}
                                 onPress={() => post()}
                             >
                                 <Text style={styles.textStyle}>Post</Text>
@@ -420,14 +516,15 @@ const Chat = ({navigation})  => {
 
                         </View>
                   <TouchableOpacity
-                    style={[styles.button, styles.buttonClose]}
+                    style={[styles.button, styles.buttonClose, {width: '20%'}]}
                     onPress={() => setPostModal(false)}
                   >
                     <Text style={styles.textStyle}>Return</Text>
                   </TouchableOpacity>
-                  
                 </View>
               </View>
+              </KeyboardAwareScrollView>
+              </HideKeyboard>
             </Modal>
 
 
@@ -443,28 +540,37 @@ const Chat = ({navigation})  => {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                <Text style={styles.modalText}>Comments:</Text>
-                <View style={styles.comment_input}>
+                <Text style={[styles.modalText, {marginBottom: 0}]}>Comments:</Text>
+                <View style={[styles.comment_input, {marginBottom: 10}]}>
                   <TextInput
                       style={styles.input}
                       placeholder='Write Comment Here'
                       placeholderTextColor='grey'
                       onChangeText={e => setComment(e)}
                       value={comment}
+                      onSubmitEditing={() => {
+                        Keyboard.dismiss();
+                        setComment('')
+                        uploadComment(comment);
+                      }}
                   />
                   <TouchableOpacity
                       onPress={() => {
                           Keyboard.dismiss();
                           setComment('')
-                          uploadComment();
+                          uploadComment(comment);
                       }}
                       style={styles.brock_button}
                   >
                     <Text>🔎</Text>
                   </TouchableOpacity>
                 </View>
-                <ScrollView horizontal={false} style={styles.box}>
-                    {modalInfo === null ? 'yarp' : getComments()}
+                <ScrollView extraScrollHeight={300} horizontal={false} style={styles.box}
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })}>
+                    <View style={{paddingBottom: 30}}>
+                      {modalInfo === null ? 'yarp' : getComments()}
+                    </View>
                 </ScrollView>
                   <TouchableOpacity
                     style={[styles.button, styles.buttonClose]}
