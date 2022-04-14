@@ -62,10 +62,11 @@ const styles = StyleSheet.create({
 
 const WorkoutLogDetail = ({navigation, route}) => {
   
-  // Redux
+  // Redux and navigation
   const userData = useSelector(state => state.user);
   const dispatch = useDispatch();
   const theme = useTheme();
+  const navi = useNavigation();
 
   // Hooks
   const [visible, setVisible] = useState(false);
@@ -133,6 +134,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
       }
     }
 
+    // Makes sure a workoutlog can't be deleted unless exact match found
     data.workoutlogList.splice(index, (index != -1) ? 1 : 0)
     
     // Save to Redux and DB
@@ -141,7 +143,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
       workoutlogList : data.workoutlogList
     })
     .then(res => {
-      console.log("---------- POST Called to db")
+      // console.log("---------- POST Called to db")
     })
     .catch(e => {
       console.log("error", e)
@@ -150,9 +152,8 @@ const WorkoutLogDetail = ({navigation, route}) => {
     dispatch(updateUsername(data))
 
     // Navigate back to dashboard automatically after deletion
+    navi.goBack()  }
 
-  }
-  
   return (
     <HideKeyboard>
     <View style={styles.container}>

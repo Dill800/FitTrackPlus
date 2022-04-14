@@ -259,7 +259,7 @@ const WorkoutLogDashboard = ({navigation}) => {
       workoutlogList : data.workoutlogList
     })
     .then(res => {
-      console.log("---------- POST Called to db")
+      // console.log("---------- POST Called to db")
     })
     .catch(e => {
       console.log("error", e)
