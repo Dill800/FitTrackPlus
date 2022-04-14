@@ -293,7 +293,11 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}>
-            {userData.username.workoutlogList.map(workoutlog =>
+          
+
+            {/* {userData.username.workoutlogList.map(workoutlog => */}
+            {/* {userData.username.workoutlogList.sort(function(a, b){return b.date-a.date}).map(workoutlog => */}
+            {userData.username.workoutlogList.sort(function(a, b){return a.date-b.date>0 ? -1 : a.date-b.date<0 ? 0 : 1}).map(workoutlog =>
                 <WorkoutLogCard id={workoutlog.id} key={workoutlog.id} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
             )}
           </ScrollView> 
