@@ -156,8 +156,24 @@ const Macros = ({ navigation }) => {
     </View>);
     
     let fatPie = Math.round((userData.username.currentFat * 9) / userData.username.currentCalorie) * 100;
+    console.log("fatpie ", fatPie);
     let proteinPie = Math.round((userData.username.currentProtein * 4) / userData.username.currentCalorie) * 100;
     let carbPie = Math.round((userData.username.currentCarb * 4) / userData.username.currentCalorie) * 100;
+    let pieData = [
+        { x: 1, y: {fatPie}, label: "Fat" },
+        { x: 2, y: {proteinPie}, label: "Protein"},
+        { x: 3, y: {carbPie}, label: "Carbs" }
+    ];
+    if (fatPie == 0 || isNaN(fatPie)) {
+        pieData[0] = {};
+        //console.log("hit");
+    }
+    if (proteinPie == 0 || isNaN(proteinPie)) {
+        pieData[1] = {};
+    }
+    if (carbPie == 0 || isNaN(carbPie)) {
+        pieData[2] = {};
+    }
 
     return (
         <View style={styles.container}>
@@ -290,11 +306,7 @@ const Macros = ({ navigation }) => {
                     // innerRadius={0}
                     colorScale={["skyblue", "gold", "forestgreen"]}
                     // padAngle={0}
-                    data={[
-                        { x: 1, y: {fatPie}, label: "Fat" },
-                        { x: 2, y: {proteinPie}, label: "Protein"},
-                        { x: 3, y: {carbPie}, label: "Carbs" }
-                    ]}
+                    data={pieData}
                     style={{
                         labels: {
                             fill: theme.colors.text
