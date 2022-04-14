@@ -248,11 +248,21 @@ const ManualMeal = ({navigation}) => {
           console.log(fatLog);
           console.log(calorieLog);
 
+
           let proteinContent = proteinLog.value * (getPortion / 100);
           let carbContent = carbLog.value * (getPortion / 100);
           let fatContent = fatLog.value * (getPortion / 100);
           let calorieContent = calorieLog.value * (getPortion / 100);
           let myCalorieContent = Math.round((proteinContent * 4) + (carbContent * 4) + (fatContent * 9));
+          
+          if (getPortion == 0) {
+            let portion100 = 100;
+            proteinContent = proteinLog.value * (portion100 / 100);
+            carbContent = carbLog.value * (portion100 / 100);
+            fatContent = fatLog.value * (portion100 / 100);
+            calorieContent = calorieLog.value * (portion100 / 100);
+            myCalorieContent = Math.round((proteinContent * 4) + (carbContent * 4) + (fatContent * 9));
+          } 
 
           console.log(proteinContent);
           console.log(carbContent);

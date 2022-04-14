@@ -99,7 +99,8 @@ const Meals = ({navigation}) => {
             justifyContent: 'center',
           },
         card_text: {
-            color: theme.colors.text
+            color: theme.colors.text,
+            fontSize: 15
         }
     })
 
@@ -157,13 +158,14 @@ const Meals = ({navigation}) => {
                 padding: 15,
                 width: "95%",
                 height: 'auto',
+                //alignItems: 'center',
             }}
         >
             <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
-            <Text style={styles.card_text}>{userData.username.mealList[i].calories}</Text>
-            <Text style={styles.card_text}>{userData.username.mealList[i].fat}</Text>
-            <Text style={styles.card_text}>{userData.username.mealList[i].protein}</Text>
-            <Text style={styles.card_text}>{userData.username.mealList[i].carbs}</Text>
+            <Text style={[styles.card_text, {color: 'tomato', fontWeight: 'bold'}]}>Calorie:                       {userData.username.mealList[i].calories}</Text>
+            <Text style={[styles.card_text, {color: 'skyblue', fontWeight: 'bold'}]}>Fat:                               {userData.username.mealList[i].fat} g</Text>
+            <Text style={[styles.card_text, {color: 'gold', fontWeight: 'bold'}]}>Protein:                       {userData.username.mealList[i].protein} g</Text>
+            <Text style={[styles.card_text, {color: 'forestgreen', fontWeight: 'bold'}]}>Carb:                            {userData.username.mealList[i].carbs} g</Text>
         </View>
     </View>
         )
@@ -222,23 +224,14 @@ const Meals = ({navigation}) => {
                     </View>
                 </ScrollView>
             </View>
-            <View style={styles.btn_box}>
+            <View style={[styles.btn_box, {marginTop: 40}]}>
                 <TouchableOpacity
                     onPress={() => {
-                        navi.navigate("Manual Meal");
+                        navi.navigate("Add Meal");
                     }}
                     style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }]}
                 >
-                    <Text style={styles.btn_text}>Manually Add Meal</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {}}
-                    style={[
-                        styles.btn_shape,
-                        { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
-                    ]}
-                >
-                    <Text style={styles.btn_text}>Search Food</Text>
+                    <Text style={[styles.btn_text]}>Add Meal</Text>
                 </TouchableOpacity>
             </View>
 

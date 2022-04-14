@@ -71,7 +71,7 @@ const MacrosNavigator = ({navigation}) => {
                 <Stack.Screen name='Meals' options={options} component={Meals}/>
                 <Stack.Screen name='Edit Macros' options={options} component={EditMacros}/>
                 <Stack.Screen name='Macro Calculator' options={options} component={MacroCalculator}/>
-                <Stack.Screen name='Manual Meal' options={options} component={ManualMeal}/>
+                <Stack.Screen name='Add Meal' options={options} component={ManualMeal}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
