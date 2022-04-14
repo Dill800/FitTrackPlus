@@ -10,7 +10,7 @@ import CircularProgress from "react-native-circular-progress-indicator";
 import { NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { VictoryPie } from "victory-native";
 import { Center } from "native-base";
-
+import * as Progress from 'react-native-progress'
 import {useSelector, useDispatch} from 'react-redux'
 import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
@@ -159,6 +159,72 @@ const Macros = ({ navigation }) => {
     let proteinPie = Math.round((userData.username.currentProtein * 4) / userData.username.currentCalorie) * 100;
     let carbPie = Math.round((userData.username.currentCarb * 4) / userData.username.currentCalorie) * 100;
 
+    let sumCals = () => {
+        let x = 0;
+        for(let i = 0; i < userData.username.mealList.length; i++) {
+            let date = new Date(userData.username.mealList[i].date)
+            let today = new Date()
+            //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+            //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+            let meal = userData.username.mealList[i];
+            if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                x = x + parseInt(meal.calories);
+            }
+        }
+        console.log("Calories: ", x)
+        console.log("typepoidf", typeof(x))
+        return x;
+    }
+    sumCals()
+
+    let sumProt = () => {
+        let x = 0;
+        for(let i = 0; i < userData.username.mealList.length; i++) {
+            let date = new Date(userData.username.mealList[i].date)
+            let today = new Date()
+            //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+            //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+            let meal = userData.username.mealList[i];
+            if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                x = x + parseInt(meal.protein);
+            }
+        }
+        console.log("Protein: ", x)
+    }
+    sumProt()
+
+    let sumFat = () => {
+        let x = 0;
+        for(let i = 0; i < userData.username.mealList.length; i++) {
+            let date = new Date(userData.username.mealList[i].date)
+            let today = new Date()
+            //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+            //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+            let meal = userData.username.mealList[i];
+            if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                x = x + parseInt(meal.fat);
+            }
+        }
+        console.log("Fat: ", x)
+    }
+    sumFat()
+
+    let sumCarbs = () => {
+        let x = 0;
+        for(let i = 0; i < userData.username.mealList.length; i++) {
+            let date = new Date(userData.username.mealList[i].date)
+            let today = new Date()
+            //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+            //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+            let meal = userData.username.mealList[i];
+            if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                x = x + parseInt(meal.carbs);
+            }
+        }
+        console.log("Carbs: ", x)
+    }
+    sumCarbs()
+    console.log("Goal: ", userData.username.goalProtein)
     return (
         <View style={styles.container}>
             <ScrollView horizontal={false} contentContainerStyle={{alignItems: "center"}}>
@@ -200,19 +266,31 @@ const Macros = ({ navigation }) => {
 
                     <View style={{ flex: 1, flexDirection: 'row' }}>
 
-
+                        {/*
                         <CircularProgress
                             radius={80}
-                            value={Math.round(userData.username.currentCalorie / userData.username.calorieGoal)}
+                            value={80}
                             textColor='#222'
                             fontSize={20}
                             valueSuffix={'%'}
                             activeStrokeColor={'tomato'}
+                            activeStrokeSecondaryColor={'#C25AFF'}
                             inActiveStrokeColor={'tomato'}
                             inActiveStrokeOpacity={0.2}
                             duration={500}
                             title='Calories'
 
+                        />
+                        */}
+                        <Progress.Circle 
+                            size={160} 
+                            showsText={true} 
+                            progress={sumCals()/userData.username.calorieGoal}
+                            color={'tomato'}
+                            thickness={10}
+                            formatText={(progress) => {
+                                return 'Cals ' + String(parseInt((sumCals()/userData.username.calorieGoal)*100)) + '%'
+                            }}
                         />
                         <CircularProgress
                             radius={80}
