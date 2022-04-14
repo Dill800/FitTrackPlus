@@ -201,7 +201,7 @@ const WeightLogList = ({navigation}) => {
     const [logList, setLogList] = useState([]);
     const [key, setKey] = useState(0)
     const [date, setDate] = useState(new Date())
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
 
     let swipeBtns = [
         {
@@ -335,7 +335,7 @@ const WeightLogList = ({navigation}) => {
                             <Text style={styles.modalText}>Edit Fields Below</Text>
                             <View style={styles.inputView}>
                             <TouchableOpacity style={[styles.input, {backgroundColor: '#808080', paddingLeft: 0, justifyContent: 'center'}]}>
-                                <RNDateTimePicker style={{backgroundColor: 'transparent', width: 100, alignSelf: 'center'}} value={date} mode={'date'} onChange={(event, selected) => {setDate(selected)}}/>
+                                {open && <RNDateTimePicker style={{backgroundColor: 'transparent', width: 100, alignSelf: 'center'}} value={date} mode={'date'} onChange={(event, selected) => {setDate(selected); setOpen(false); setTimeout(() => {setOpen(true)}, 10)}}/>}
                             </TouchableOpacity>
                             <View style={{alignItems:'center', }}>
                             </View>
