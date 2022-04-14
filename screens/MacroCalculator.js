@@ -229,6 +229,11 @@ const MacroCalculator = ({navigation}) => {
 
     //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
 
+    let totalActualCalories = 0;
+    let proteinAmount = 0;
+    let carbAmount = 0;
+    let fatAmount = 0;
+
     const calculateMacros = () => { 
         let totalCalories = 0;
 
@@ -272,44 +277,47 @@ const MacroCalculator = ({navigation}) => {
         }
         console.log(totalCalories);
 
-       let proteinAmount = selectedWeight;
+       proteinAmount = Math.round(selectedWeight);
        let remainderCalories = totalCalories - (proteinAmount * 4);
-       let carbAmount = (remainderCalories * .7) / 4;
-       let fatAmount  = (remainderCalories * .3) / 9;
+       carbAmount = Math.round((remainderCalories * .7) / 4);
+       fatAmount  = Math.round((remainderCalories * .3) / 9);
 
-       let totalActualCalories = Math.round((proteinAmount * 4) + (carbAmount * 4) + (fatAmount * 9));
+       totalActualCalories = Math.round((proteinAmount * 4) + (carbAmount * 4) + (fatAmount * 9));
        console.log(totalActualCalories);
+       console.log(fatAmount);
+       console.log(proteinAmount);
+       console.log(carbAmount);
 
 
-        // var data = qs.stringify({
-        //   'username': userData.username.username,
-        //   'calorieGoal': calorieCount,
-        //   'goalFat': fatCount,
-        //   'goalProtein': proteinCount,
-        //   'goalCarb': carbCount
-        // });
-        // var config2 = {
-        //   method: 'post',
-        //   url: 'http://' + config.ipv4 + ':5000/user/updateMacros',
-        //   headers: { 
-        //     'Content-Type': 'application/x-www-form-urlencoded'
-        //   },
-        //   data : data
-        // };
+        var data = qs.stringify({
+          'username': userData.username.username,
+          'calorieGoal': totalActualCalories,
+          'goalFat': fatAmount,
+          'goalProtein': proteinAmount,
+          'goalCarb': carbAmount
+        });
+        var config2 = {
+          method: 'post',
+          url: 'http://' + config.ipv4 + ':5000/user/updateMacros',
+          headers: { 
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data : data
+        };
 
-        // axios(config2)
-        // .then(function (response) {
-        //   //console.log(JSON.stringify(response.data));
-        //   let data = userData.username;
-        //   data.calorieGoal = calorieCount;
-        //   data.goalFat = fatCount;
-        //   data.goalCarb = carbCount;
-        //   data.goalProtein = proteinCount;
-        //   dispatch(updateUsername(data));
-        // })
-        // .catch(function (error) {
-        //   console.log(error);
-        // });
+        axios(config2)
+        .then(function (response) {
+          //console.log(JSON.stringify(response.data));
+          let data = userData.username;
+          data.calorieGoal = totalActualCalories;
+          data.goalFat = fatAmount;
+          data.goalCarb = carbAmount;
+          data.goalProtein = proteinAmount;
+          dispatch(updateUsername(data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     };
 
 
@@ -479,8 +487,8 @@ const MacroCalculator = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => {
                       calculateMacros();
-                      //Alert.alert("Successfully updated macros goals!")
-                      //navigation.navigate("Macros");
+                      Alert.alert("To reach " + userData.username.goalWeight + " lbs:\nTotal Calories: " + totalActualCalories + "\nFat: " + fatAmount + " g\nProtein: " + proteinAmount + " g\nCarb: " + carbAmount + " g");
+                      navigation.navigate("Macros");
                     }}
                     style={styles.btn_shape}
                 >
