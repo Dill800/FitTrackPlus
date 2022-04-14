@@ -379,7 +379,6 @@ const Home = ({ navigation }) => {
           width: 370,
           height: 100,
           paddingTop: 8,
-          marginBottom: 15,
         }}
       >
         <View
@@ -575,7 +574,7 @@ const Home = ({ navigation }) => {
               /> */}
         </View>
         <ScrollView horizontal={false} style={styles.box}>
-          <Text>{friends}</Text>
+          <View style={{flexGrow: 0}}>{friends}</View>
         </ScrollView>
       </View>
       <View style={styles.btn_box}>

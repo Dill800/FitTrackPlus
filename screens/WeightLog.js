@@ -280,6 +280,14 @@ const WeightLog = ({navigation}) => {
         )
     }
 
+    const dataSetter = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            arr[i].x = i
+        }
+
+        setData(arr)
+    }
+
     return (
         <HideKeyboard>
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -400,10 +408,10 @@ const WeightLog = ({navigation}) => {
                             }}
                         /> */}
                         {data.length > 0  ? <Chart
-                            style={{ height: 250, width: '90%' }}
+                            style={{ height: 250, width: '90%'}}
                             data={data}
                             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-                            xDomain={{ min: data[0].x, max: data.length }}
+                            xDomain={{ min: 0, max: data.length}}
                             yDomain={{ min: min - 10, max: max + 10}}
                             viewport={{ size: { width: 5 }, initialOrigin: {x: 0} }}
                         >
@@ -464,9 +472,9 @@ const WeightLog = ({navigation}) => {
                                         if (allData.length > 7) {
                                             console.log('poggers')
                                             let arr = Array.from({length: 7}, (v, i) => allData[allData.length - 7 + i])
-                                            setData(arr)
+                                            dataSetter(arr)
                                         } else {
-                                            setData(allData);
+                                            dataSetter(allData);
                                         }
 
                                         setRender(!render);
@@ -494,9 +502,10 @@ const WeightLog = ({navigation}) => {
                             <TouchableOpacity
                                     onPress={() => {
                                         if (allData.length > 30) {
-                                            setData(Array.from({length: 30}, (v, i) => allData[allData.length - 30 + i]))
+                                            let arr = Array.from({length: 30}, (v, i) => allData[allData.length - 30 + i])
+                                            dataSetter(arr)
                                         } else {
-                                            setData(allData);
+                                            dataSetter(allData);
                                         }
 
                                         setRender(!render);
@@ -523,7 +532,7 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(allData);
+                                        dataSetter(allData);
                                         setRender(!render);
                                         setPoint(prevState => {
                                             return { 
