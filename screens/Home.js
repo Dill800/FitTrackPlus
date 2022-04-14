@@ -190,6 +190,7 @@ const Home = ({ navigation }) => {
   const [newGroupName, setGroupName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goalModal, setGoalModal] = useState(false);
+  const [friendModal, setFriendModal] = useState(false);
   const [goalWeight, setGoalWeight] = useState(0);
   const [streak, setStreak] = useState(0);
   //const [currentWeight, setCurrentWeight] = useState(0);
@@ -373,50 +374,112 @@ const Home = ({ navigation }) => {
 
 
   for (var i = 0; i < friendsList.length; i++) {
+
     friends.push(
-      <View
-        key={i}
-        style={{
-          alignItems: "center",
-          width: 370,
-          height: 100,
-          paddingTop: 8,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: theme.colors.secondary,
-            borderRadius: 15,
-            padding: 15,
-            width: "95%",
-            height: "95%",
-            flexDirection: "row",
+      <View >
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={friendModal}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setFriendModal(!friendModal);
           }}
+        >
+          <View style={[styles.centeredView]}>
+            <View style={[styles.modalView, {height: "75%"}]}>
+              {/* <View style={{ flexGrow: 0 }}>{friends[0]}</View> */}
+              <View
+            style={{
+              backgroundColor: theme.colors.secondary,
+              borderRadius: 15,
+              padding: 15,
+              width: "95%",
+              height: "95%",
+              flexDirection: "row",
+            }}
+          >
+            <View
+              style={{
+                width: "75%",
+                justifyContent: 'center',
+                padding: 10,
+                //backgroundColor: theme.colors.secondary,
+              }}
+            >
+              <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text, }}>{friendsList[i].Username}</Text>
+              <Text style={{ color: theme.colors.text }}>{"Streak: " + friendsList[i].Streak + "🔥 " + i}</Text>
+            </View>
+            <View style={{ justifyContent: 'center', width: 50, }}>
+              <Image
+                source={friendStreakURL(friendsList[i].Streak)}
+                resizeMode='contain'
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  height: 25,
+                  marginLeft: 0,
+                }}
+              />
+            </View>
+          </View>
+              
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setFriendModal(!friendModal)}
+              >
+                <Text style={styles.textStyle}>Return</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+
+        <TouchableOpacity
+          key={i}
+          style={{
+            alignItems: "center",
+            width: 370,
+            height: 100,
+            paddingTop: 8,
+          }}
+          onPress={() => setFriendModal(true)}
         >
           <View
             style={{
-              width: 150,
-              justifyContent: 'center',
-              padding: 10,
-              //backgroundColor: theme.colors.secondary,
+              backgroundColor: theme.colors.secondary,
+              borderRadius: 15,
+              padding: 15,
+              width: "95%",
+              height: "95%",
+              flexDirection: "row",
             }}
           >
-            <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text,}}>{friendsList[i].Username}</Text>
-            <Text style={{ color: theme.colors.text }}>{"Streak: " + friendsList[i].Streak + "🔥"}</Text>
-          </View>
-          <View style={{ justifyContent: 'center', width: 50,}}>
-            <Image
-              source={friendStreakURL(friendsList[i].Streak)}
-              resizeMode='contain'
+            <View
               style={{
-                flex: 1,
-                width: '100%',
-                height: 25,
-                marginLeft: 100,
+                width: 150,
+                justifyContent: 'center',
+                padding: 10,
+                //backgroundColor: theme.colors.secondary,
               }}
-            />
+            >
+              <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text, }}>{friendsList[i].Username}</Text>
+              <Text style={{ color: theme.colors.text }}>{"Streak: " + friendsList[i].Streak + "🔥"}</Text>
+            </View>
+            <View style={{ justifyContent: 'center', width: 50, }}>
+              <Image
+                source={friendStreakURL(friendsList[i].Streak)}
+                resizeMode='contain'
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  height: 25,
+                  marginLeft: 100,
+                }}
+              />
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -505,7 +568,7 @@ const Home = ({ navigation }) => {
           <View style={styles.progress_box}>
             <Text style={styles.progress_title}>Current Weight:</Text>
             <Text style={styles.progress_value}>
-              {currentWeight == oldWeight ? (currentWeight + " lbs") : 
+              {currentWeight == oldWeight ? (currentWeight + " lbs") :
                 (currentWeight < oldWeight ? (currentWeight + " lbs 🔽") : currentWeight + " lbs 🔼")}
             </Text>
           </View>
@@ -520,7 +583,7 @@ const Home = ({ navigation }) => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Update goal weight</Text>
+                <Text style={styles.modalText}>Update Goal Weight</Text>
                 <View style={styles.inputView}>
                   <TextInput
                     style={styles.input}
@@ -551,6 +614,7 @@ const Home = ({ navigation }) => {
               </View>
             </View>
           </Modal>
+
           <View style={styles.progress_boxBadge}>
             <Image
               source={streakImageURL}
@@ -588,8 +652,9 @@ const Home = ({ navigation }) => {
                 }}
               /> */}
         </View>
+
         <ScrollView horizontal={false} style={styles.box}>
-          <View style={{flexGrow: 0}}>{friends}</View>
+          <View style={{ flexGrow: 0 }}>{friends}</View>
         </ScrollView>
       </View>
       <View style={styles.btn_box}>
