@@ -483,7 +483,7 @@ const Chat = ({ navigation }) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Create Post</Text>
-                  <View style={[styles.inputView, { flexDirection: 'column', height: 250, width: '100%', marginBottom: 0 }]}>
+                  <View style={[styles.inputView, { flexDirection: 'column', height: 410, width: '100%', marginBottom: 0, }]}>
                     <TextInput
                       style={[styles.input,
                       { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%' }]}
@@ -507,15 +507,16 @@ const Chat = ({ navigation }) => {
                     />
 
 
-                    <TouchableOpacity
-                      style={[styles.button, styles.buttonClose, { marginTop: 0, width: '20%' }]}
+                    
+
+
+                  </View>
+                  <TouchableOpacity
+                      style={[styles.button, styles.buttonClose, { marginTop: 30, width: '20%', }]}
                       onPress={() => post()}
                     >
                       <Text style={styles.textStyle}>Post</Text>
                     </TouchableOpacity>
-
-
-                  </View>
                   <TouchableOpacity
                     style={[styles.button, styles.buttonClose, { width: '20%' }]}
                     onPress={() => setPostModal(false)}
@@ -541,7 +542,7 @@ const Chat = ({ navigation }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={[styles.modalText, { marginBottom: 0 }]}>Comments:</Text>
+              <Text style={[styles.modalText, { marginBottom: 0, height: 50, }]}>Comments:</Text>
               <View style={[styles.comment_input, { marginBottom: 10 }]}>
                 <TextInput
                   style={styles.input}
