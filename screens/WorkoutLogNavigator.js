@@ -13,7 +13,6 @@ import axios from 'axios'
 import config from '../backend/config/config.js'
 
 // For stack navigation
-import AddExercise from './AddExercise'
 import WorkoutLogDetail from './WorkoutLogDetail'
 
 const Stack = createNativeStackNavigator();
@@ -47,7 +46,6 @@ const WorkoutLogNavigator = ({navigation}) => {
     <NavigationContainer theme={themeReducer.theme ? DarkerTheme : DefaulterTheme} independent={true}>
       <Stack.Navigator initialRouteName='WorkoutLog'>
         <Stack.Screen name='WorkoutLog' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDashboard}/>
-        <Stack.Screen name='AddExercise' options={{headerShown: false, gestureEnabled: true}} component={AddExercise}/>
         <Stack.Screen name='WorkoutLogDetail' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDetail}/>
       </Stack.Navigator>
     </NavigationContainer>
@@ -213,12 +211,28 @@ const WorkoutLogDashboard = ({navigation}) => {
     const wol_id = uuid().slice(0,8)
 
     let ex1 = {
+      exid: uuid().slice(0,8),
       name: "bid is goat",
       sets: 5,
       reps: 7,
       weight: 20
     }
     let ex2 = {
+      exid: uuid().slice(0,8),
+      name: "bid is goat",
+      sets: 5,
+      reps: 7,
+      weight: 20
+    }
+    let ex3 = {
+      exid: uuid().slice(0,8),
+      name: "ben ching",
+      sets: 5,
+      reps: 6,
+      weight: 2120
+    }
+    let ex4 = {
+      exid: uuid().slice(0,8),
       name: "ben ching",
       sets: 5,
       reps: 6,
@@ -228,8 +242,7 @@ const WorkoutLogDashboard = ({navigation}) => {
     let newlog = {
       id: wol_id,
       date: date,
-      exercises: new Array(ex1, ex1, ex2, ex2)
-      // exercises: new Array()
+      exercises: new Array()
     }
     console.log(newlog)
     // data.workoutlogList = newlog
@@ -281,7 +294,7 @@ const WorkoutLogDashboard = ({navigation}) => {
 
           <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}>
             {userData.username.workoutlogList.map(workoutlog =>
-                <WorkoutLogCard key={workoutlog.id} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
+                <WorkoutLogCard id={workoutlog.id} key={workoutlog.id} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
             )}
           </ScrollView> 
 

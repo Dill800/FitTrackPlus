@@ -4,6 +4,7 @@ import { BottomSheet } from 'react-native-btr';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { updateUsername } from '../redux/actions/user';
+import { v4 as uuid } from 'uuid';
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -77,7 +78,12 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
   // Add exercise to Redux and DB when form is completed
   const addExercise = () => {
+
+    // Generate 8-digit UUID for key component for later rendering
+    const exid = uuid().slice(0,8)
+
     let exerciseData = {
+      exid: exid,
       name: name,
       sets: numSets,
       reps: numReps,
@@ -99,7 +105,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
     // Iterate and find the workout log we want
     let index = 0;
     for(let i = 0; i < workoutloglist.length; i++){
-      if(workoutloglist[i].date == route.params.name && workoutloglist[i].exercises == route.params.exercises){
+      if(workoutloglist[i].id  == route.params.id){
         index = i
       }
     }
@@ -120,7 +126,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
       {
       route.params.exercises.map(exercise =>
-      <Text key={exercise.id}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+      <Text key={exercise.exid}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight} - {exercise.exid}</Text>     
       )}
 
       {/* Button to add exercises */}
