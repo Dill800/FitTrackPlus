@@ -277,4 +277,18 @@ module.exports = {
         })      
     },
 
+    addMeal: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {$push: {mealList: req.body.meal}}, (err, data) => { 
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+
+             
+            res.send({success: 1, data: data})
+        })   
+
+    }
+
 }
