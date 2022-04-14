@@ -11,6 +11,8 @@ import axios from 'axios'
 import qs from 'qs'
 import config from '../backend/config/config.js'
 
+const fetch = require("node-fetch");
+
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -24,6 +26,12 @@ const ManualMeal = ({navigation}) => {
     const theme = useTheme();
 
     const styles = StyleSheet.create({
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
       modalView: {
         margin: 20,
         backgroundColor: theme.colors.background,
@@ -43,7 +51,8 @@ const ManualMeal = ({navigation}) => {
         marginBottom: 15,
         textAlign: "center",
         fontSize: 20,
-        color: theme.colors.text
+        color: theme.colors.text,
+        marginHorizontal: 100
       },
       container: {
         backgroundColor: theme.colors.card,
@@ -111,6 +120,51 @@ const ManualMeal = ({navigation}) => {
         fontSize: 22,
         alignSelf: "center",
       },
+      inputView: {
+        flexDirection: 'row',
+        borderRadius: 30,
+        height: 45,
+        marginBottom: 20,
+        marginHorizontal: 50,
+        alignItems: "center",
+      },
+      input: {
+        flex: 1,
+        height: 40,
+        paddingHorizontal: 20,
+        borderRadius: 15,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        backgroundColor: theme.colors.secondary,
+        color: theme.colors.text,
+      },
+      brock_button: {
+        backgroundColor: theme.colors.primary,
+        borderRadius: 15,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        height: 40,
+        margin: 10,
+        marginLeft: 0,
+        justifyContent: "center",
+        paddingHorizontal: 20
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
   });
 
     const [name, setName] = useState('');
@@ -122,6 +176,8 @@ const ManualMeal = ({navigation}) => {
     const [calorieCount, setCalorieCount] = useState(0);
     const [mealName, setMealName] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+    const [getFoodSearch, setFoodSearch] = useState('');
+    const [getPortion, setPortion] = useState('');
 
     //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
 
@@ -167,16 +223,60 @@ const ManualMeal = ({navigation}) => {
         });
     };
 
+    const findFood = () => {
+        const params = {
+            api_key: 'gX9n2yNedDJtAGoQyF34t86M1gN63LjTuLFeDccy',
+            query: getFoodSearch,
+            dataType: ["Survey (FNDDS)"],
+            pagesize: 1,
+        }
+
+        const api_url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(params.query)}&dataType=${encodeURIComponent(params.dataType)}&pagesize=${encodeURIComponent(params.pagesize)}`
+        function getData() {
+          return fetch(api_url)
+          .then(response => response.json())
+        }
+        
+        getData().then(data => {
+          let proteinLog = data.foods[0].foodNutrients[0];
+          let fatLog = data.foods[0].foodNutrients[1];
+          let carbLog = data.foods[0].foodNutrients[2];
+          let calorieLog = data.foods[0].foodNutrients[3];
+          console.log(data.foods[0]);
+          console.log(proteinLog);
+          console.log(carbLog);
+          console.log(fatLog);
+          console.log(calorieLog);
+
+          let proteinContent = proteinLog.value;
+          let carbContent = carbLog.value;
+          let fatContent = fatLog.value;
+          let calorieContent = calorieLog.value;
+          let myCalorieContent = Math.round((proteinContent * 4) + (carbContent * 4) + (fatContent * 9));
+
+          console.log(proteinContent);
+          console.log(carbContent);
+          console.log(fatContent);
+          console.log(calorieContent);
+
+          console.log("My calorie: " + myCalorieContent);
+        })
+
+        // function getData() {
+        //   return fetch(api_url)
+        //   .then(function (response) {
+        //     console.log(JSON.stringify(response.foods[0].foodNutrients));
+        //   })
+        // }
+
+    }
+
     return (
         <HideKeyboard>
         <ScrollView>
         <View style={{flex: 1, alignItems: 'center'}}>
           <Macros>
-            <View style={{flexDirection:'row'}}>
-              <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Add Meal</Text>
-              <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Hi</Text>
-            </View>
-         
+          <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Add Meal</Text>
           <View style={styles.container}>
             <View style={styles.box}>
 
@@ -252,7 +352,65 @@ const ManualMeal = ({navigation}) => {
                 >
                     <Text style={styles.btn_text}>Save Changes</Text>
                 </TouchableOpacity>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      Alert.alert("Modal has been closed.");
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                          <Text style={styles.modalText}>Enter food and portion (grams)</Text>
+                          <View style={[styles.inputView, { flexDirection: 'column', height: 100, width: '100%', marginBottom: 0 }]}>
+                            <TextInput
+                              style={[styles.input,
+                              { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%' }]}
+                              placeholder='Default 100 g'
+                              placeholderTextColor='grey'
+                              keyboardType="numeric"
+                              onChangeText={e => setPortion(e)}
+                              value={getPortion}
+                            />
+                            <TextInput
+                              
+                              style={[styles.input,{ flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%' }]}
+                              placeholder='Enter name of a food'
+                              placeholderTextColor='grey'
+                              onChangeText={e => setFoodSearch(e)}
+                              value={getFoodSearch}
+                            />
+
+
+                            <TouchableOpacity
+                              style={[styles.button, styles.buttonClose, { marginTop: 0, width: '20%' }]}
+                              onPress={() => findFood()}
+                            >
+                              <Text style={styles.textStyle}>Search</Text>
+                            </TouchableOpacity>
+                          </View>
+                          <TouchableOpacity
+                            style={[styles.button, styles.buttonClose, {marginTop: 50}]}
+                            onPress={() => setModalVisible(false)}
+                          >
+                            <Text style={styles.textStyle}>Return</Text>
+                          </TouchableOpacity>
+                        </View>
+                    </View>
+                  </Modal>
                 
+                <TouchableOpacity
+                    onPress={() => {
+                        setModalVisible(true)
+                        //console.log(userData.username)
+                    }}
+                    style={[styles.btn_shape, { backgroundColor: "purple" }]}
+                >
+                    <Text style={styles.btn_text}>Search Foods 🔍</Text>
+                </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => {
@@ -263,6 +421,7 @@ const ManualMeal = ({navigation}) => {
                 >
                     <Text style={styles.btn_text}>Back to Meals</Text>
                 </TouchableOpacity>
+
               </View>
             </View>
           </Macros>

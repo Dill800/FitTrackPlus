@@ -104,6 +104,7 @@ const Meals = ({navigation}) => {
     for(let i = 0; i < userData.username.mealList.length; i++) {
         foodList.push(
             <View
+            key = {i}
             style={{
             alignItems: "center",
             width: 370,
