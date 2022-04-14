@@ -520,7 +520,7 @@ const Home = ({ navigation }) => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Update goal weight</Text>
+                <Text style={styles.modalText}>Update Goal Weight</Text>
                 <View style={styles.inputView}>
                   <TextInput
                     style={styles.input}
