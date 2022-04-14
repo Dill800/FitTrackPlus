@@ -14,8 +14,10 @@ const userSchema = new mongoose.Schema({
 	groupName: {type: String, required: true, default: 'Fellow'},
 	workoutlogList: {
 		type: [{
+			id: {type: String, required: true},
 			date: {type: Date, required: true, default: new Date(-287364287364)},
 			exercises:[{
+				exid: {type: String, required: true},
 				name: {type: String, required: true},
 				sets: {type: mongoose.Number, required: true},
 				reps: {type: mongoose.Number, required: true},

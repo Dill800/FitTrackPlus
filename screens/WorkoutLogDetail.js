@@ -69,7 +69,6 @@ const WorkoutLogDetail = ({navigation, route}) => {
   const [numSets, setNumSets] = useState('');
   const [numReps, setNumReps] = useState('');
   const [weight, setWeight] = useState('');
-  const [displayExercises, setDisplayExercises] = useState(new Array());
 
   // Toggling the visibility state of the bottom sheet
   const toggleBottomNavigationView = () => {
@@ -105,15 +104,11 @@ const WorkoutLogDetail = ({navigation, route}) => {
       }
     }
     workoutloglist[index].exercises.push(exerciseData);
-    console.log(data.workoutlogList[index])
 
     // Update the store after writing the new workout log
     // TODO ALSO SAVE TO DATABASE
     dispatch(updateUsername(data))
   }
-
-  setDisplayExercises(route.params.exercises.slice(0,2))
-  console.log('DISPLAY', displayExercises)
 
   return (
     <HideKeyboard>
@@ -121,11 +116,11 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
       <Text style={styles.input_title}>Details of workout</Text>
       <Text>{route.params.name}</Text>
+      <Text>{route.params.id}</Text>
 
       {
-      // route.params.exercises.slice(0,2).map((exercise, key) =>
-      displayExercises.map((exercise, key) =>
-      <Text key={exercise.name+key+""}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+      route.params.exercises.map(exercise =>
+      <Text key={exercise.id}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
       )}
 
       {/* Button to add exercises */}
