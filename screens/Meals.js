@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import { useDrawerStatus } from "@react-navigation/drawer";
@@ -97,6 +97,7 @@ const Meals = ({navigation}) => {
     })
 
     const navi = useNavigation();
+    const scrollViewRef = useRef();
     let foodList = []
 
     console.log("About to run for loop, list length: ", userData.username.mealList.length)
@@ -150,11 +151,15 @@ const Meals = ({navigation}) => {
                     <Text style={styles.title}>Meals</Text>
                 </View>
 
-                <ScrollView style={styles.box} horizontal={false}>
+                <ScrollView style={styles.box} horizontal={false}
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })}>
 
                     
-                    {console.log("Rendering list")}
-                    <View style={{flexGrow: 0}}>{foodList}</View>
+                    {/* {console.log("Rendering list")} */}
+                    <View style={{flexGrow: 0}}>
+                        {foodList}
+                    </View>
                 </ScrollView>
             </View>
             <View style={styles.btn_box}>
