@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
-import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
+import { TouchableWithoutFeedback, Modal,Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import { useDrawerStatus } from "@react-navigation/drawer";
 import {useSelector, useDispatch} from 'react-redux'
 
@@ -178,7 +178,7 @@ const Meals = ({navigation}) => {
                         { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
                     ]}
                 >
-                    <Text style={styles.btn_text}>Refresh</Text>
+                    <Text style={styles.btn_text}>Search Food</Text>
                 </TouchableOpacity>
             </View>
 

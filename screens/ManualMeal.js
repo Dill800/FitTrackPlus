@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 
 import { Macros } from './../components/styles'
@@ -24,6 +24,27 @@ const ManualMeal = ({navigation}) => {
     const theme = useTheme();
 
     const styles = StyleSheet.create({
+      modalView: {
+        margin: 20,
+        backgroundColor: theme.colors.background,
+        borderRadius: 20,
+        paddingVertical: 100,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 20,
+        color: theme.colors.text
+      },
       container: {
         backgroundColor: theme.colors.card,
         borderRadius: 15,
@@ -99,7 +120,8 @@ const ManualMeal = ({navigation}) => {
     const [proteinCount, setProteinCount] = useState(0);
     const [carbCount, setCarbCount] = useState(0);
     const [calorieCount, setCalorieCount] = useState(0);
-    const [mealName, setMealName] = useState()
+    const [mealName, setMealName] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
 
     //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
 
@@ -150,7 +172,11 @@ const ManualMeal = ({navigation}) => {
         <ScrollView>
         <View style={{flex: 1, alignItems: 'center'}}>
           <Macros>
-          <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Add Meal</Text>
+            <View style={{flexDirection:'row'}}>
+              <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Add Meal</Text>
+              <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>Hi</Text>
+            </View>
+         
           <View style={styles.container}>
             <View style={styles.box}>
 
