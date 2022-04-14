@@ -4,6 +4,10 @@ import { BottomSheet } from 'react-native-btr';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { updateUsername } from '../redux/actions/user';
+import { v4 as uuid } from 'uuid';
+
+import axios from 'axios'
+import config from '../backend/config/config.js'
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -24,8 +28,7 @@ const styles = StyleSheet.create({
       marginBottom: 25,
     },
     input_title: {
-      color: "#121212",
-      marginTop: -20,
+      fontSize: 40,
     },
     input_placeholder: {
       flex: 1,
@@ -58,10 +61,12 @@ const styles = StyleSheet.create({
 
 const WorkoutLogDetail = ({navigation, route}) => {
   
-  // Redux
+  // Redux and navigation
   const userData = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const theme = useTheme();
+  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+  const theme = useTheme();  
+  const navi = useNavigation();
 
   // Hooks
   const [visible, setVisible] = useState(false);
@@ -69,7 +74,6 @@ const WorkoutLogDetail = ({navigation, route}) => {
   const [numSets, setNumSets] = useState('');
   const [numReps, setNumReps] = useState('');
   const [weight, setWeight] = useState('');
-  const [displayExercises, setDisplayExercises] = useState(new Array());
 
   // Toggling the visibility state of the bottom sheet
   const toggleBottomNavigationView = () => {
@@ -78,14 +82,19 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
   // Add exercise to Redux and DB when form is completed
   const addExercise = () => {
+
+    // Generate 8-digit UUID for key component for later rendering
+    const exid = uuid().slice(0,8)
+
     let exerciseData = {
+      exid: exid,
       name: name,
       sets: numSets,
       reps: numReps,
       weight: weight,
     }
 
-    console.log("VERIFY DATA FORM", exerciseData)
+    // console.log("VERIFY DATA FORM", exerciseData)
 
     // Clear form after submitting
     setName("")
@@ -100,38 +109,74 @@ const WorkoutLogDetail = ({navigation, route}) => {
     // Iterate and find the workout log we want
     let index = 0;
     for(let i = 0; i < workoutloglist.length; i++){
-      if(workoutloglist[i].date == route.params.name && workoutloglist[i].exercises == route.params.exercises){
+      if(workoutloglist[i].id  == route.params.id){
         index = i
       }
     }
     workoutloglist[index].exercises.push(exerciseData);
-    console.log(data.workoutlogList[index])
 
     // Update the store after writing the new workout log
     // TODO ALSO SAVE TO DATABASE
     dispatch(updateUsername(data))
   }
 
-  setDisplayExercises(route.params.exercises.slice(0,2))
-  console.log('DISPLAY', displayExercises)
+  const deleteWorkoutLog = () => {
+
+    // Bodgy Redux querying
+    const data = userData.username
+    const workoutloglist = data.workoutlogList
+
+    // Iterate and find the workout log we want
+    let index = -1;
+    for(let i = 0; i < workoutloglist.length; i++){
+      if(workoutloglist[i].id  == route.params.id){
+        index = i
+      }
+    }
+
+    // Makes sure a workoutlog can't be deleted unless exact match found
+    data.workoutlogList.splice(index, (index != -1) ? 1 : 0)
+    
+    // Save to Redux and DB
+    axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
+      username: userData.username.username,
+      workoutlogList : data.workoutlogList
+    })
+    .then(res => {
+      // console.log("---------- POST Called to db")
+    })
+    .catch(e => {
+      console.log("error", e)
+    })
+
+    dispatch(updateUsername(data))
+
+    // Navigate back to dashboard automatically after deletion
+    navi.goBack()  }
 
   return (
     <HideKeyboard>
     <View style={styles.container}>
+      <View style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
+        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>Workout Details</Text>
+        <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
 
-      <Text style={styles.input_title}>Details of workout</Text>
-      <Text>{route.params.name}</Text>
-
-      {
-      // route.params.exercises.slice(0,2).map((exercise, key) =>
-      displayExercises.map((exercise, key) =>
-      <Text key={exercise.name+key+""}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
-      )}
+        <Text>{route.params.name}</Text>
+        
+        {
+        route.params.exercises.map(exercise =>
+        <Text key={exercise.exid}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight} - {exercise.exid}</Text>     
+        )}
 
       {/* Button to add exercises */}
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]}onPress={toggleBottomNavigationView}>
-      <Text style={styles.btn_text}>Add Exercise to Log</Text>
+        <Text style={styles.btn_text}>Add Exercise to Log</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#e91d1d" }]} onPress={deleteWorkoutLog}>
+        <Text style={styles.btn_text}>Delete Workout Log</Text>
+      </TouchableOpacity>
+      </View>
 
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
         <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, alignItems:'center'}]}>
@@ -161,7 +206,6 @@ const WorkoutLogDetail = ({navigation, route}) => {
         <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]} onPress={addExercise}>
           <Text style={styles.btn_text}>Add Exercise</Text>
         </TouchableOpacity>
-
 
         </View>
       </BottomSheet>

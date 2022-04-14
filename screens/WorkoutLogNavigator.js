@@ -7,12 +7,12 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { BottomSheet } from 'react-native-btr';
 import { updateUsername } from '../redux/actions/user';
 import dateformat from "dateformat";
+import { v4 as uuid } from 'uuid';
 
 import axios from 'axios'
 import config from '../backend/config/config.js'
 
 // For stack navigation
-import AddExercise from './AddExercise'
 import WorkoutLogDetail from './WorkoutLogDetail'
 
 const Stack = createNativeStackNavigator();
@@ -46,7 +46,6 @@ const WorkoutLogNavigator = ({navigation}) => {
     <NavigationContainer theme={themeReducer.theme ? DarkerTheme : DefaulterTheme} independent={true}>
       <Stack.Navigator initialRouteName='WorkoutLog'>
         <Stack.Screen name='WorkoutLog' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDashboard}/>
-        <Stack.Screen name='AddExercise' options={{headerShown: false, gestureEnabled: true}} component={AddExercise}/>
         <Stack.Screen name='WorkoutLogDetail' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDetail}/>
       </Stack.Navigator>
     </NavigationContainer>
@@ -77,7 +76,7 @@ const WorkoutLogCard = (props) => {
         <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
         <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
         
-        {props.exercises.map((exercise, index) =>
+        {props.exercises.slice(0,3).map((exercise, index) =>
           <Text key={""+exercise+index} style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
         )}
       </TouchableOpacity>
@@ -196,35 +195,76 @@ const WorkoutLogDashboard = ({navigation}) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
-    console.log(currentDate)
+    // console.log(currentDate)
   };
 
-  const debugUser = () => {
-    console.log(userData.username)
-  } 
+  // const debugUser = () => {
+  //   console.log(userData.username)
+  // } 
 
   const createWorkoutLog = () => {
 
     // Append new workout log to store
     const data = userData.username;
+
+    // Generate 8-digit UUID for key component for later rendering
+    const wol_id = uuid().slice(0,8)
+
     let ex1 = {
+      exid: uuid().slice(0,8),
       name: "bid is goat",
       sets: 5,
       reps: 7,
       weight: 20
     }
+    let ex2 = {
+      exid: uuid().slice(0,8),
+      name: "bid is goat",
+      sets: 5,
+      reps: 7,
+      weight: 20
+    }
+    let ex3 = {
+      exid: uuid().slice(0,8),
+      name: "ben ching",
+      sets: 5,
+      reps: 6,
+      weight: 2120
+    }
+    let ex4 = {
+      exid: uuid().slice(0,8),
+      name: "ben ching",
+      sets: 5,
+      reps: 6,
+      weight: 2120
+    }
+
+    // Add timestamp to selected date to help in sorting in main dashboard
+    const current = new Date();
+    const date_with_timestamp = new Date(date.getFullYear(), date.getMonth(), date.getDate(), current.getHours(), current.getMinutes(), current.getSeconds())
 
     let newlog = {
-      date: date,
-      exercises: new Array(ex1, ex1)
+      id: wol_id,
+      date: date_with_timestamp,
       // exercises: new Array()
+      exercises: new Array(ex1, ex2, ex3, ex4)
     }
     // console.log(newlog)
     // data.workoutlogList = newlog
     data.workoutlogList.push(newlog);
 
-    // Update the store after writing the new workout log
-    // TODO ALSO SAVE TO DATABASE
+    // Save to Redux and DB
+    axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
+      username: userData.username.username,
+      workoutlogList : data.workoutlogList
+    })
+    .then(res => {
+      // console.log("---------- POST Called to db")
+    })
+    .catch(e => {
+      console.log("error", e)
+    })
+
     dispatch(updateUsername(data))
   }
 
@@ -268,8 +308,11 @@ const WorkoutLogDashboard = ({navigation}) => {
           </View>
 
           <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}>
-            {userData.username.workoutlogList.map(workoutlog =>
-                <WorkoutLogCard key={workoutlog.date.toString()} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
+          
+
+            {/* {userData.username.workoutlogList.map(workoutlog => */}
+            {userData.username.workoutlogList.sort(function(a, b){return b.date-a.date}).map(workoutlog =>
+                <WorkoutLogCard id={workoutlog.id} key={workoutlog.id} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
             )}
           </ScrollView> 
 

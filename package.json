@@ -80,6 +80,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.3",
+    "uuidv4": "^6.2.13",
     "victory-native": "^36.3.1"
   },
   "devDependencies": {
