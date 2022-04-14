@@ -55,6 +55,14 @@ const MacroCalculator = ({navigation}) => {
         flexDirection: 'row',
         alignItems: 'center'
       },
+      input_box3: {
+        width: "75%",
+        height: 65,
+        marginBottom: 20,
+        bottom: -10,
+        flexDirection: 'row',
+        alignItems: 'center'
+      },
       input_title: {
         color: theme.colors.text,
         fontSize: 18
@@ -62,19 +70,19 @@ const MacroCalculator = ({navigation}) => {
       input_title2: {
         color: theme.colors.text,
         fontSize: 18,
-        marginTop: 30,
+        marginTop: 40,
       },
       input_placeholder: {
         flex: 1,
         height: 40,
         marginTop: 0,
         paddingHorizontal: 20,
-        borderRadius: 15,
+        borderRadius: 10,
         backgroundColor: theme.colors.secondary,
         color: theme.colors.text,
         textAlign: 'center',
         fontSize: 18,
-        alignSelf: 'center'
+        alignSelf: 'center',
       },
       btn_shape: {
         backgroundColor: "rgba(99,206,237,1)",
@@ -103,6 +111,7 @@ const MacroCalculator = ({navigation}) => {
       btns: {
         marginBottom: 20,
         alignItems: 'center',
+        marginTop: 20,
 
       },
       title_box: {
@@ -118,133 +127,191 @@ const MacroCalculator = ({navigation}) => {
         alignSelf: "center",
       },
       pickerAge: {
-          marginTop: 30,
-          width: 75,
-          height: 40,
+          marginTop: 40,
+          width: 50,
+          height: 105,
           alignSelf: 'center', 
-          backgroundColor: theme.colors.sec,
-          color: theme.colors.card,
-          marginLeft: 130
+          //backgroundColor: theme.colors.secondary,
+          //color: theme.colors.card,
+          marginLeft: 135,
+          overflow: 'hidden',
+          borderRadius: 10,
       },
       pickerAgeItem : {
-          height: 40,
+          height: 105,
           width: 75,
-          backgroundColor: theme.colors.secondary,
+          backgroundColor: theme.colors.sec,
           alignSelf: 'center', 
           borderRadius: 10,
-          color: theme.colors.text
+          color: theme.colors.text,
+          overflow: 'hidden',
       },
     pickerHeight: {
-        width: 70,
-        height: 40,
+        width: 50,
+        height: 105,
         alignSelf: 'center', 
-        backgroundColor: theme.colors.sec,
-        color: theme.colors.card,
-        marginLeft: 75,
-        overflow: 'hidden',
+        //backgroundColor: theme.colors.secondary,
+        //color: theme.colors.card,
+        marginLeft: 90,
+        //overflow: 'hidden',
+        //borderRadius: 10
     },
     pickerHeightItem : {
-        height: 40,
-        width: 60,
-        backgroundColor: theme.colors.secondary,
-        alignSelf: 'center', 
-        borderRadius: 10,
-        color: theme.colors.text,
-        overflow: 'hidden',
-    },
-    pickerHeightInch: {
+        height: 105,
         width: 70,
-        height: 40,
+        //backgroundColor: theme.colors.sec,
         alignSelf: 'center', 
-        backgroundColor: theme.colors.sec,
-        color: theme.colors.card,
-        //marginLeft: 10
-        left: -20,
+        //borderRadius: 10,
+        color: theme.colors.text,
         //overflow: 'hidden',
     },
-    pickerHeightInchItem : {
-        height: 40,
-        width: 75,
-        backgroundColor: theme.colors.secondary,
+    pickerHeightInch: {
+        width: 50,
+        height: 105,
         alignSelf: 'center', 
-        borderRadius: 10,
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
+       // backgroundColor: theme.colors.secondary,
+        //color: theme.colors.card,
+        //marginLeft: 10
+        //left: -0.5,
+        //overflow: 'hidden',
+        //borderRadius: 10
+        marginLeft: 6
+    },
+    pickerHeightInchItem : {
+        height: 105,
+        width: 75,
+        //backgroundColor: theme.colors.sec,
+        alignSelf: 'center', 
+        //borderRadius: 10,
+        //borderTopRightRadius: 10,
+        //borderBottomRightRadius: 10,
         color: theme.colors.text,
-        overflow: 'hidden',
+        //overflow: 'hidden',
     },
     pickerActivity: {
-        width: 240,
-        height: 40,
+        width: 200,
+        height: 105,
         alignSelf: 'center', 
-        backgroundColor: theme.colors.sec,
-        color: theme.colors.card,
-        marginLeft: 10,
+        //backgroundColor: theme.colors.secondary,
+        //color: theme.colors.card,
+        marginLeft: 30,
         marginRight: 3,
         overflow: 'hidden',
+        borderRadius: 10
     },
     pickerActivityItem : {
-        height: 40,
+        height: 105,
         width: 240,
-        backgroundColor: theme.colors.secondary,
+        //backgroundColor: theme.colors.secondary,
         alignSelf: 'center', 
         borderRadius: 10,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         color: theme.colors.text,
         overflow: 'hidden',
-        fontSize: 17,
+        fontSize: 18,
     },
   });
 
-    const [name, setName] = useState('');
-    const [numSets, setNumSets] = useState('');
-    const [numReps, setNumReps] = useState('');
-    const [fatCount, setFatCount] = useState(0);
-    const [proteinCount, setProteinCount] = useState(0);
-    const [carbCount, setCarbCount] = useState(0);
-    const [calorieCount, setCalorieCount] = useState(0);
-
-    //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
-
-    const updateMacros = () => {
-        var data = qs.stringify({
-          'username': userData.username.username,
-          'calorieGoal': calorieCount,
-          'goalFat': fatCount,
-          'goalProtein': proteinCount,
-          'goalCarb': carbCount
-        });
-        var config2 = {
-          method: 'post',
-          url: 'http://' + config.ipv4 + ':5000/user/updateMacros',
-          headers: { 
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          data : data
-        };
-
-        axios(config2)
-        .then(function (response) {
-          //console.log(JSON.stringify(response.data));
-          let data = userData.username;
-          data.calorieGoal = calorieCount;
-          data.goalFat = fatCount;
-          data.goalCarb = carbCount;
-          data.goalProtein = proteinCount;
-          dispatch(updateUsername(data));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    };
+   
+    // const [fatCount, setFatCount] = useState(0);
+    // const [proteinCount, setProteinCount] = useState(0);
+    // const [carbCount, setCarbCount] = useState(0);
+    // const [calorieCount, setCalorieCount] = useState(0);
 
     const [selectedAge, setSelectedAge] = useState('18');
-    const [checked, setChecked] = React.useState('');
+    const [selectedGender, setSelectedGender] = React.useState('');
     const [selectedFoot, setSelectedFoot] = useState('5');
     const [selectedInch, setSelectedInch] = useState('5');
     const [selectedWeight, setSelectedWeight] = useState('');
     const [selectedActivity, setSelectedActivity] = useState('');
+    
+
+    //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
+
+    const calculateMacros = () => { 
+        let totalCalories = 0;
+
+        let kg = selectedWeight / 2.2046;
+        let totalInches = (12 * selectedFoot) + selectedInch;
+        let cm = totalInches * 2.54;
+        let bmr = 0;
+        if (selectedGender == "Male") {
+            bmr = (10 * kg) + (6.25 * cm) - (5 * selectedAge) + 5;
+        }
+        else {
+            bmr = (10 * kg) + (6.25 * cm) - (5 * selectedAge) - 161;
+        }
+        
+        if (selectedActivity == 1) {
+            totalCalories = bmr * 1.2;
+        }
+        else if (selectedActivity == 2) {
+            totalCalories = bmr * 1.375;
+        }
+        else if (selectedActivity == 3) {
+            totalCalories = bmr * 1.465;
+        }
+        else if (selectedActivity == 4) {
+            totalCalories = bmr * 1.55;
+        }
+        else if (selectedActivity == 5) {
+            totalCalories = bmr * 1.725;
+        }
+        else if (selectedActivity == 6) {
+            totalCalories = bmr * 1.90;
+        }
+        totalCalories = Math.round(totalCalories);
+        console.log(totalCalories);
+
+        if (userData.username.currentWeight < userData.username.goalWeight) {
+            totalCalories = totalCalories + 300;
+        }
+        else if (userData.username.currentWeight > userData.username.goalWeight) {
+            totalCalories = totalCalories - 300;
+        }
+        console.log(totalCalories);
+
+       let proteinAmount = selectedWeight;
+       let remainderCalories = totalCalories - (proteinAmount * 4);
+       let carbAmount = (remainderCalories * .7) / 4;
+       let fatAmount  = (remainderCalories * .3) / 9;
+
+       let totalActualCalories = Math.round((proteinAmount * 4) + (carbAmount * 4) + (fatAmount * 9));
+       console.log(totalActualCalories);
+
+
+        // var data = qs.stringify({
+        //   'username': userData.username.username,
+        //   'calorieGoal': calorieCount,
+        //   'goalFat': fatCount,
+        //   'goalProtein': proteinCount,
+        //   'goalCarb': carbCount
+        // });
+        // var config2 = {
+        //   method: 'post',
+        //   url: 'http://' + config.ipv4 + ':5000/user/updateMacros',
+        //   headers: { 
+        //     'Content-Type': 'application/x-www-form-urlencoded'
+        //   },
+        //   data : data
+        // };
+
+        // axios(config2)
+        // .then(function (response) {
+        //   //console.log(JSON.stringify(response.data));
+        //   let data = userData.username;
+        //   data.calorieGoal = calorieCount;
+        //   data.goalFat = fatCount;
+        //   data.goalCarb = carbCount;
+        //   data.goalProtein = proteinCount;
+        //   dispatch(updateUsername(data));
+        // })
+        // .catch(function (error) {
+        //   console.log(error);
+        // });
+    };
+
 
 
     let ageArray = [];
@@ -273,12 +340,12 @@ const MacroCalculator = ({navigation}) => {
         )
     }
 
-    activityArray.push(<Picker.Item key= {1} label= {"Exercise 0-1 times/week"} value={1} />);
-    activityArray.push(<Picker.Item key= {2} label= {"Exercise 1-3 times/week"} value={2} />);
-    activityArray.push(<Picker.Item key= {3} label= {"Exercise 4-5 times/week"} value={3} />);
-    activityArray.push(<Picker.Item key= {4} label= {"Exercise 3-4 times/week"} value={4} />);
-    activityArray.push(<Picker.Item key= {5} label= {"Exercise 6-7 times/week"} value={5} />);
-    activityArray.push(<Picker.Item key= {6} label= {"Daily intense exercise"} value={6} />);
+    activityArray.push(<Picker.Item key= {1} label= {"Sendentary"} value={1} />);
+    activityArray.push(<Picker.Item key= {2} label= {"Light"} value={2} />);
+    activityArray.push(<Picker.Item key= {3} label= {"Moderate"} value={3} />);
+    activityArray.push(<Picker.Item key= {4} label= {"Active"} value={4} />);
+    activityArray.push(<Picker.Item key= {5} label= {"Very Active"} value={5} />);
+    activityArray.push(<Picker.Item key= {6} label= {"Extra Active"} value={6} />);
     // let activityArray = [
     //     {value: "Sedentary: little or no exercse"},
     //     {value: "Light: exercise 1-3 times/week"},
@@ -311,7 +378,7 @@ const MacroCalculator = ({navigation}) => {
                     </Picker>
                 </View>
 
-                <View style = {styles.input_box2}>
+                <View style = {styles.input_box3}>
                     <Text style={styles.input_title}>
                         Gender
                     </Text>
@@ -319,10 +386,10 @@ const MacroCalculator = ({navigation}) => {
                         <RadioButton.Android
                             value=""
                             uncheckedColor={theme.colors.text}
-                            status={ checked === 'Male' ? 'checked' : 'unchecked' }
+                            status={ selectedGender === 'Male' ? 'checked' : 'unchecked' }
                             onPress={() => {
-                              setChecked('Male');
-                              console.log(checked);
+                              setSelectedGender('Male');
+                              console.log(selectedGender);
                             }}
                         />
                         <Text style={styles.input_title}>Male</Text>
@@ -330,10 +397,10 @@ const MacroCalculator = ({navigation}) => {
                             value="Female"
                             uncheckedColor={theme.colors.text}
                             color='#eb28d7'
-                            status={ checked === 'Female' ? 'checked' : 'unchecked' }
+                            status={ selectedGender === 'Female' ? 'checked' : 'unchecked' }
                             onPress={() => {
-                              setChecked('Female');
-                              console.log(checked);
+                              setSelectedGender('Female');
+                              console.log(selectedGender);
                             }}
                         />
                         <Text style={styles.input_title}>Female</Text>
@@ -370,12 +437,12 @@ const MacroCalculator = ({navigation}) => {
                     <Text style={styles.input_title}>
                         Weight
                     </Text>
-                    <View style = {{flexDirection: 'row', padding:5, justifyContent:"space-between", alignItems: "center", marginLeft: 60, marginRight: 60}}>
+                    <View style = {{flexDirection: 'row', padding:5, justifyContent:"space-between", alignItems: "center", marginLeft: 60, marginRight: 55}}>
                         <TextInput
                         style={styles.input_placeholder}
                         keyboardType="numeric"
                         returnKeyType={ 'done' }
-                        placeholder={"0"}
+                        placeholder={"Enter in lbs"}
                         placeholderTextColor='grey'
                         onChangeText={e => {
                           setSelectedWeight(e);
@@ -411,13 +478,9 @@ const MacroCalculator = ({navigation}) => {
               <View style={styles.btns}>
                 <TouchableOpacity
                     onPress={() => {
-                      updateMacros();
-                      Alert.alert("Successfully updated macros goals!")
-                      setCalorieCount(0);
-                      setFatCount(0);
-                      setProteinCount(0);
-                      setCarbCount(0);
-                      navigation.navigate("Macros");
+                      calculateMacros();
+                      //Alert.alert("Successfully updated macros goals!")
+                      //navigation.navigate("Macros");
                     }}
                     style={styles.btn_shape}
                 >
