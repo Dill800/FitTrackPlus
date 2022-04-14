@@ -3,13 +3,15 @@ import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/n
 import { TouchableWithoutFeedback, Modal,Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import { useDrawerStatus } from "@react-navigation/drawer";
 import {useSelector, useDispatch} from 'react-redux'
-
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { BottomSheet } from 'react-native-btr';
 
 const Meals = ({navigation}) => {
 
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
     const theme = useTheme();
+    
 
     const styles = StyleSheet.create({
         container: {
@@ -91,6 +93,11 @@ const Meals = ({navigation}) => {
             textAlign: "center",
             fontWeight: "bold",
         },
+        bottomNavigationView: {
+            borderRadius: 10,
+            height: '50%',
+            justifyContent: 'center',
+          },
         card_text: {
             color: theme.colors.text
         }
@@ -100,8 +107,38 @@ const Meals = ({navigation}) => {
     const scrollViewRef = useRef();
     let foodList = []
 
+    const [date, setDate] = useState(new Date(Date.now()))
+    const [visible, setVisible] = useState(false);
+    const [actdate, setActdate] = useState(new Date(Date.now()))
+
+    const [sid, setSid] = useState(0)
+
+    const toggleBottomNavigationView = () => {
+        setVisible(!visible);
+      };
+
+      const onChange = (event, selectedDate) => {
+        const currentDate = new Date(selectedDate);
+        setDate(new Date(selectedDate));
+        currentDate.setDate(currentDate.getDate() - 1)
+        setActdate(currentDate)
+
+        
+        console.log(currentDate)
+      };
+
+    const changeDate = () => {
+
+        console.log(date)
+        setSid(sid+1)
+
+    }
+
     console.log("About to run for loop, list length: ", userData.username.mealList.length)
     for(let i = 0; i < userData.username.mealList.length; i++) {
+        let x = new Date(userData.username.mealList[i].date)
+
+        if(x.getUTCDate() === actdate.getUTCDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear())
         foodList.push(
             <View
             key = {i}
@@ -135,10 +172,32 @@ const Meals = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={styles.progress}>
-                <View style={styles.title_box}>
-                    <Text style={styles.title}>Today</Text>
-                </View>
 
+                <TouchableOpacity style={[styles.title_box, {marginTop: 10}]} onPress={toggleBottomNavigationView}>
+                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getUTCDate()}, {actdate.getFullYear()}</Text>
+                </TouchableOpacity>
+
+                <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
+                    <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
+                    
+                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={'dark'} value={date} mode={'date'} onChange={onChange} display="inline"/>
+                    <View style={{alignItems:'center', }}>
+                    <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={toggleBottomNavigationView}>
+                        <Text style={styles.btn_text}>Done</Text>
+                    </TouchableOpacity>
+                    </View>
+
+                    </View>
+                </BottomSheet>
+
+                {/*
+                <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={"dark"} value={date} mode={'date'} onChange={(e, d) => console.log(e, d)} display="inline"/>
+                <View style={{alignItems:'center', }}>
+                <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={() => console.log("hi")}>
+                    <Text style={styles.btn_text}>Done</Text>
+                </TouchableOpacity>
+                </View>
+                */}
             </View>
             <View style={styles.exercise_container}>
 
@@ -146,7 +205,7 @@ const Meals = ({navigation}) => {
                 <View
                     style={[
                         styles.title_box,
-                        { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                        { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10, marginTop:-50 },
                     ]}
                 >
                     <Text style={styles.title}>Meals</Text>

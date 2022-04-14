@@ -180,12 +180,13 @@ const ManualMeal = ({navigation}) => {
     const [getPortion, setPortion] = useState('');
 
     //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
-
+    
     const updateMeals = () => {
+        let d = Date.now();
         var data = qs.stringify({
           'username': userData.username.username,
           'meal': {
-              'date': Date.now(),
+              'date': new Date(),
               'mealName': mealName,
               'fat': fatCount,
               'protein': proteinCount,
@@ -206,9 +207,8 @@ const ManualMeal = ({navigation}) => {
         .then(function (response) {
           //console.log(JSON.stringify(response.data));
           let data = userData.username;
-
           data.mealList.push({
-            'date': Date.now(),
+            'date': new Date(),
             'mealName': mealName,
             'fat': fatCount,
             'protein': proteinCount,
@@ -415,7 +415,7 @@ const ManualMeal = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => {
                         navigation.navigate("Meals")
-                        //console.log(userData.username)
+                        console.log(userData.username)
                     }}
                     style={[styles.btn_shape, { backgroundColor: "red" }]}
                 >
