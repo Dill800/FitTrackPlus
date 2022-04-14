@@ -195,12 +195,12 @@ const WorkoutLogDashboard = ({navigation}) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
-    console.log(currentDate)
+    // console.log(currentDate)
   };
 
-  const debugUser = () => {
-    console.log(userData.username)
-  } 
+  // const debugUser = () => {
+  //   console.log(userData.username)
+  // } 
 
   const createWorkoutLog = () => {
 
@@ -239,12 +239,16 @@ const WorkoutLogDashboard = ({navigation}) => {
       weight: 2120
     }
 
+    // Add timestamp to selected date to help in sorting in main dashboard
+    const current = new Date();
+    const date_with_timestamp = new Date(date.getFullYear(), date.getMonth(), date.getDate(), current.getHours(), current.getMinutes(), current.getSeconds())
+
     let newlog = {
       id: wol_id,
-      date: date,
+      date: date_with_timestamp,
       exercises: new Array()
     }
-    console.log(newlog)
+    // console.log(newlog)
     // data.workoutlogList = newlog
     data.workoutlogList.push(newlog);
 
@@ -296,8 +300,7 @@ const WorkoutLogDashboard = ({navigation}) => {
           
 
             {/* {userData.username.workoutlogList.map(workoutlog => */}
-            {/* {userData.username.workoutlogList.sort(function(a, b){return b.date-a.date}).map(workoutlog => */}
-            {userData.username.workoutlogList.sort(function(a, b){return a.date-b.date>0 ? -1 : a.date-b.date<0 ? 0 : 1}).map(workoutlog =>
+            {userData.username.workoutlogList.sort(function(a, b){return b.date-a.date}).map(workoutlog =>
                 <WorkoutLogCard id={workoutlog.id} key={workoutlog.id} name={workoutlog.date.toString()} exercises={workoutlog.exercises}/>
             )}
           </ScrollView> 

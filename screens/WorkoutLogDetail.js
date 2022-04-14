@@ -90,7 +90,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
       weight: weight,
     }
 
-    console.log("VERIFY DATA FORM", exerciseData)
+    // console.log("VERIFY DATA FORM", exerciseData)
 
     // Clear form after submitting
     setName("")

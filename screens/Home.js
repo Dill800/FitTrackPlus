@@ -514,7 +514,7 @@ const Home = ({ navigation }) => {
                     placeholder='Submit'
                     placeholderTextColor='grey'
                     onChangeText={e => setGoalWeight(e)}
-                    value={goalWeigh+""}
+                    value={goalWeight+""}
                   />
                   <TouchableOpacity
                     onPress={() => {
