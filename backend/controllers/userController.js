@@ -214,9 +214,12 @@ module.exports = {
     },
 
     // Needs updating, for now just add the exercise in as a string
-    addExercise: async (req, res) => {
-
-        User.findOneAndUpdate({username: req.body.username}, {$push: {exerciseList: req.body.exercise}}, (err, data) => {
+    updateWorkoutLog: async (req, res) => {
+        
+        User.findOneAndUpdate({username: req.body.username}, 
+            // {$push: {exerciseList: req.body.workou}}, 
+            {workoutlogList: req.body.workoutlogList},
+            (err, data) => {
             if(err) {
                 console.log(err);
                 res.send({success: 0});
