@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
 import { useDrawerStatus } from "@react-navigation/drawer";
@@ -104,6 +104,7 @@ const Meals = ({navigation}) => {
     })
 
     const navi = useNavigation();
+    const scrollViewRef = useRef();
     let foodList = []
 
     const [date, setDate] = useState(new Date(Date.now()))
@@ -140,21 +141,21 @@ const Meals = ({navigation}) => {
         if(x.getUTCDate() === actdate.getUTCDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear())
         foodList.push(
             <View
-        style={{
+            style={{
             alignItems: "center",
             width: 370,
-            height: 125,
-            paddingTop: 8,
-            marginBottom: 15,
+            height: 'auto',
+            marginBottom: 15
         }}
     >
         <View
+            key = {i}
             style={{
                 backgroundColor: theme.colors.secondary,
                 borderRadius: 15,
                 padding: 15,
                 width: "95%",
-                height: "95%",
+                height: 'auto',
             }}
         >
             <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
@@ -209,11 +210,15 @@ const Meals = ({navigation}) => {
                     <Text style={styles.title}>Meals</Text>
                 </View>
 
-                <ScrollView style={styles.box} horizontal={false}>
+                <ScrollView style={styles.box} horizontal={false}
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })}>
 
                     
-                    {console.log("Rendering list")}
-                    <View style={{flexGrow: 0}}>{foodList}</View>
+                    {/* {console.log("Rendering list")} */}
+                    <View style={{flexGrow: 0, paddingTop: 8}}>
+                        {foodList}
+                    </View>
                 </ScrollView>
             </View>
             <View style={styles.btn_box}>
