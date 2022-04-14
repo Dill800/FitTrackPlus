@@ -231,7 +231,7 @@ const ManualMeal = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => {
                         navigation.navigate("Meals")
-                        console.log(userData.username)
+                        //console.log(userData.username)
                     }}
                     style={[styles.btn_shape, { backgroundColor: "red" }]}
                 >

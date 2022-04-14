@@ -154,7 +154,7 @@ const Meals = ({navigation}) => {
 
                     
                     {console.log("Rendering list")}
-                    <Text>{foodList}</Text>
+                    <View style={{flexGrow: 0}}>{foodList}</View>
                 </ScrollView>
             </View>
             <View style={styles.btn_box}>
