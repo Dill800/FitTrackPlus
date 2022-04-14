@@ -43,7 +43,7 @@ module.exports = {
 
             // If newUser not null, the new user was successfully added to database 
             if(newUser){
-                res.send({success: 1, message: "SUCCESS: New user added to database"})
+                res.send({success: 1, message: "SUCCESS: New user added to database", data: newUser})
             }
         })
 

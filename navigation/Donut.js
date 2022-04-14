@@ -43,7 +43,7 @@ export default function Donut({
         num = 1;
     }
     return Animated.timing(animated, {
-      delay: 1000,
+      delay: 500,
       toValue,
       duration,
       useNativeDriver: true,

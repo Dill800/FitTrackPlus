@@ -41,11 +41,11 @@ const Login = ({navigation}) => {
 
     useEffect(() => {
 
-        //dispatch(updateUsername(null))
+        dispatch(updateUsername(null))
         
 
         //dispatch(updateUsername({"_id":"624cf2d132f91a30aacd2cff","username":"bid","passwordHash":"$2a$10$FzMghYsH6rGYdHjym/JvLuMEW/yp9jm859DHFDsrfwJv5EdwKtMcC","streakCounter":0,"lastCheckIn":"1960-11-23T00:35:12.636Z","friendList":[],"groupName":"Fellow","exerciseList":[],"weightList":[],"createdAt":"2022-04-06T01:54:25.087Z","updatedAt":"2022-04-06T01:54:25.087Z","__v":0}))
-        //return;
+        return;
 
         if(userData.username !== null) {
             // Do a fetch of most recent data
