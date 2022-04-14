@@ -121,7 +121,7 @@ const Meals = ({navigation}) => {
       const onChange = (event, selectedDate) => {
         const currentDate = new Date(selectedDate);
         setDate(new Date(selectedDate));
-        currentDate.setDate(currentDate.getDate() - 1)
+        currentDate.setDate(currentDate.getDate())
         setActdate(currentDate)
 
         
@@ -139,7 +139,7 @@ const Meals = ({navigation}) => {
     for(let i = 0; i < userData.username.mealList.length; i++) {
         let x = new Date(userData.username.mealList[i].date)
 
-        if(x.getUTCDate() === actdate.getUTCDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear())
+        if(x.getDate() === actdate.getDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear())
         foodList.push(
             <View
             key = {i}
@@ -176,7 +176,7 @@ const Meals = ({navigation}) => {
             <View style={styles.progress}>
 
                 <TouchableOpacity style={[styles.title_box, {marginTop: 10}]} onPress={toggleBottomNavigationView}>
-                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getUTCDate()}, {actdate.getFullYear()}</Text>
+                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getDate()}, {actdate.getFullYear()}</Text>
                 </TouchableOpacity>
 
                 <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
