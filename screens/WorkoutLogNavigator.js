@@ -253,8 +253,7 @@ const WorkoutLogDashboard = ({navigation}) => {
     // data.workoutlogList = newlog
     data.workoutlogList.push(newlog);
 
-    // Update the store after writing the new workout log
-    // TODO ALSO SAVE TO DATABASE
+    // Save to Redux and DB
     axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
       username: userData.username.username,
       workoutlogList : data.workoutlogList

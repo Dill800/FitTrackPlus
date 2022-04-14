@@ -6,6 +6,9 @@ import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/n
 import { updateUsername } from '../redux/actions/user';
 import { v4 as uuid } from 'uuid';
 
+import axios from 'axios'
+import config from '../backend/config/config.js'
+
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -113,9 +116,43 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
     // Update the store after writing the new workout log
     // TODO ALSO SAVE TO DATABASE
-    // dispatch(updateUsername(data))
+    dispatch(updateUsername(data))
   }
 
+  const deleteWorkoutLog = () => {
+
+    // Bodgy Redux querying
+    const data = userData.username
+    const workoutloglist = data.workoutlogList
+
+    // Iterate and find the workout log we want
+    let index = -1;
+    for(let i = 0; i < workoutloglist.length; i++){
+      if(workoutloglist[i].id  == route.params.id){
+        index = i
+      }
+    }
+
+    data.workoutlogList.splice(index, (index != -1) ? 1 : 0)
+    
+    // Save to Redux and DB
+    axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
+      username: userData.username.username,
+      workoutlogList : data.workoutlogList
+    })
+    .then(res => {
+      console.log("---------- POST Called to db")
+    })
+    .catch(e => {
+      console.log("error", e)
+    })
+
+    dispatch(updateUsername(data))
+
+    // Navigate back to dashboard automatically after deletion
+
+  }
+  
   return (
     <HideKeyboard>
     <View style={styles.container}>
@@ -131,7 +168,11 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
       {/* Button to add exercises */}
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]}onPress={toggleBottomNavigationView}>
-      <Text style={styles.btn_text}>Add Exercise to Log</Text>
+        <Text style={styles.btn_text}>Add Exercise to Log</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#e91d1d" }]} onPress={deleteWorkoutLog}>
+        <Text style={styles.btn_text}>Delete Workout Log</Text>
       </TouchableOpacity>
 
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
@@ -162,7 +203,6 @@ const WorkoutLogDetail = ({navigation, route}) => {
         <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]} onPress={addExercise}>
           <Text style={styles.btn_text}>Add Exercise</Text>
         </TouchableOpacity>
-
 
         </View>
       </BottomSheet>
