@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
       marginBottom: 25,
     },
     input_title: {
-      color: "#121212",
-      marginTop: -20,
+      fontSize: 40,
     },
     input_placeholder: {
       flex: 1,
@@ -65,7 +64,8 @@ const WorkoutLogDetail = ({navigation, route}) => {
   // Redux and navigation
   const userData = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const theme = useTheme();
+  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+  const theme = useTheme();  
   const navi = useNavigation();
 
   // Hooks
@@ -157,15 +157,16 @@ const WorkoutLogDetail = ({navigation, route}) => {
   return (
     <HideKeyboard>
     <View style={styles.container}>
+      <View style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
+        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>Workout Details</Text>
+        <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
 
-      <Text style={styles.input_title}>Details of workout</Text>
-      <Text>{route.params.name}</Text>
-      <Text>{route.params.id}</Text>
-
-      {
-      route.params.exercises.map(exercise =>
-      <Text key={exercise.exid}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight} - {exercise.exid}</Text>     
-      )}
+        <Text>{route.params.name}</Text>
+        
+        {
+        route.params.exercises.map(exercise =>
+        <Text key={exercise.exid}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight} - {exercise.exid}</Text>     
+        )}
 
       {/* Button to add exercises */}
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]}onPress={toggleBottomNavigationView}>
@@ -175,6 +176,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#e91d1d" }]} onPress={deleteWorkoutLog}>
         <Text style={styles.btn_text}>Delete Workout Log</Text>
       </TouchableOpacity>
+      </View>
 
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
         <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, alignItems:'center'}]}>
