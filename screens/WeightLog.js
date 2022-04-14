@@ -8,6 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-native-responsive-linechart'
 import { format } from 'date-fns'
 import {useSelector, useDispatch} from 'react-redux'
+import { updateUsername } from '../redux/actions/user';
 
 import config from '../backend/config/config.js'
 import { Logger } from './../components/styles'
@@ -195,9 +196,14 @@ const WeightLog = ({navigation}) => {
         axios(config2)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                // let data = userData.username;
+                let data = userData.username;
+                data.weightList.push({
+                    'weight': weight,
+                    'date': Date.now(),
+                })
+
                 // data.groupName = newGroupName;
-                // dispatch(updateUsername(data))
+                dispatch(updateUsername(data))
             })
             .catch(function (error) {
                 console.log(error);
@@ -278,6 +284,14 @@ const WeightLog = ({navigation}) => {
         return (
             <Text>Loading...</Text>
         )
+    }
+
+    const dataSetter = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            arr[i].x = i
+        }
+
+        setData(arr)
     }
 
     return (
@@ -400,10 +414,10 @@ const WeightLog = ({navigation}) => {
                             }}
                         /> */}
                         {data.length > 0  ? <Chart
-                            style={{ height: 250, width: '90%' }}
+                            style={{ height: 250, width: '90%'}}
                             data={data}
                             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-                            xDomain={{ min: data[0].x, max: data.length }}
+                            xDomain={{ min: 0, max: data.length}}
                             yDomain={{ min: min - 10, max: max + 10}}
                             viewport={{ size: { width: 5 }, initialOrigin: {x: 0} }}
                         >
@@ -464,9 +478,9 @@ const WeightLog = ({navigation}) => {
                                         if (allData.length > 7) {
                                             console.log('poggers')
                                             let arr = Array.from({length: 7}, (v, i) => allData[allData.length - 7 + i])
-                                            setData(arr)
+                                            dataSetter(arr)
                                         } else {
-                                            setData(allData);
+                                            dataSetter(allData);
                                         }
 
                                         setRender(!render);
@@ -494,9 +508,10 @@ const WeightLog = ({navigation}) => {
                             <TouchableOpacity
                                     onPress={() => {
                                         if (allData.length > 30) {
-                                            setData(Array.from({length: 30}, (v, i) => allData[allData.length - 30 + i]))
+                                            let arr = Array.from({length: 30}, (v, i) => allData[allData.length - 30 + i])
+                                            dataSetter(arr)
                                         } else {
-                                            setData(allData);
+                                            dataSetter(allData);
                                         }
 
                                         setRender(!render);
@@ -523,7 +538,7 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                     onPress={() => {
-                                        setData(allData);
+                                        dataSetter(allData);
                                         setRender(!render);
                                         setPoint(prevState => {
                                             return { 

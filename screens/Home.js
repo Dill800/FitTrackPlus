@@ -169,7 +169,8 @@ const Home = ({ navigation }) => {
       borderRadius: 15,
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0,
-      backgroundColor: theme.colors.secondary
+      backgroundColor: theme.colors.secondary,
+      color: theme.colors.text,
     },
     brock_button: {
       backgroundColor: theme.colors.primary,
@@ -191,6 +192,7 @@ const Home = ({ navigation }) => {
   const [goalModal, setGoalModal] = useState(false);
   const [goalWeight, setGoalWeight] = useState(0);
   const [streak, setStreak] = useState(0);
+  //const [currentWeight, setCurrentWeight] = useState(0);
 
   let friends = [];
   let friends2 = [];
@@ -379,7 +381,6 @@ const Home = ({ navigation }) => {
           width: 370,
           height: 100,
           paddingTop: 8,
-          marginBottom: 15,
         }}
       >
         <View
@@ -481,6 +482,18 @@ const Home = ({ navigation }) => {
   //   streakImageURL = require("../assets/pasta.png");
   // }
 
+  let currentWeight = 0;
+  let oldWeight = 0;
+  if (userData.username.weightList.length != 0) {
+    //userData.username.weightList[userData.username.weightList.length - 1];
+    //setCurrentWeight(userData.username.weightList[userData.username.weightList.length - 1]);
+    console.log("hi");
+    currentWeight = userData.username.weightList[userData.username.weightList.length - 1].weight;
+    if (userData.username.weightList.length > 1) {
+      oldWeight = userData.username.weightList[userData.username.weightList.length - 2].weight;
+    }
+  }
+
   //console.timeEnd();
   return (
     <View style={styles.container}>
@@ -492,7 +505,8 @@ const Home = ({ navigation }) => {
           <View style={styles.progress_box}>
             <Text style={styles.progress_title}>Current Weight:</Text>
             <Text style={styles.progress_value}>
-              {userData.username.currentWeight < userData.username.goalWeight ? userData.username.currentWeight + " lbs 🔼" : userData.username.currentWeight + " lbs 🔽"}
+              {currentWeight == oldWeight ? (currentWeight + " lbs") : 
+                (currentWeight < oldWeight ? (currentWeight + " lbs 🔽") : currentWeight + " lbs 🔼")}
             </Text>
           </View>
           <Modal
@@ -575,7 +589,7 @@ const Home = ({ navigation }) => {
               /> */}
         </View>
         <ScrollView horizontal={false} style={styles.box}>
-          <Text>{friends}</Text>
+          <View style={{flexGrow: 0}}>{friends}</View>
         </ScrollView>
       </View>
       <View style={styles.btn_box}>
