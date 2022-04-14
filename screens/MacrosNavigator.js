@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux'
 
 import Meals from './Meals'
 import Macros from './Macros'
+import ManualMeal from './ManualMeal'
 import EditMacros from './EditMacros'
 import MacroCalculator from './MacroCalculator'
 import reducers from "../redux/state/reducers";
@@ -70,6 +71,7 @@ const MacrosNavigator = ({navigation}) => {
                 <Stack.Screen name='Meals' options={options} component={Meals}/>
                 <Stack.Screen name='Edit Macros' options={options} component={EditMacros}/>
                 <Stack.Screen name='Macro Calculator' options={options} component={MacroCalculator}/>
+                <Stack.Screen name='Manual Meal' options={options} component={ManualMeal}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

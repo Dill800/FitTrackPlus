@@ -1,11 +1,14 @@
-import * as React from "react";
-
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
+import { TouchableWithoutFeedback, Keyboard, Text, View, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView} from 'react-native';
+import { useDrawerStatus } from "@react-navigation/drawer";
+import {useSelector, useDispatch} from 'react-redux'
 
 
 const Meals = ({navigation}) => {
 
+    const userData = useSelector(state => state.user);
+    const dispatch = useDispatch();
     const theme = useTheme();
 
     const styles = StyleSheet.create({
@@ -94,8 +97,12 @@ const Meals = ({navigation}) => {
     })
 
     const navi = useNavigation();
-    let foodList = [];
-    foodList.push(<View
+    let foodList = []
+
+    console.log("About to run for loop, list length: ", userData.username.mealList.length)
+    for(let i = 0; i < userData.username.mealList.length; i++) {
+        foodList.push(
+            <View
         style={{
             alignItems: "center",
             width: 370,
@@ -113,169 +120,15 @@ const Meals = ({navigation}) => {
                 height: "95%",
             }}
         >
-            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>Pizza</Text>
-            <Text style={styles.card_text}>{"Calories: 103"}</Text>
-            <Text style={styles.card_text}>{"Fat: 386"}</Text>
-            <Text style={styles.card_text}>{"Protein: 38 grams"}</Text>
-            <Text style={styles.card_text}>{"Carb: 38 grams "}</Text>
-            <Image
-                source={require('../assets/pizza.png')}
-                resizeMode='contain'
-                style={{
-                    position: "absolute",
-                    right: 15,
-                    bottom: 15,
-                    width: 100,
-                    height: 100,
-                }}
-            />
+            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
+            <Text style={styles.card_text}>{userData.username.mealList[i].calories}</Text>
+            <Text style={styles.card_text}>{userData.username.mealList[i].fat}</Text>
+            <Text style={styles.card_text}>{userData.username.mealList[i].protein}</Text>
+            <Text style={styles.card_text}>{userData.username.mealList[i].carbs}</Text>
         </View>
-    </View>)
-    foodList.push(<View
-        style={{
-            alignItems: "center",
-            width: 370,
-            height: 125,
-            paddingTop: 8,
-            marginBottom: 15,
-        }}
-    >
-        <View
-            style={{
-                backgroundColor: theme.colors.secondary,
-                borderRadius: 15,
-                padding: 15,
-                width: "95%",
-                height: "95%",
-            }}
-        >
-            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>Pasta</Text>
-            <Text style={styles.card_text}>{"Calories: 103"}</Text>
-            <Text style={styles.card_text}>{"Fat: 386"}</Text>
-            <Text style={styles.card_text}>{"Protein: 38 grams"}</Text>
-            <Text style={styles.card_text}>{"Carb: 38 grams "}</Text>
-            <Image
-                source={require('../assets/pasta.png')}
-                resizeMode='contain'
-                style={{
-                    position: "absolute",
-                    right: 15,
-                    bottom: 15,
-                    width: 100,
-                    height: 100,
-                    borderRadius: 15
-                }}
-            />
-        </View>
-    </View>)
-    foodList.push(<View
-        style={{
-            alignItems: "center",
-            width: 370,
-            height: 125,
-            paddingTop: 8,
-            marginBottom: 15,
-        }}
-    >
-        <View
-            style={{
-                backgroundColor: theme.colors.secondary,
-                borderRadius: 15,
-                padding: 15,
-                width: "95%",
-                height: "95%",
-            }}
-        >
-            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>Cupcake</Text>
-            <Text style={styles.card_text}>{"Calories: 103"}</Text>
-            <Text style={styles.card_text}>{"Fat: 38 grams"}</Text>
-            <Text style={styles.card_text}>{"Protein: 38 grams"}</Text>
-            <Text style={styles.card_text}>{"Carb: 38 grams "}</Text>
-            <Image
-                source={require('../assets/cupcake.png')}
-                resizeMode='contain'
-                style={{
-                    position: "absolute",
-                    right: 15,
-                    bottom: 15,
-                    width: 100,
-                    height: 100,
-                }}
-            />
-        </View>
-    </View>)
-    foodList.push(<View
-        style={{
-            alignItems: "center",
-            width: 370,
-            height: 125,
-            paddingTop: 8,
-            marginBottom: 15,
-        }}
-    >
-        <View
-            style={{
-                backgroundColor: theme.colors.secondary,
-                borderRadius: 15,
-                padding: 15,
-                width: "95%",
-                height: "95%",
-            }}
-        >
-            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>Pudding</Text>
-            <Text style={styles.card_text}>{"Calories: 103"}</Text>
-            <Text style={styles.card_text}>{"Fat: 386"}</Text>
-            <Text style={styles.card_text}>{"Protein: 38 grams"}</Text>
-            <Text style={styles.card_text}>{"Carb: 38 grams "}</Text>
-            <Image
-                source={require('../assets/pudding.png')}
-                resizeMode='contain'
-                style={{
-                    position: "absolute",
-                    right: 15,
-                    bottom: 15,
-                    width: 100,
-                    height: 100,
-                }}
-            />
-        </View>
-    </View>)
-    foodList.push(<View
-        style={{
-            alignItems: "center",
-            width: 370,
-            height: 125,
-            paddingTop: 8,
-            marginBottom: 15,
-        }}
-    >
-        <View
-            style={{
-                backgroundColor: theme.colors.secondary,
-                borderRadius: 15,
-                padding: 15,
-                width: "95%",
-                height: "95%",
-            }}
-        >
-            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>Greek Yogurt</Text>
-            <Text style={styles.card_text}>{"Calories: 103"}</Text>
-            <Text style={styles.card_text}>{"Fat: 386"}</Text>
-            <Text style={styles.card_text}>{"Protein: 38 grams"}</Text>
-            <Text style={styles.card_text}>{"Carb: 38 grams "}</Text>
-            <Image
-                source={require('../assets/greekYogurt.png')}
-                resizeMode='contain'
-                style={{
-                    position: "absolute",
-                    right: 15,
-                    bottom: 15,
-                    width: 100,
-                    height: 100,
-                }}
-            />
-        </View>
-    </View>);
+    </View>
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -298,20 +151,23 @@ const Meals = ({navigation}) => {
                 </View>
 
                 <ScrollView style={styles.box} horizontal={false}>
+
+                    
+                    {console.log("Rendering list")}
                     <Text>{foodList}</Text>
                 </ScrollView>
             </View>
             <View style={styles.btn_box}>
                 <TouchableOpacity
                     onPress={() => {
-                        navi.navigate("Macros");
+                        navi.navigate("Manual Meal");
                     }}
                     style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }]}
                 >
-                    <Text style={styles.btn_text}>Add Food</Text>
+                    <Text style={styles.btn_text}>Manually Add Meal</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => this.refresh()}
+                    onPress={() => {}}
                     style={[
                         styles.btn_shape,
                         { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },

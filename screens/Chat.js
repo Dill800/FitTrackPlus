@@ -235,6 +235,7 @@ const Chat = ({navigation})  => {
               
             chats2.push(chat);
             }
+            chats2.sort((a, b) => (a.date < b.date) ? 1 : -1)
             setLoading(false);
           })
           .catch(function (error) {

@@ -40,6 +40,7 @@ userRouter.get('/getWeightLog', userController.getWeightLog)
 userRouter.post('/addPfp', upload.single('photo'), userController.addPfp)
 userRouter.post('/updateGoalWeight', userController.updateGoalWeight)
 userRouter.post('/updateMacros', userController.updateMacros)
+userRouter.post('/addMeal', userController.addMeal)
 
 // Logging in as an existing user
 // userRouter.post('/login', userController.authenticate)
