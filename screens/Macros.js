@@ -269,7 +269,7 @@ const Macros = ({ navigation }) => {
                             { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }, 
                         ]}
                     >
-                        <Text style={styles.btn_text}>Add Food</Text>
+                        <Text style={styles.btn_text}>Meals</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
