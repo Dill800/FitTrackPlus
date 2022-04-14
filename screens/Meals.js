@@ -119,6 +119,9 @@ const Meals = ({navigation}) => {
       };
 
       const onChange = (event, selectedDate) => {
+          let d = new Date();
+          d.setHours(d.getHours() - 4);
+        console.log("oogd", d)
         const currentDate = new Date(selectedDate);
         setDate(new Date(selectedDate));
         currentDate.setDate(currentDate.getDate())

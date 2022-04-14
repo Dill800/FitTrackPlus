@@ -183,10 +183,12 @@ const ManualMeal = ({navigation}) => {
     
     const updateMeals = () => {
         let d = Date.now();
+        let goodDate = new Date();
+        goodDate.setHours(goodDate.getHours() - 4);
         var data = qs.stringify({
           'username': userData.username.username,
           'meal': {
-              'date': new Date(),
+              'date': goodDate,
               'mealName': mealName,
               'fat': fatCount,
               'protein': proteinCount,
@@ -206,9 +208,11 @@ const ManualMeal = ({navigation}) => {
         axios(config2)
         .then(function (response) {
           //console.log(JSON.stringify(response.data));
+          let goodDate = new Date();
+          goodDate.setHours(goodDate.getHours() - 4);
           let data = userData.username;
           data.mealList.push({
-            'date': new Date(),
+            'date': goodDate,
             'mealName': mealName,
             'fat': fatCount,
             'protein': proteinCount,
