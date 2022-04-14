@@ -104,6 +104,7 @@ const Meals = ({navigation}) => {
         }
     })
 
+
     const navi = useNavigation();
     const scrollViewRef = useRef();
     let foodList = []
@@ -111,6 +112,8 @@ const Meals = ({navigation}) => {
     const [date, setDate] = useState(new Date(Date.now()))
     const [visible, setVisible] = useState(false);
     const [actdate, setActdate] = useState(new Date(Date.now()))
+
+    const themeReducer = useSelector(({ themeReducer }) => themeReducer);
 
     const [sid, setSid] = useState(0)
 
@@ -185,7 +188,7 @@ const Meals = ({navigation}) => {
                 <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
                     <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
                     
-                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={'dark'} value={date} mode={'date'} onChange={onChange} display="inline"/>
+                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={themeReducer.theme ? "dark" : "light"} value={date} mode={'date'} onChange={onChange} display="inline"/>
                     <View style={{alignItems:'center', }}>
                     <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={toggleBottomNavigationView}>
                         <Text style={styles.btn_text}>Done</Text>
