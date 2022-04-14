@@ -459,7 +459,7 @@ rightArrowOverlap: {
                 }
             >
                   <View style={{paddingBottom: 30}}>
-                    <Text>{chats}</Text>
+                    <View style={{flexGrow: 0}}>{chats}</View>
                   </View>
             </ScrollView>
           </View>
