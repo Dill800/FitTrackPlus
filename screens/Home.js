@@ -441,7 +441,7 @@ const Home = ({ navigation }) => {
               //backgroundColor: theme.colors.secondary,
             }}
           >
-            <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text,}}>{friendsList[i].Username}</Text>
+            <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text, width: 1000}}>{friendsList[i].Username}</Text>
             <Text style={{ color: theme.colors.text }}>{"Streak: " + friendsList[i].Streak + "🔥"}</Text>
           </View>
           <View style={{ justifyContent: 'center', width: 50,}}>

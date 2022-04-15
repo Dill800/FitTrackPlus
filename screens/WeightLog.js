@@ -263,6 +263,7 @@ const WeightLog = ({navigation}) => {
                         //     max = biggerDog[i].weight
                         // }
                         console.log('uses effect like a boss')
+                        console.log(dater[i])
                       }
                     
                       setData(dater);

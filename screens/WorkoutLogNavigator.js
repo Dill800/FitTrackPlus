@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BottomSheet } from 'react-native-btr';
 import { updateUsername } from '../redux/actions/user';
@@ -43,12 +43,37 @@ const WorkoutLogNavigator = ({navigation}) => {
 
   const themeReducer = useSelector(({ themeReducer }) => themeReducer);
 
+  const options = {
+    headerShown: true, 
+    gestureEnabled: true,
+    headerStyle: {
+        backgroundColor: themeReducer.theme ? DarkerTheme.colors.primary : DefaulterTheme.colors.primary,
+        shadowColor: 'transparent',
+    },
+    headerTitleStyle: {
+        color: 'black'
+    },
+    headerTintColor: 'black',
+    headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Image
+                source={require('../assets/settings.png')}
+                style={{
+                    width: 25,
+                    height: 25,
+                    // right: 20
+                }}
+            />
+        </TouchableOpacity>
+    )
+  }
+
   return (
     <NavigationContainer theme={themeReducer.theme ? DarkerTheme : DefaulterTheme} independent={true}>
-      <Stack.Navigator initialRouteName='WorkoutLog'>
-        <Stack.Screen name='WorkoutLog' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDashboard}/>
-        <Stack.Screen name='WorkoutLogDetail' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDetail}/>
-        <Stack.Screen name='WorkoutGraphs' options={{headerShown: false, gestureEnabled: true}} component={WorkoutGraphs}/>
+      <Stack.Navigator initialRouteName='Workout Log'>
+        <Stack.Screen name='Workout Log' options={options} component={WorkoutLogDashboard}/>
+        <Stack.Screen name='Log Detail' options={options} component={WorkoutLogDetail}/>
+        <Stack.Screen name='Exercise Graphs' options={options} component={WorkoutGraphs}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -68,18 +93,19 @@ const WorkoutLogCard = (props) => {
         alignItems: "center",
         alignSelf: "center",
         width: 350,
-        height: 110,
+        height: 'auto',
         marginTop: 8,
+        marginBottom: 10
       }}
     >
       <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
-        onPress={() => navi.navigate("WorkoutLogDetail", props)}
+        onPress={() => navi.navigate("Log Detail", props)}
       >
-        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
-        <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
+        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, alignSelf: 'center'}}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
+        <View style={[{marginBottom: 5, borderBottomWidth: 1, }]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
         
-        {props.exercises.slice(0,3).map((exercise, index) =>
-          <Text key={""+exercise+index} style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+        {props.exercises.map((exercise, index) =>
+          <Text key={""+exercise+index} style={{color: theme.colors.text, paddingVertical: 2, fontSize: 15}}>• {exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
         )}
       </TouchableOpacity>
 
@@ -270,9 +296,14 @@ const WorkoutLogDashboard = ({navigation}) => {
     })
 
     dispatch(updateUsername(data))
+
+    toggleBottomNavigationView();
   }
 
 const navi = useNavigation();
+
+const passRef = useRef();
+const scrollViewRef = useRef();
 
 const populateExerciseArray = () => {
 
@@ -295,11 +326,16 @@ const populateExerciseArray = () => {
 
         <View style={[styles.exercise_container, {marginBottom: 10}]}>
 
-          <View style={[styles.title_box, { backgroundColor: "#66059e", marginVertical: 10 },]}>
+          <View style={[styles.title_box, { backgroundColor: "#66059e", marginVertical: 15 },]}>
             <Text style={styles.title}>All Workouts 🏋️</Text>
           </View>
 
-          <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}>
+          <ScrollView 
+              ref={scrollViewRef}
+              onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })} 
+              horizontal={false} style={styles.box} 
+              contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}
+          >
           
 
             {/* {userData.username.workoutlogList.map(workoutlog => */}
@@ -315,7 +351,7 @@ const populateExerciseArray = () => {
             <Text style={styles.btn_text}>Add New Workout</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]} onPress={() => navi.navigate("WorkoutGraphs", populateExerciseArray())}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]} onPress={() => navi.navigate("Exercise Graphs", populateExerciseArray())}>
             <Text style={styles.btn_text}>View Graphs</Text>
         </TouchableOpacity>
       </View>
