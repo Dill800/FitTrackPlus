@@ -98,7 +98,7 @@ const WorkoutLogCard = (props) => {
         marginBottom: 10
       }}
     >
-      <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
+      <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%",}}
         onPress={() => navi.navigate("Log Detail", props)}
       >
         <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, alignSelf: 'center'}}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
