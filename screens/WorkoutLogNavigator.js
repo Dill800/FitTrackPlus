@@ -68,18 +68,19 @@ const WorkoutLogCard = (props) => {
         alignItems: "center",
         alignSelf: "center",
         width: 350,
-        height: 110,
+        height: 'auto',
         marginTop: 8,
+        marginBottom: 10
       }}
     >
-      <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
+      <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height:'auto'}}
         onPress={() => navi.navigate("WorkoutLogDetail", props)}
       >
         <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, alignSelf: 'center'}}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
-        <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
+        <View style={[{marginBottom: 5, borderBottomWidth: 1, }]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
         
-        {props.exercises.slice(0,3).map((exercise, index) =>
-          <Text key={""+exercise+index} style={{color: theme.colors.text}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+        {props.exercises.map((exercise, index) =>
+          <Text key={""+exercise+index} style={{color: theme.colors.text, paddingVertical: 2, fontSize: 15}}>• {exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
         )}
       </TouchableOpacity>
 
