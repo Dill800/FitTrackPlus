@@ -133,14 +133,17 @@ const Login = ({navigation}) => {
 
     const toHomeScreen = () => {
        //console.time();
+        
 
         if(user === 'admin' && password === 'admin') {
             dispatch(updateUsername('admin'))
             navigation.navigate('Home')
         }
         else {
+            let userLower = user;
+            userLower = userLower.toLowerCase();
             axios.post('http://' + config.ipv4 + ':5000/user/login', {
-            username: user,
+            username: userLower,
             password: password
             })
             .then(response => {
@@ -199,6 +202,7 @@ const Login = ({navigation}) => {
                         style={styles.input}
                         placeholder='Username'
                         placeholderTextColor='grey'
+                        autocapitalize="none"
                         onChangeText={e => setUser(e)}
                         onSubmitEditing={() => {
                             passRef.current.focus();

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   Easing,
   TextInput,
@@ -6,6 +7,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import Constants from 'expo-constants';
 import Svg, { G, Circle, Rect } from 'react-native-svg';
@@ -34,9 +36,12 @@ export default function Donut({
 
 
   const isFocused = useIsFocused()
+  const [over100, setover100] = useState(false);
 
   //console.log(isFocused);
 
+  //let over100 = false;
+  
   const animation = (toValue) => {
     let num = 0;
     if (!isFocused) {
@@ -65,21 +70,44 @@ export default function Donut({
         animation(percentage);
     }
     animated.addListener((v) => {
-      const maxPerc = 100 * v.value / max;
-      let text2 = Math.round(v.value) + " g";
-      if (calorie) {
-          text2 = String(Math.round(v.value));
+      let maxPerc = 100 * v.value / max;
+      if (maxPerc > 100) {
+        setover100(true);
+        maxPerc = 100;
+        let text2 = Math.round(v.value) + " g";
+        if (calorie) {
+            text2 = String(Math.round(v.value));
+            //text2 = text2 + "/" + maxPerc;
+        }
+        const strokeDashoffset = circumference - (circumference * maxPerc) / 100;
+        if (inputRef?.current) {
+          inputRef.current.setNativeProps({
+            text: text2,
+          });
+        }
+        if (circleRef?.current) {
+          circleRef.current.setNativeProps({
+            strokeDashoffset,
+          });
+        }
       }
-      const strokeDashoffset = circumference - (circumference * maxPerc) / 100;
-      if (inputRef?.current) {
-        inputRef.current.setNativeProps({
-          text: text2,
-        });
-      }
-      if (circleRef?.current) {
-        circleRef.current.setNativeProps({
-          strokeDashoffset,
-        });
+      else {
+        setover100(false);
+        let text2 = Math.round(v.value) + " g";
+        if (calorie) {
+            text2 = String(Math.round(v.value));
+        }
+        const strokeDashoffset = circumference - (circumference * maxPerc) / 100;
+        if (inputRef?.current) {
+          inputRef.current.setNativeProps({
+            text: text2,
+          });
+        }
+        if (circleRef?.current) {
+          circleRef.current.setNativeProps({
+            strokeDashoffset,
+          });
+        }
       }
     }, [max, percentage]);
 
@@ -88,6 +116,7 @@ export default function Donut({
     };
   });
 
+  console.log(isFocused);
   return (
     <View style={{ width: radius * 2, height: radius * 2 }}>
       <Svg
@@ -133,7 +162,7 @@ export default function Donut({
         ]}
       />
       {/* <Text style={{textAlign:'center', color: color, textShadowColor: 'black', textShadowRadius: 0.5}}>{dataLabel}</Text> */}
-      <Text style={{textAlign:'center', color: color, fontWeight: '900'}}>{dataLabel}</Text>
+      <Text style={{textAlign:'center', color: color, fontWeight: '900'}}> {dataLabel} {over100 && '⚠️'}</Text>
       {/* <Text style={[
           StyleSheet.absoluteFillObject,
           { fontSize: radius / 2.5, color: textColor ?? color },

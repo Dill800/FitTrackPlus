@@ -472,7 +472,7 @@ const WeightLog = ({navigation}) => {
                             />
                         </Chart>
                         :
-                        <Text>Enter Weight</Text>}
+                        <Text styles={{color: theme.colors.text}}></Text>}
                         {/* <Text>{'hi ' + data.length}</Text> */}
                         <View style={styles.bottom_buttons}>
                             <TouchableOpacity

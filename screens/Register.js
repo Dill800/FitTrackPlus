@@ -44,9 +44,10 @@ const Register = ({navigation}) => {
         if(user === '' || password === '') {
             Alert.alert("Missing Fields", "Please enter a valid username and password.")
         }
-
+        let userLower = user;
+        userLower = userLower.toLowerCase();
         var data = qs.stringify({
-            'username': user,
+            'username': userLower,
             'passwordHash': password 
         });
 

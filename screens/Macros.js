@@ -14,6 +14,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
 import { useDrawerStatus } from "@react-navigation/drawer";
+import { useIsFocused } from '@react-navigation/native'
 
 const Macros = ({ navigation }) => {
 
@@ -114,7 +115,8 @@ const Macros = ({ navigation }) => {
 
     const navi = useNavigation();
     let foodList = [];
-
+    const isFocused = useIsFocused()
+    console.log(isFocused);
 
 
     foodList.push(<View
@@ -134,21 +136,21 @@ const Macros = ({ navigation }) => {
     console.log("fatpie ", fatPie);
     let proteinPie = Math.round((userData.username.currentProtein * 4) / userData.username.currentCalorie) * 100;
     let carbPie = Math.round((userData.username.currentCarb * 4) / userData.username.currentCalorie) * 100;
-    let pieData = [
-        { x: 1, y: {fatPie}, label: "Fat" },
-        { x: 2, y: {proteinPie}, label: "Protein"},
-        { x: 3, y: {carbPie}, label: "Carbs" }
-    ];
-    if (fatPie == 0 || isNaN(fatPie)) {
-        pieData[0] = {};
-        //console.log("hit");
-    }
-    if (proteinPie == 0 || isNaN(proteinPie)) {
-        pieData[1] = {};
-    }
-    if (carbPie == 0 || isNaN(carbPie)) {
-        pieData[2] = {};
-    }
+    // let pieData = [
+    //     { x: 1, y: {fatPie}, label: "Fat" },
+    //     { x: 2, y: {proteinPie}, label: "Protein"},
+    //     { x: 3, y: {carbPie}, label: "Carbs" }
+    // ];
+    // if (fatPie == 0 || isNaN(fatPie)) {
+    //     pieData[0] = {};
+    //     //console.log("hit");
+    // }
+    // if (proteinPie == 0 || isNaN(proteinPie)) {
+    //     pieData[1] = {};
+    // }
+    // if (carbPie == 0 || isNaN(carbPie)) {
+    //     pieData[2] = {};
+    // }
 
     
 
@@ -315,7 +317,7 @@ const Macros = ({ navigation }) => {
                 </View>
 
 
-                <View style={styles.btn_box}>
+                <View style={[styles.btn_box, {marginTop: 40}]}>
                     <TouchableOpacity
                         onPress={() => {
                             navi.navigate("Meals");
@@ -340,25 +342,7 @@ const Macros = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ color: theme.colors.text, paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: {userData.username.currentCalorie}</Text>
-                <VictoryPie
-                    //padAngle={({ datum }) => datum.y}
-                    // innerRadius={0}
-                    colorScale={["skyblue", "gold", "forestgreen"]}
-                    // padAngle={0}
-                    data={pieData}
-                    style={{
-                        labels: {
-                            fill: theme.colors.text
-                        }
-                    }}
-
-
-                />
-
-                <View style={{ padding: 50 }}>
-                    <Text></Text>
-                </View>
+              
 
             </ScrollView>
         </View>

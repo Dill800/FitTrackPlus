@@ -421,27 +421,85 @@ const Home = ({ navigation }) => {
     )
   }
 
+  let sumCals = () => {
+    let x = 0;
+    for(let i = 0; i < userData.username.mealList.length; i++) {
+        let date = new Date(userData.username.mealList[i].date)
+        let today = new Date()
+        //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+        //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+        let meal = userData.username.mealList[i];
+        if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+            x = x + parseInt(meal.calories);
+        }
+    }
+    return x;
+  }
+  //sumCals()
+
+  let sumProt = () => {
+      let x = 0;
+      for(let i = 0; i < userData.username.mealList.length; i++) {
+          let date = new Date(userData.username.mealList[i].date)
+          let today = new Date()
+          //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+          //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+          let meal = userData.username.mealList[i];
+          if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+              x = x + parseInt(meal.protein);
+          }
+      }
+      return x;
+  }
+  //sumProt()
+
+  let sumFat = () => {
+      let x = 0;
+      for(let i = 0; i < userData.username.mealList.length; i++) {
+          let date = new Date(userData.username.mealList[i].date)
+          let today = new Date()
+          let meal = userData.username.mealList[i];
+          if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+              x = x + parseInt(meal.fat);
+          }
+      }
+      return x;
+  }
+  //sumFat()
+
+  let sumCarbs = () => {
+      let x = 0;
+      for(let i = 0; i < userData.username.mealList.length; i++) {
+          let date = new Date(userData.username.mealList[i].date)
+          let today = new Date()
+          let meal = userData.username.mealList[i];
+          if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+              x = x + parseInt(meal.carbs);
+          }
+      }
+      return x;
+  }
 
   const donutData = [{
-    percentage: 1700,
+    percentage: sumCals(),
     color: 'tomato',
     max: 2400,
     calorie: true,
     dataLabel: "calorie"
   }, {
-    percentage: 76,
+    percentage: sumFat(),
     color: 'skyblue',
     max: 92,
     calorie: false,
     dataLabel: "fat"
   }, {
-    percentage: 130,
+    percentage: sumProt(),
     color: 'gold',
     max: 150,
     calorie: false,
     dataLabel: "protein"
   }, {
-    percentage: 200,
+    percentage: sumCarbs(),
     color: 'forestgreen',
     max: 400,
     calorie: false,
@@ -494,6 +552,7 @@ const Home = ({ navigation }) => {
     }
   }
 
+  //sumCarbs()
   //console.timeEnd();
   return (
     <View style={styles.container}>
@@ -528,7 +587,7 @@ const Home = ({ navigation }) => {
                     placeholder='Submit'
                     placeholderTextColor='grey'
                     onChangeText={e => setGoalWeight(e)}
-                    value={goalWeight+""}
+                    value={goalWeight}
                   />
                   <TouchableOpacity
                     onPress={() => {
@@ -536,6 +595,7 @@ const Home = ({ navigation }) => {
                       //console.log("hit");
                       updateGoalWeight();
                       setGoalWeight('');
+                      setGoalModal(!goalModal);
                     }}
                     style={styles.brock_button}
                   >
