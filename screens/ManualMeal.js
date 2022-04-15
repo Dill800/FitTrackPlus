@@ -436,15 +436,7 @@ const ManualMeal = ({navigation}) => {
                     <Text style={styles.btn_text}>Search Foods 🔍</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate("Meals")
-                        console.log(userData.username)
-                    }}
-                    style={[styles.btn_shape, { backgroundColor: "red" }]}
-                >
-                    <Text style={styles.btn_text}>Back to Meals</Text>
-                </TouchableOpacity>
+              
 
               </View>
             </View>

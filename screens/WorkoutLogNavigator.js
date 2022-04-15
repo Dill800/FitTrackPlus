@@ -295,11 +295,11 @@ const navi = useNavigation();
         </View>
 
       <View style={styles.btn_box}>
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={toggleBottomNavigationView}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]}onPress={toggleBottomNavigationView}>
             <Text style={styles.btn_text}>Add New Workout</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#27833e" }]} onPress={() => navi.navigate("WorkoutGraphs")}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]} onPress={() => navi.navigate("WorkoutGraphs")}>
             <Text style={styles.btn_text}>View Graphs</Text>
         </TouchableOpacity>
       </View>
