@@ -25,6 +25,7 @@ const DarkerTheme = {
     secondary: '#404040',
     card: '#181818',
     text: 'white',
+    third: "rgba(153,50,245,1)",
   },
 };
 
@@ -34,7 +35,8 @@ const DefaulterTheme = {
       background: '#f2f2f2',
       secondary: 'white',
       card: '#d5dadf',
-      text: 'black'
+      text: 'black',
+      third: 'rgba(178,108,233,1)',
   }
 }
 
@@ -140,7 +142,7 @@ const WorkoutLogDashboard = ({navigation}) => {
       justifyContent: "center",
     },
     title: {
-      color: "rgba(255,255,255,1)",
+      color: theme.colors.text,
       fontSize: 22,
       alignSelf: "center",
     },
@@ -196,7 +198,7 @@ const WorkoutLogDashboard = ({navigation}) => {
       justifyContent: "center",
     },
     btn_text: {
-      color: "rgba(255,255,255,1)",
+      color: theme.colors.text,
       fontSize: 16,
       textAlign: "center",
       fontWeight: "bold",
@@ -326,7 +328,7 @@ const populateExerciseArray = () => {
 
         <View style={[styles.exercise_container, {marginBottom: 10}]}>
 
-          <View style={[styles.title_box, { backgroundColor: "#66059e", marginVertical: 15 },]}>
+          <View style={[styles.title_box, { backgroundColor: theme.colors.third, marginVertical: 10 },]}>
             <Text style={styles.title}>All Workouts 🏋️</Text>
           </View>
 
@@ -347,11 +349,11 @@ const populateExerciseArray = () => {
         </View>
 
       <View style={styles.btn_box}>
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]}onPress={toggleBottomNavigationView}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: theme.colors.third, marginHorizontal: 10  }]}onPress={toggleBottomNavigationView}>
             <Text style={styles.btn_text}>Add New Workout</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]} onPress={() => navi.navigate("Exercise Graphs", populateExerciseArray())}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: theme.colors.third, marginHorizontal: 10  }]} onPress={() => navi.navigate("Exercise Graphs", populateExerciseArray())}>
             <Text style={styles.btn_text}>View Graphs</Text>
         </TouchableOpacity>
       </View>

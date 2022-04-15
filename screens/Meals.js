@@ -34,7 +34,7 @@ const Meals = ({navigation}) => {
             justifyContent: "center",
         },
         title: {
-            color: "rgba(255,255,255,1)",
+            color: theme.colors.text,
             fontSize: 22,
             alignSelf: "center",
         },
@@ -88,7 +88,7 @@ const Meals = ({navigation}) => {
             justifyContent: "center",
         },
         btn_text: {
-            color: "rgba(255,255,255,1)",
+            color: theme.colors.text,
             fontSize: 16,
             textAlign: "center",
             fontWeight: "bold",
@@ -213,7 +213,7 @@ const Meals = ({navigation}) => {
                 <View
                     style={[
                         styles.title_box,
-                        { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10, marginTop:-50 },
+                        { backgroundColor: theme.colors.third, marginVertical: 10, marginTop:-50 },
                     ]}
                 >
                     <Text style={styles.title}>Meals</Text>
@@ -235,7 +235,7 @@ const Meals = ({navigation}) => {
                     onPress={() => {
                         navi.navigate("Add Meal");
                     }}
-                    style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }]}
+                    style={[styles.btn_shape, { backgroundColor: theme.colors.third, marginHorizontal: 10 }]}
                 >
                     <Text style={[styles.btn_text]}>Add Meal</Text>
                 </TouchableOpacity>

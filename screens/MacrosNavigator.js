@@ -21,6 +21,7 @@ const DarkerTheme = {
       secondary: '#404040',
       card: '#181818',
       text: 'white',
+      third: "rgba(153,50,245,1)",
     },
 };
 
@@ -31,7 +32,8 @@ const DefaulterTheme = {
         background: '#f2f2f2',
         secondary: 'white',
         card: '#d5dadf',
-        text: 'black'
+        text: 'black',
+        third: 'rgba(178,108,233,1)',
     }
 }
 

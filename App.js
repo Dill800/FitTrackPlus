@@ -13,6 +13,7 @@ import Meals from './screens/Meals'
 import Macros from './screens/Macros'
 import EditMacros from './screens/EditMacros'
 import WeightLog from './screens/WeightLog'
+import Chat from './screens/Chat';
 
 import WorkoutLogNavigator from './screens/WorkoutLogNavigator'
 
@@ -37,7 +38,7 @@ const DarkerTheme = {
     secondary: '#404040',
     card: '#181818',
     text: 'white',
-    third: '#60C287',
+    third: "rgba(153,50,245,1)",
   },
 };
 
@@ -49,7 +50,7 @@ const DefaulterTheme = {
       secondary: 'white',
       card: '#d5dadf',
       text: 'black',
-      third: '#BCDAC8',
+      third: 'rgba(178,108,233,1)',
   }
 }
 
