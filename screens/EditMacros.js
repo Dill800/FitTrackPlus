@@ -211,12 +211,7 @@ const EditMacros = ({navigation}) => {
                     <Text style={styles.btn_text}>Macro Calculator</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Macros")}
-                    style={[styles.btn_shape, { backgroundColor: "red" }]}
-                >
-                    <Text style={styles.btn_text}>Back to Macros</Text>
-                </TouchableOpacity>
+                
               </View>
             </View>
           </Macros>

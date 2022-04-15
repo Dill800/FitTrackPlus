@@ -116,7 +116,7 @@ export default function Donut({
     };
   });
 
-  console.log(isFocused);
+  //console.log(isFocused);
   return (
     <View style={{ width: radius * 2, height: radius * 2 }}>
       <Svg

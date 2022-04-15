@@ -219,12 +219,12 @@ const MacroCalculator = ({navigation}) => {
     // const [carbCount, setCarbCount] = useState(0);
     // const [calorieCount, setCalorieCount] = useState(0);
 
-    const [selectedAge, setSelectedAge] = useState('18');
+    const [selectedAge, setSelectedAge] = useState('0');
     const [selectedGender, setSelectedGender] = React.useState('');
-    const [selectedFoot, setSelectedFoot] = useState('5');
-    const [selectedInch, setSelectedInch] = useState('5');
+    const [selectedFoot, setSelectedFoot] = useState(0);
+    const [selectedInch, setSelectedInch] = useState(0);
     const [selectedWeight, setSelectedWeight] = useState('');
-    const [selectedActivity, setSelectedActivity] = useState('');
+    const [selectedActivity, setSelectedActivity] = useState(1);
     
 
     //setCalorieCount((fatCount * 9) + (proteinCount * 4) + (carbCount * 4));
@@ -235,18 +235,29 @@ const MacroCalculator = ({navigation}) => {
     let fatAmount = 0;
 
     const calculateMacros = () => { 
+        // console.log("age", selectedAge);
+        // console.log("gender", selectedGender);
+        // console.log("ft", selectedFoot);
+        // console.log("in", selectedInch);
+        // console.log("lbs", selectedWeight);
+        // console.log("act", selectedActivity);
         let totalCalories = 0;
 
         let kg = selectedWeight / 2.2046;
+        //console.log("brock,", 12 * selectedFoot);
         let totalInches = (12 * selectedFoot) + selectedInch;
         let cm = totalInches * 2.54;
         let bmr = 0;
+        // console.log("kg", kg);
+        // console.log("cm", cm);
         if (selectedGender == "Male") {
             bmr = (10 * kg) + (6.25 * cm) - (5 * selectedAge) + 5;
+            //console.log("breh", bmr);
         }
         else {
             bmr = (10 * kg) + (6.25 * cm) - (5 * selectedAge) - 161;
         }
+        //console.log("bmr ", bmr);
         
         if (selectedActivity == 1) {
             totalCalories = bmr * 1.2;
@@ -496,12 +507,7 @@ const MacroCalculator = ({navigation}) => {
                 </TouchableOpacity>
                 
 
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Macros")}
-                    style={[styles.btn_shape, { backgroundColor: "red" }]}
-                >
-                    <Text style={styles.btn_text}>Back to Macros</Text>
-                </TouchableOpacity>
+                
               </View>
             </View>
           </Macros>
