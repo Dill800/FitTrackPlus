@@ -10,6 +10,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import axios from 'axios'
 import qs from 'qs'
 import config from '../backend/config/config.js'
+import { InputLeftAddon } from 'native-base';
 
 const fetch = require("node-fetch");
 
@@ -410,29 +411,32 @@ const ManualMeal = ({navigation}) => {
                   >
                     <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                          <Text style={styles.modalText}>Enter food and portion (grams)</Text>
+                          <Text style={[styles.modalText, ]}>Enter Food Data</Text>
                           <View style={[styles.inputView, { flexDirection: 'column', height: 100, width: '100%', marginBottom: 0 }]}>
+                          <Text style={[styles.input_title, {marginRight: 210, marginBottom: 10, textAlign: 'left'}]}>Food:</Text>
+                            <TextInput
+                              
+                              style={[styles.input,{ flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 20, width: 250 }]}
+                              placeholder='Name of Food'
+                              placeholderTextColor='grey'
+                              onChangeText={e => setFoodSearch(e)}
+                              value={getFoodSearch}
+                            />
+                            <Text style={[styles.input_title, {marginRight: 200, marginBottom: 10}]}>Portion:</Text>
                             <TextInput
                               style={[styles.input,
-                              { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%' }]}
-                              placeholder='Default 100 g'
+                              { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: 250 }]}
+                              placeholder='Default: 100g'
                               placeholderTextColor='grey'
                               keyboardType="numeric"
                               onChangeText={e => setPortion(e)}
                               value={getPortion}
                             />
-                            <TextInput
-                              
-                              style={[styles.input,{ flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%' }]}
-                              placeholder='Enter name of a food'
-                              placeholderTextColor='grey'
-                              onChangeText={e => setFoodSearch(e)}
-                              value={getFoodSearch}
-                            />
+                            
 
 
                             <TouchableOpacity
-                              style={[styles.button, styles.buttonClose, { marginTop: 0, width: '20%' }]}
+                              style={[styles.btn_shape, styles.buttonClose, { marginTop: 30 }]}
                               onPress={() => {
                                 findFood();
                                 setModalVisible(false);
@@ -443,7 +447,7 @@ const ManualMeal = ({navigation}) => {
                             </TouchableOpacity>
                           </View>
                           <TouchableOpacity
-                            style={[styles.button, styles.buttonClose, {marginTop: 50}]}
+                            style={[styles.btn_shape, styles.buttonClose, {marginTop: 150}]}
                             onPress={() => setModalVisible(false)}
                           >
                             <Text style={styles.textStyle}>Return</Text>
