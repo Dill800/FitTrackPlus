@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import DropdownMenu from 'react-native-dropdown-menu';
+import { useSelector, useDispatch } from 'react-redux'
+
 import { View, Text, StyleSheet } from "react-native";
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
-import DropDownPicker from 'react-native-dropdown-picker'
 
 const WorkoutGraphs = (exercises) => {
     
   const [exerciseForGraph, setSelectedExercise] = useState('')
   const userData = useSelector(state => state.user);
 
-  const exercises = new Array
+  const exerciseData = new Array()
 
   const populateExerciseArray = () => {
 
@@ -42,13 +43,13 @@ const WorkoutGraphs = (exercises) => {
           populateExerciseArray()
           setSelectedExercise(exercises[selection][row])}
         }
-        data={data}
+        data={exerciseData}
       >
 
         <View style={{flex: 1}}>
           <Text>
             {/* configure gaph */}
-            {this.state.text} is the best language in the world
+            {exerciseForGraph} is selected for graph
           </Text>
         </View>
 
