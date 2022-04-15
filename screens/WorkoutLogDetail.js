@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { BottomSheet } from 'react-native-btr';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert, ScrollView } from 'react-native';
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
 import { updateUsername } from '../redux/actions/user';
 import dateformat from "dateformat";
@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import axios from 'axios'
 import config from '../backend/config/config.js'
+//import { ScrollView } from 'native-base';
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -95,7 +96,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
       width: "95%",
       alignSelf: "center",
       justifyContent: "center",
-      top: 300
+      marginTop: 20
   },
 });
 
@@ -257,6 +258,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
   }
 
   return (
+    <ScrollView>
     <HideKeyboard>
     <View style={styles.container}>
       <View style={{backgroundColor: theme.colors.card, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
@@ -331,6 +333,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
     </View>
     </HideKeyboard>
+    </ScrollView>
   );
 }
 
