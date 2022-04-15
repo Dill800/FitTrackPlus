@@ -101,7 +101,29 @@ const WorkoutGraph = ({navigation}) => {
         bottom_buttons: {
             flex: 1,
             flexDirection: 'row'
-        }
+        },
+        dropdown2BtnStyle: {
+            width: '80%',
+            height: 50,
+            backgroundColor: theme.colors.secondary,
+            borderRadius: 8,
+          },
+          dropdown2BtnTxtStyle: {
+            color: theme.colors.text,
+            textAlign: 'center',
+            fontWeight: 'bold',
+          },
+          dropdown2DropdownStyle: {
+            backgroundColor: theme.colors.secondary,
+            borderBottomLeftRadius: 12,
+            borderBottomRightRadius: 12,
+          },
+          dropdown2RowStyle: {backgroundColor: theme.colors.secondary, borderBottomColor: 'transparent'},
+          dropdown2RowTxtStyle: {
+            color: theme.colors.text,
+            textAlign: 'center',
+            fontWeight: 'bold',
+          },
     })
 
     const navi = useNavigation();
@@ -390,7 +412,7 @@ const WorkoutGraph = ({navigation}) => {
             <Logger>
                 <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>1RM Graphs</Text>
                 <View style={styles.container}>
-                    <View style={styles.box}>
+                    <View style={[styles.box, {alignItems: 'center'}]}>
                         <Text style={styles.title}>Select Exercise</Text>
                         <View style={styles.inputView}>
                             
@@ -432,6 +454,12 @@ const WorkoutGraph = ({navigation}) => {
                             // if data array is an array of objects then return item.property to represent item in dropdown
                             return item
                           }}
+                          buttonStyle={styles.dropdown2BtnStyle}
+                          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                          dropdownIconPosition={'right'}
+                          dropdownStyle={styles.dropdown2DropdownStyle}
+                          rowStyle={styles.dropdown2RowStyle}
+                          rowTextStyle={styles.dropdown2RowTxtStyle}
                         />
 
 

@@ -148,7 +148,7 @@ const Chat = ({ navigation }) => {
       backgroundColor: "#2196F3",
     },
     textStyle: {
-      color: "white",
+      color: theme.colors.text,
       fontWeight: "bold",
       textAlign: "center"
     },
@@ -443,7 +443,7 @@ const Chat = ({ navigation }) => {
           style={[
             styles.title_box,
             {
-              backgroundColor: "rgba(178,108,233,1)", marginVertical: 10,
+              backgroundColor: theme.colors.third, marginVertical: 10,
             },
           ]}
         >
@@ -483,7 +483,7 @@ const Chat = ({ navigation }) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Create Post</Text>
-                  <View style={[styles.inputView, { flexDirection: 'column', height: 410, width: '100%', marginBottom: 0, }]}>
+                  <View style={[styles.inputView, { flexDirection: 'column', height: 435, width: '100%', marginBottom: 0, }]}>
                     <TextInput
                       style={[styles.input,
                       { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: '70%' }]}
@@ -512,13 +512,13 @@ const Chat = ({ navigation }) => {
 
                   </View>
                   <TouchableOpacity
-                      style={[styles.button, styles.buttonClose, { marginTop: 30, width: '20%', }]}
+                      style={[styles.btn_shape, styles.buttonClose, { marginTop: 15, width: '20%', backgroundColor: theme.colors.third }]}
                       onPress={() => post()}
                     >
                       <Text style={styles.textStyle}>Post</Text>
                     </TouchableOpacity>
                   <TouchableOpacity
-                    style={[styles.button, styles.buttonClose, { width: '20%' }]}
+                    style={[styles.btn_shape, styles.buttonClose, { marginTop: 15, width: '20%', backgroundColor: theme.colors.third}]}
                     onPress={() => setPostModal(false)}
                   >
                     <Text style={styles.textStyle}>Return</Text>
@@ -542,7 +542,7 @@ const Chat = ({ navigation }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={[styles.modalText, { marginBottom: 0, height: 50, }]}>Comments:</Text>
+              <Text style={[styles.modalText, { marginBottom: 0, height: 45, }]}>Comments:</Text>
               <View style={[styles.comment_input, { marginBottom: 10 }]}>
                 <TextInput
                   style={styles.input}
@@ -575,7 +575,7 @@ const Chat = ({ navigation }) => {
                 </View>
               </ScrollView>
               <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
+                style={[styles.btn_shape, styles.buttonClose, {backgroundColor: theme.colors.third, marginTop: 30}]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.textStyle}>Return</Text>
@@ -584,7 +584,7 @@ const Chat = ({ navigation }) => {
           </View>
         </Modal>
         <TouchableOpacity
-          style={[styles.button, styles.buttonClose,]}
+          style={[styles.btn_shape, styles.buttonClose, {backgroundColor: theme.colors.third, marginTop: 25}]}
           onPress={() => setPostModal(true)}
         >
           <Text style={styles.textStyle}>Create Post</Text>

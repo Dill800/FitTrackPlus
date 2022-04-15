@@ -48,7 +48,7 @@ const Macros = ({ navigation }) => {
             justifyContent: "center",
         },
         title: {
-            color: "rgba(255,255,255,1)",
+            color: theme.colors.text,
             fontSize: 22,
             alignSelf: "center",
         },
@@ -103,7 +103,7 @@ const Macros = ({ navigation }) => {
             justifyContent: "center",
         },
         btn_text: {
-            color: "rgba(255,255,255,1)",
+            color: theme.colors.text,
             fontSize: 16,
             textAlign: "center",
             fontWeight: "bold",
@@ -280,7 +280,7 @@ const Macros = ({ navigation }) => {
                     <View
                         style={[
                             styles.title_box,
-                            { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10 },
+                            { backgroundColor: theme.colors.third, marginVertical: 10 },
                         ]}
                     >
                         <Text style={styles.title}>Today's Progress</Text>
@@ -324,7 +324,7 @@ const Macros = ({ navigation }) => {
                         }}
                         style={[
                             styles.btn_shape,
-                            { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }, 
+                            { backgroundColor: theme.colors.third, marginHorizontal: 10 }, 
                         ]}
                     >
                         <Text style={styles.btn_text}>Meals</Text>
@@ -335,7 +335,7 @@ const Macros = ({ navigation }) => {
                         }}
                         style={[
                             styles.btn_shape,
-                            { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 },
+                            { backgroundColor: theme.colors.third, marginHorizontal: 10 },
                         ]}
                     >
                         <Text style={styles.btn_text}>Adjust Macros</Text>

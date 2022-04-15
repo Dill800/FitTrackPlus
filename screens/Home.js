@@ -144,7 +144,7 @@ const Home = ({ navigation }) => {
       backgroundColor: "#2196F3",
     },
     textStyle: {
-      color: "white",
+      color: theme.colors.text,
       fontWeight: "bold",
       textAlign: "center"
     },
@@ -791,7 +791,10 @@ const Home = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
+                style={[
+                  styles.btn_shape,
+                  { backgroundColor: theme.colors.third, marginHorizontal: 10, padding: 10 },
+                ]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.textStyle}>Return</Text>
