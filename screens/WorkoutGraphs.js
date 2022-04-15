@@ -404,18 +404,18 @@ const WorkoutGraph = ({navigation}) => {
       //console.log('megadata: ',megaData)
 
       //console.log('megadata: ',megaData)
-      for (let i = 0; i < megaData.length; i++) {
+      for (let exercises in megaData) {
             console.log("hi");
-            console.log(megaData[i].toLowerCase());
-            if (megaData[i].toLowerCase() == "squat") {
+            // console.log(megaData[i].toLowerCase());
+            if (megaData[exercises].toLowerCase() == "squat") {
             
                 console.log("squat");
             }
-            else if (megaData[i].toLowerCase().substring(0,5) == "bench") {
+            else if (megaData[exercises].toLowerCase().substring(0,5) == "bench") {
                // megaData[i].name;
                 console.log("bench");
             }
-            else if (megaData[i].toLowerCase() == "deadlift") {
+            else if (megaData[exercises].toLowerCase() == "deadlift") {
                 //megaData[i].name;
                 console.log("dead");
             }

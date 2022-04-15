@@ -49,7 +49,7 @@ const MacroCalculator = ({navigation}) => {
         marginBottom: 20,
       },
       input_box2: {
-        width: "75%",
+        width: "80%",
         height: 65,
         marginBottom: 20,
         flexDirection: 'row',
@@ -139,7 +139,7 @@ const MacroCalculator = ({navigation}) => {
       },
       pickerAgeItem : {
           height: 120,
-          width: 75,
+          width: 100,
           backgroundColor: theme.colors.sec,
           alignSelf: 'center', 
           borderRadius: 10,
@@ -175,11 +175,11 @@ const MacroCalculator = ({navigation}) => {
         //left: -0.5,
         //overflow: 'hidden',
         //borderRadius: 10
-        marginLeft: 6
+        marginLeft: 12
     },
     pickerHeightInchItem : {
         height: 120,
-        width: 75,
+        width: 90,
         //backgroundColor: theme.colors.sec,
         alignSelf: 'center', 
         //borderRadius: 10,
@@ -280,10 +280,11 @@ const MacroCalculator = ({navigation}) => {
         totalCalories = Math.round(totalCalories);
         console.log(totalCalories);
 
-        if (userData.username.currentWeight < userData.username.goalWeight) {
+        let currentWeight = userData.username.weightList[userData.username.weightList.length - 1].weight;
+        if (currentWeight < userData.username.goalWeight) {
             totalCalories = totalCalories + 300;
         }
-        else if (userData.username.currentWeight > userData.username.goalWeight) {
+        else if (currentWeight > userData.username.goalWeight) {
             totalCalories = totalCalories - 300;
         }
         console.log(totalCalories);

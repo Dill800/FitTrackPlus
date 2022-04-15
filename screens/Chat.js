@@ -564,7 +564,7 @@ const Chat = ({ navigation }) => {
                   }}
                   style={styles.brock_button}
                 >
-                  <Text>🔎</Text>
+                  <Text>📤</Text>
                 </TouchableOpacity>
               </View>
               <ScrollView extraScrollHeight={300} horizontal={false} style={styles.box}

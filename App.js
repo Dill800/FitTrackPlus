@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react'
 import {NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 //import { createDrawerNavigator } from '@react-navigation/drawer';
+import {useDispatch} from 'react-redux'
 
 import Login from './screens/Login'
 import Home from './screens/Home'
