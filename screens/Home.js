@@ -591,6 +591,7 @@ const Home = ({ navigation }) => {
   //sumCarbs()
   //console.timeEnd();
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.progress}>
         <View style={styles.title_box}>
@@ -839,6 +840,7 @@ const Home = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 }
 
