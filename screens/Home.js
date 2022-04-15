@@ -190,7 +190,9 @@ const Home = ({ navigation }) => {
   const [newGroupName, setGroupName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goalModal, setGoalModal] = useState(false);
+  const [wodalVisible, setWodalVisible] = useState(false);
   const [goalWeight, setGoalWeight] = useState(0);
+  const [currWeight, setCurrWeight] = useState(0);
   const [streak, setStreak] = useState(0);
   //const [currentWeight, setCurrentWeight] = useState(0);
 
@@ -335,6 +337,40 @@ const Home = ({ navigation }) => {
       });
   }
 
+  const updateCurrWeight = () => {
+
+    navigation.navigate("Macros")
+    return;
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'weight': currWeight,
+    });
+    var config2 = {
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/user/addWeight',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+    };
+
+    axios(config2)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+        let data = userData.username;
+        data.weightList.push({
+          'weight': currWeight,
+          'date': new Date()
+        })
+        dispatch(updateUsername(data));
+        //.username.goalWeight);
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   const CheckInFunction = () => {
     var data = qs.stringify({
       'username': userData.username.username
@@ -421,27 +457,85 @@ const Home = ({ navigation }) => {
     )
   }
 
+  let sumCals = () => {
+    let x = 0;
+    for(let i = 0; i < userData.username.mealList.length; i++) {
+        let date = new Date(userData.username.mealList[i].date)
+        let today = new Date()
+        //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+        //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+        let meal = userData.username.mealList[i];
+        if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+            x = x + parseInt(meal.calories);
+        }
+    }
+    return x;
+  }
+  //sumCals()
+
+  let sumProt = () => {
+      let x = 0;
+      for(let i = 0; i < userData.username.mealList.length; i++) {
+          let date = new Date(userData.username.mealList[i].date)
+          let today = new Date()
+          //console.log(today.getDate(), today.getMonth(), today.getFullYear())
+          //console.log(date.getDate(), date.getMonth(), date.getFullYear())
+          let meal = userData.username.mealList[i];
+          if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+              x = x + parseInt(meal.protein);
+          }
+      }
+      return x;
+  }
+  //sumProt()
+
+  let sumFat = () => {
+      let x = 0;
+      for(let i = 0; i < userData.username.mealList.length; i++) {
+          let date = new Date(userData.username.mealList[i].date)
+          let today = new Date()
+          let meal = userData.username.mealList[i];
+          if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+              x = x + parseInt(meal.fat);
+          }
+      }
+      return x;
+  }
+  //sumFat()
+
+  let sumCarbs = () => {
+      let x = 0;
+      for(let i = 0; i < userData.username.mealList.length; i++) {
+          let date = new Date(userData.username.mealList[i].date)
+          let today = new Date()
+          let meal = userData.username.mealList[i];
+          if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+              x = x + parseInt(meal.carbs);
+          }
+      }
+      return x;
+  }
 
   const donutData = [{
-    percentage: 1700,
+    percentage: sumCals(),
     color: 'tomato',
     max: 2400,
     calorie: true,
     dataLabel: "calorie"
   }, {
-    percentage: 76,
+    percentage: sumFat(),
     color: 'skyblue',
     max: 92,
     calorie: false,
     dataLabel: "fat"
   }, {
-    percentage: 130,
+    percentage: sumProt(),
     color: 'gold',
     max: 150,
     calorie: false,
     dataLabel: "protein"
   }, {
-    percentage: 200,
+    percentage: sumCarbs(),
     color: 'forestgreen',
     max: 400,
     calorie: false,
@@ -494,6 +588,7 @@ const Home = ({ navigation }) => {
     }
   }
 
+  //sumCarbs()
   //console.timeEnd();
   return (
     <View style={styles.container}>
@@ -502,13 +597,67 @@ const Home = ({ navigation }) => {
           <Text style={styles.title}>Hi, {userData.username.username}! 👋</Text>
         </View>
         <View style={styles.progress_container}>
-          <View style={styles.progress_box}>
+          <TouchableOpacity style={styles.progress_box} onPress={() => navigation.navigate("Weight Log")}>
             <Text style={styles.progress_title}>Current Weight:</Text>
             <Text style={styles.progress_value}>
               {currentWeight == oldWeight ? (currentWeight + " lbs") : 
                 (currentWeight < oldWeight ? (currentWeight + " lbs 🔽") : currentWeight + " lbs 🔼")}
             </Text>
-          </View>
+          </TouchableOpacity>
+
+
+
+
+
+          {/* update current weight by adding to weightList */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={wodalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setWodalVisible(false);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Update Current Weight</Text>
+                <View style={styles.inputView}>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType='numeric'
+                    placeholder='Submit'
+                    placeholderTextColor='grey'
+                    onChangeText={e => setCurrWeight(e)}
+                    value={currWeight+""}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      Keyboard.dismiss();
+                      //console.log("hit");
+                      updateCurrWeight();
+                      setCurrWeight('');
+                    }}
+                    style={styles.brock_button}
+                  >
+                    <Text>☑️</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setWodalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Return</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+
+
+
+
+
           <Modal
             animationType="slide"
             transparent={true}
@@ -528,7 +677,7 @@ const Home = ({ navigation }) => {
                     placeholder='Submit'
                     placeholderTextColor='grey'
                     onChangeText={e => setGoalWeight(e)}
-                    value={goalWeight+""}
+                    value={goalWeight}
                   />
                   <TouchableOpacity
                     onPress={() => {
@@ -536,6 +685,7 @@ const Home = ({ navigation }) => {
                       //console.log("hit");
                       updateGoalWeight();
                       setGoalWeight('');
+                      setGoalModal(!goalModal);
                     }}
                     style={styles.brock_button}
                   >

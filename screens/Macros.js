@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Component } from "react";
 import Svg from "react-native-svg";
 
-
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import Donut from '../navigation/Donut'
 import CircularProgress from "react-native-circular-progress-indicator";
@@ -15,6 +14,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
 import { useDrawerStatus } from "@react-navigation/drawer";
+import { useIsFocused } from '@react-navigation/native'
 
 const Macros = ({ navigation }) => {
 
@@ -115,31 +115,8 @@ const Macros = ({ navigation }) => {
 
     const navi = useNavigation();
     let foodList = [];
-    const donutData = [{
-        percentage: 1700,
-        color: 'tomato',
-        max: 2400,
-        calorie: true,
-        dataLabel: "calorie"
-    }, {
-        percentage: 76,
-        color: 'skyblue',
-        max: 92,
-        calorie: false,
-        dataLabel: "fat"
-    }, {
-        percentage: 130,
-        color: 'gold',
-        max: 150,
-        calorie: false,
-        dataLabel: "protein"
-    }, {
-        percentage: 200,
-        color: 'forestgreen',
-        max: 400,
-        calorie: false,
-        dataLabel: "carb"
-    }];
+    const isFocused = useIsFocused()
+    console.log(isFocused);
 
 
     foodList.push(<View
@@ -156,8 +133,26 @@ const Macros = ({ navigation }) => {
     </View>);
     
     let fatPie = Math.round((userData.username.currentFat * 9) / userData.username.currentCalorie) * 100;
+    console.log("fatpie ", fatPie);
     let proteinPie = Math.round((userData.username.currentProtein * 4) / userData.username.currentCalorie) * 100;
     let carbPie = Math.round((userData.username.currentCarb * 4) / userData.username.currentCalorie) * 100;
+    // let pieData = [
+    //     { x: 1, y: {fatPie}, label: "Fat" },
+    //     { x: 2, y: {proteinPie}, label: "Protein"},
+    //     { x: 3, y: {carbPie}, label: "Carbs" }
+    // ];
+    // if (fatPie == 0 || isNaN(fatPie)) {
+    //     pieData[0] = {};
+    //     //console.log("hit");
+    // }
+    // if (proteinPie == 0 || isNaN(proteinPie)) {
+    //     pieData[1] = {};
+    // }
+    // if (carbPie == 0 || isNaN(carbPie)) {
+    //     pieData[2] = {};
+    // }
+
+    
 
     let sumCals = () => {
         let x = 0;
@@ -171,8 +166,6 @@ const Macros = ({ navigation }) => {
                 x = x + parseInt(meal.calories);
             }
         }
-        console.log("Calories: ", x)
-        console.log("typepoidf", typeof(x))
         return x;
     }
     sumCals()
@@ -189,7 +182,7 @@ const Macros = ({ navigation }) => {
                 x = x + parseInt(meal.protein);
             }
         }
-        console.log("Protein: ", x)
+        return x;
     }
     sumProt()
 
@@ -198,33 +191,62 @@ const Macros = ({ navigation }) => {
         for(let i = 0; i < userData.username.mealList.length; i++) {
             let date = new Date(userData.username.mealList[i].date)
             let today = new Date()
-            //console.log(today.getDate(), today.getMonth(), today.getFullYear())
-            //console.log(date.getDate(), date.getMonth(), date.getFullYear())
             let meal = userData.username.mealList[i];
             if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
                 x = x + parseInt(meal.fat);
             }
         }
-        console.log("Fat: ", x)
+        return x;
     }
-    sumFat()
+        sumFat()
 
     let sumCarbs = () => {
         let x = 0;
         for(let i = 0; i < userData.username.mealList.length; i++) {
             let date = new Date(userData.username.mealList[i].date)
             let today = new Date()
-            //console.log(today.getDate(), today.getMonth(), today.getFullYear())
-            //console.log(date.getDate(), date.getMonth(), date.getFullYear())
             let meal = userData.username.mealList[i];
             if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
                 x = x + parseInt(meal.carbs);
             }
         }
-        console.log("Carbs: ", x)
+        return x;
     }
     sumCarbs()
-    console.log("Goal: ", userData.username.goalProtein)
+    
+    const donutData1 = [{
+        percentage: sumCals(),
+        color: 'tomato',
+        max: userData.username.calorieGoal,
+        calorie: true,
+        dataLabel: "Calories",
+        radius: 70
+      }, {
+        percentage: sumFat(),
+        color: 'skyblue',
+        max: userData.username.goalFat,
+        calorie: false,
+        dataLabel: "Fat",
+        radius: 70
+      }];
+
+
+      const donutData2 = [{
+        percentage: sumProt(),
+        color: 'gold',
+        max: userData.username.goalProtein,
+        calorie: false,
+        dataLabel: "Protein",
+        radius: 70       
+      }, {
+        percentage: sumCarbs(),
+        color: 'forestgreen',
+        max: userData.username.goalCarb,
+        calorie: false,
+        dataLabel: "Carbs",
+        radius: 70
+      }];
+
     return (
         <View style={styles.container}>
             <ScrollView horizontal={false} contentContainerStyle={{alignItems: "center"}}>
@@ -232,7 +254,7 @@ const Macros = ({ navigation }) => {
 
                 <View style={styles.progress}>
                     <View style={styles.title_box}>
-                        <Text style={styles.title}>Target Macros</Text>
+                        <Text style={styles.title}>Target Macros 🎯</Text>
                     </View>
                     <View style={styles.progress_container}>
                     <View style={styles.progress_box}>
@@ -266,78 +288,36 @@ const Macros = ({ navigation }) => {
 
                     <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                        {/*
-                        <CircularProgress
-                            radius={80}
-                            value={80}
-                            textColor='#222'
-                            fontSize={20}
-                            valueSuffix={'%'}
-                            activeStrokeColor={'tomato'}
-                            activeStrokeSecondaryColor={'#C25AFF'}
-                            inActiveStrokeColor={'tomato'}
-                            inActiveStrokeOpacity={0.2}
-                            duration={500}
-                            title='Calories'
+                        {
+                        donutData1.map((p, i) => {
+                            return <View style={{marginHorizontal: 15, marginTop: 5}}>
+                                <Donut key={i} radius={p.radius} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} calorie={p.calorie} dataLabel={p.dataLabel} />
+                                    </View>
+                                
+                        })                        
+                        }
 
-                        />
-                        */}
-                        <Progress.Circle 
-                            size={160} 
-                            showsText={true} 
-                            progress={sumCals()/userData.username.calorieGoal}
-                            color={'tomato'}
-                            thickness={10}
-                            formatText={(progress) => {
-                                return 'Cals ' + String(parseInt((sumCals()/userData.username.calorieGoal)*100)) + '%'
-                            }}
-                        />
-                        <CircularProgress
-                            radius={80}
-                            value={Math.round(userData.username.currentFat / userData.username.goalFat)}
-                            textColor='#222'
-                            fontSize={20}
-                            valueSuffix={'%'}
-                            activeStrokeColor={'skyblue'}
-                            inActiveStrokeColor={'skyblue'}
-                            inActiveStrokeOpacity={0.2}
-                            title='Fat'
 
-                        />
                     </View>
 
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <CircularProgress
-                            radius={80}
-                            value={Math.round(userData.username.currentProtein / userData.username.goalProtein)}
-                            textColor='#222'
-                            fontSize={20}
-                            valueSuffix={'%'}
-                            activeStrokeColor={'gold'}
-                            inActiveStrokeColor={'gold'}
-                            inActiveStrokeOpacity={0.2}
-                            title='Protein'
 
-                        />
-                        <CircularProgress
-                            radius={80}
-                            value={Math.round(userData.username.currentCarb / userData.username.goalCarb)}
-                            textColor='green'
-                            fontSize={20}
-                            valueSuffix={'%'}
-                            activeStrokeColor={'forestgreen'}
-                            inActiveStrokeColor={'forestgreen'}
-                            inActiveStrokeOpacity={0.2}
-                            title='Carbs'
+                    {
+                        donutData2.map((p, i) => {
+                            return <View style={{marginHorizontal: 15, marginTop: 5}}>
+                            <Donut key={i} radius={p.radius} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} calorie={p.calorie} dataLabel={p.dataLabel} />
+                                </View>
+                        })                        
+                        }
 
-                        />
+                        
 
                     </View>
 
                 </View>
 
 
-                <View style={styles.btn_box}>
+                <View style={[styles.btn_box, {marginTop: 40}]}>
                     <TouchableOpacity
                         onPress={() => {
                             navi.navigate("Meals");
@@ -362,29 +342,7 @@ const Macros = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={{ color: theme.colors.text, paddingTop: 30, fontSize: 30, textAlign: 'center' }}>Calories: {userData.username.currentCalorie}</Text>
-                <VictoryPie
-                    //padAngle={({ datum }) => datum.y}
-                    // innerRadius={0}
-                    colorScale={["skyblue", "gold", "forestgreen"]}
-                    // padAngle={0}
-                    data={[
-                        { x: 1, y: {fatPie}, label: "Fat" },
-                        { x: 2, y: {proteinPie}, label: "Protein"},
-                        { x: 3, y: {carbPie}, label: "Carbs" }
-                    ]}
-                    style={{
-                        labels: {
-                            fill: theme.colors.text
-                        }
-                    }}
-
-
-                />
-
-                <View style={{ padding: 50 }}>
-                    <Text></Text>
-                </View>
+              
 
             </ScrollView>
         </View>

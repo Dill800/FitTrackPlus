@@ -3,12 +3,13 @@ import React, {useRef, useState, useEffect} from 'react';
 import { Keyboard, TouchableWithoutFeedback, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import 'react-native-console-time-polyfill'
-
+import {useDispatch} from 'react-redux'
 
 import axios from 'axios'
 import qs from 'qs'
 
 import config from '../backend/config/config.js'
+import { updateUsername } from '../redux/actions/user';
 
 import {
     StyledContainer,
@@ -24,6 +25,8 @@ const HideKeyboard = ({ children }) => (
 );
 
 const Register = ({navigation}) => {
+
+    const dispatch = useDispatch()
 
     const toLoginScreen = () => {
         navigation.navigate('Login')
@@ -41,9 +44,10 @@ const Register = ({navigation}) => {
         if(user === '' || password === '') {
             Alert.alert("Missing Fields", "Please enter a valid username and password.")
         }
-
+        let userLower = user;
+        userLower = userLower.toLowerCase();
         var data = qs.stringify({
-            'username': user,
+            'username': userLower,
             'passwordHash': password 
         });
 
@@ -55,9 +59,15 @@ const Register = ({navigation}) => {
             },
             data : data
         })
-        .then(reponse => {
-            //console.log(JSON.stringify(reponse.data))
-           // console.timeEnd();
+        .then(response => {
+            console.log("Response: ", response.data)
+
+            dispatch(updateUsername(response.data.data))
+            //console.log('Response: ', response.data.user)
+
+            navigation.navigate('Home')
+            //console.log(response)
+
         })
         .catch(e => {
             console.log(e)

@@ -103,7 +103,7 @@ const MacroCalculator = ({navigation}) => {
         backgroundColor: theme.colors.card,
         borderRadius: 10,
         width: "95%",
-        height: 400,
+        height: 415,
         alignSelf: "center",
         alignItems: "center",
         justifyContent: "center"
@@ -129,7 +129,7 @@ const MacroCalculator = ({navigation}) => {
       pickerAge: {
           marginTop: 40,
           width: 50,
-          height: 105,
+          height: 120,
           alignSelf: 'center', 
           //backgroundColor: theme.colors.secondary,
           //color: theme.colors.card,
@@ -138,7 +138,7 @@ const MacroCalculator = ({navigation}) => {
           borderRadius: 10,
       },
       pickerAgeItem : {
-          height: 105,
+          height: 120,
           width: 75,
           backgroundColor: theme.colors.sec,
           alignSelf: 'center', 
@@ -148,7 +148,7 @@ const MacroCalculator = ({navigation}) => {
       },
     pickerHeight: {
         width: 50,
-        height: 105,
+        height: 120,
         alignSelf: 'center', 
         //backgroundColor: theme.colors.secondary,
         //color: theme.colors.card,
@@ -157,7 +157,7 @@ const MacroCalculator = ({navigation}) => {
         //borderRadius: 10
     },
     pickerHeightItem : {
-        height: 105,
+        height: 120,
         width: 70,
         //backgroundColor: theme.colors.sec,
         alignSelf: 'center', 
@@ -167,7 +167,7 @@ const MacroCalculator = ({navigation}) => {
     },
     pickerHeightInch: {
         width: 50,
-        height: 105,
+        height: 120,
         alignSelf: 'center', 
        // backgroundColor: theme.colors.secondary,
         //color: theme.colors.card,
@@ -178,7 +178,7 @@ const MacroCalculator = ({navigation}) => {
         marginLeft: 6
     },
     pickerHeightInchItem : {
-        height: 105,
+        height: 120,
         width: 75,
         //backgroundColor: theme.colors.sec,
         alignSelf: 'center', 
@@ -190,7 +190,7 @@ const MacroCalculator = ({navigation}) => {
     },
     pickerActivity: {
         width: 200,
-        height: 105,
+        height: 120,
         alignSelf: 'center', 
         //backgroundColor: theme.colors.secondary,
         //color: theme.colors.card,
@@ -200,7 +200,7 @@ const MacroCalculator = ({navigation}) => {
         borderRadius: 10
     },
     pickerActivityItem : {
-        height: 105,
+        height: 120,
         width: 240,
         //backgroundColor: theme.colors.secondary,
         alignSelf: 'center', 

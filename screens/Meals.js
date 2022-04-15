@@ -182,7 +182,7 @@ const Meals = ({navigation}) => {
             <View style={styles.progress}>
 
                 <TouchableOpacity style={[styles.title_box, {marginTop: 10}]} onPress={toggleBottomNavigationView}>
-                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getDate()}, {actdate.getFullYear()}</Text>
+                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getDate()}, {actdate.getFullYear()} 📅</Text>
                 </TouchableOpacity>
 
                 <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
