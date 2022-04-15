@@ -10,7 +10,7 @@ const WorkoutGraphs = (exercises) => {
   const [exerciseForGraph, setSelectedExercise] = useState('')
   const userData = useSelector(state => state.user);
 
-  const exerciseData = new Array()
+  const exerciseData = [["C", "Java", "JavaScript", "PHP"], ["Python", "Ruby"], ["Swift", "Objective-C"]];
 
   const populateExerciseArray = () => {
 
@@ -34,6 +34,8 @@ const WorkoutGraphs = (exercises) => {
   return (
     <View style={{flex: 1}}>
       <View style={{height: 64}} />
+      {/* https://github.com/WheelerLee/react-native-dropdown-menu
+      https://www.educba.com/react-native-dropdown/ */}
       <DropdownMenu
         style={{flex: 0.5}}
         bgColor={'grey'}

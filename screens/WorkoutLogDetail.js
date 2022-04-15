@@ -141,8 +141,18 @@ const WorkoutLogDetail = ({navigation, route}) => {
     }
     workoutloglist[index].exercises.push(exerciseData);
 
-    // Update the store after writing the new workout log
-    // TODO ALSO SAVE TO DATABASE
+    // Save to Redux and DB
+    axios.post('http://' + config.ipv4 + ':5000/user/updateWorkoutLog', {
+      username: userData.username.username,
+      workoutlogList : data.workoutlogList
+    })
+    .then(res => {
+      // console.log("---------- POST Called to db")
+    })
+    .catch(e => {
+      console.log("error", e)
+    })
+
     dispatch(updateUsername(data))
   }
 

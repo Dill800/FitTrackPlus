@@ -274,6 +274,22 @@ const WorkoutLogDashboard = ({navigation}) => {
 
 const navi = useNavigation();
 
+const populateExerciseArray = () => {
+
+  // Bodgy Redux querying
+  const data = userData.username
+  const workoutloglist = data.workoutlogList
+  // const exercise_data = new Array()
+
+  // Iterate and find the workout log we want
+  let index = 0;
+  for(let i = 0; i < workoutloglist.length; i++){
+
+  }
+
+  return new Array()
+}
+
   return (
     <View style={styles.container}>
 
@@ -299,7 +315,7 @@ const navi = useNavigation();
             <Text style={styles.btn_text}>Add New Workout</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]} onPress={() => navi.navigate("WorkoutGraphs")}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#9932f5", marginHorizontal: 10  }]} onPress={() => navi.navigate("WorkoutGraphs", populateExerciseArray())}>
             <Text style={styles.btn_text}>View Graphs</Text>
         </TouchableOpacity>
       </View>
