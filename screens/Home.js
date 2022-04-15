@@ -190,7 +190,9 @@ const Home = ({ navigation }) => {
   const [newGroupName, setGroupName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goalModal, setGoalModal] = useState(false);
+  const [wodalVisible, setWodalVisible] = useState(false);
   const [goalWeight, setGoalWeight] = useState(0);
+  const [currWeight, setCurrWeight] = useState(0);
   const [streak, setStreak] = useState(0);
   //const [currentWeight, setCurrentWeight] = useState(0);
 
@@ -329,6 +331,40 @@ const Home = ({ navigation }) => {
         dispatch(updateUsername(data));
         setGoalWeight(userData.username.goalWeight);
         //.username.goalWeight);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  const updateCurrWeight = () => {
+
+    navigation.navigate("Macros")
+    return;
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'weight': currWeight,
+    });
+    var config2 = {
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/user/addWeight',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+    };
+
+    axios(config2)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+        let data = userData.username;
+        data.weightList.push({
+          'weight': currWeight,
+          'date': new Date()
+        })
+        dispatch(updateUsername(data));
+        //.username.goalWeight);
+
       })
       .catch(function (error) {
         console.log(error);
@@ -561,13 +597,67 @@ const Home = ({ navigation }) => {
           <Text style={styles.title}>Hi, {userData.username.username}! 👋</Text>
         </View>
         <View style={styles.progress_container}>
-          <View style={styles.progress_box}>
+          <TouchableOpacity style={styles.progress_box} onPress={() => navigation.navigate("Weight Log")}>
             <Text style={styles.progress_title}>Current Weight:</Text>
             <Text style={styles.progress_value}>
               {currentWeight == oldWeight ? (currentWeight + " lbs") : 
                 (currentWeight < oldWeight ? (currentWeight + " lbs 🔽") : currentWeight + " lbs 🔼")}
             </Text>
-          </View>
+          </TouchableOpacity>
+
+
+
+
+
+          {/* update current weight by adding to weightList */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={wodalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setWodalVisible(false);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Update Current Weight</Text>
+                <View style={styles.inputView}>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType='numeric'
+                    placeholder='Submit'
+                    placeholderTextColor='grey'
+                    onChangeText={e => setCurrWeight(e)}
+                    value={currWeight+""}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      Keyboard.dismiss();
+                      //console.log("hit");
+                      updateCurrWeight();
+                      setCurrWeight('');
+                    }}
+                    style={styles.brock_button}
+                  >
+                    <Text>☑️</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setWodalVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Return</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+
+
+
+
+
           <Modal
             animationType="slide"
             transparent={true}
