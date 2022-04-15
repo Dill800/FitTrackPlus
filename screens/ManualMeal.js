@@ -243,15 +243,39 @@ const ManualMeal = ({navigation}) => {
         }
         
         getData().then(data => {
-          let proteinLog = data.foods[0].foodNutrients[0];
-          let fatLog = data.foods[0].foodNutrients[1];
-          let carbLog = data.foods[0].foodNutrients[2];
-          let calorieLog = data.foods[0].foodNutrients[3];
+          let proteinLog = {};
+          let carbLog = {};
+          let fatLog = {};
+          let calorieLog = {};
+          for (let i = 0; i < data.foods[0].foodNutrients.length; i++) {
+              let nutrientName = data.foods[0].foodNutrients[i].nutrientName;
+              if (nutrientName.substring(0,6) == "Energy") {
+                  calorieLog =  data.foods[0].foodNutrients[i];
+              }
+              else if (nutrientName.substring(0,7) == "Protein") {
+                  proteinLog = data.foods[0].foodNutrients[i];
+              }
+              else if (nutrientName.substring(0,12) == "Carbohydrate") {
+                  carbLog = data.foods[0].foodNutrients[i];
+              }
+              else if (nutrientName.substring(0,11) == "Total lipid") {
+                  fatLog = data.foods[0].foodNutrients[i];
+              }
+              
+          }
+
+          // let proteinLog = data.foods[0].foodNutrients[0];
+          // let fatLog = data.foods[0].foodNutrients[1];
+          // let carbLog = data.foods[0].foodNutrients[2];
+          // let calorieLog = data.foods[0].foodNutrients[3];
+
           console.log(data.foods[0]);
           console.log(proteinLog);
           console.log(carbLog);
           console.log(fatLog);
           console.log(calorieLog);
+          console.log(typeof(proteinLog));
+
 
 
           let proteinContent = proteinLog.value * (getPortion / 100);
@@ -269,10 +293,11 @@ const ManualMeal = ({navigation}) => {
             myCalorieContent = Math.round((proteinContent * 4) + (carbContent * 4) + (fatContent * 9));
           } 
 
-          console.log(proteinContent);
-          console.log(carbContent);
-          console.log(fatContent);
-          console.log(calorieContent);
+          console.log(data.foods[0].description)
+          console.log("protein", proteinContent);
+          console.log("carb", carbContent);
+          console.log("fat", fatContent);
+          console.log("calorie", calorieContent);
 
           setProteinCount(String(Math.round(proteinContent)));
           setCarbCount(String(Math.round(carbContent)));
