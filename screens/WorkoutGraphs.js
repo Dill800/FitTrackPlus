@@ -268,7 +268,7 @@ const WorkoutGraph = ({navigation}) => {
                         console.log('uses effect like a boss')
                       }
                     
-                      setData(dater);
+                      setData([]);
                       setLoading(false);
                       setAllData(dater);
                       setMin(Math.min(...valer));
@@ -303,8 +303,8 @@ const WorkoutGraph = ({navigation}) => {
     let megaData = {}
 
     // have object [exercise name] of list of object [date and 1rm]
-    let calcMax = (sets, reps) => {
-        return sets * reps;
+    let calcMax = (sets, reps, weight) => {
+        return parseInt((100 * weight) / (101.3 - 2.67123 * reps))
     }
 
     let sameDay = (x, actdate) => {
@@ -331,7 +331,7 @@ const WorkoutGraph = ({navigation}) => {
             // calculate max
             // see if date exists. if not, add in
             // if date exists and max is greater, update max
-            let max = calcMax(eggs[j].sets, eggs[j].reps)
+            let max = calcMax(eggs[j].sets, eggs[j].reps, eggs[j].weight)
             let vals = megaData[eggs[j].name]
             //console.log(vals)
             if(vals === undefined) {
@@ -366,7 +366,7 @@ const WorkoutGraph = ({navigation}) => {
             megaData[eggs[j].name] = []
             megaData[eggs[j].name].push({
               'date': d,
-              'max': calcMax(eggs[j].sets, eggs[j].reps)
+              'max': calcMax(eggs[j].sets, eggs[j].reps, eggs[j].weight)
             })
 
           }
