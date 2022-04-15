@@ -328,7 +328,7 @@ const populateExerciseArray = () => {
 
         <View style={[styles.exercise_container, {marginBottom: 10}]}>
 
-          <View style={[styles.title_box, { backgroundColor: theme.colors.third, marginVertical: 10 },]}>
+          <View style={[styles.title_box, { backgroundColor: theme.colors.third, marginVertical: 15 },]}>
             <Text style={styles.title}>All Workouts 🏋️</Text>
           </View>
 
