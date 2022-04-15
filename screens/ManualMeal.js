@@ -185,7 +185,7 @@ const ManualMeal = ({navigation}) => {
     const updateMeals = () => {
         let d = Date.now();
         let goodDate = new Date();
-        goodDate.setHours(goodDate.getHours() - 4);
+        goodDate.setHours(goodDate.getHours());
         var data = qs.stringify({
           'username': userData.username.username,
           'meal': {
@@ -210,7 +210,7 @@ const ManualMeal = ({navigation}) => {
         .then(function (response) {
           //console.log(JSON.stringify(response.data));
           let goodDate = new Date();
-          goodDate.setHours(goodDate.getHours() - 4);
+          goodDate.setHours(goodDate.getHours());
           let data = userData.username;
           data.mealList.push({
             'date': goodDate,

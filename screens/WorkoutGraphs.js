@@ -219,10 +219,10 @@ const WorkoutGraph = ({navigation}) => {
 
         axios(config2)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                //console.log(JSON.stringify(response.data));
                 let data = userData.username;
                 let goodDate = new Date();
-                goodDate.setHours(goodDate.getHours() - 4);
+                goodDate.setHours(goodDate.getHours());
                 data.weightList.push({
                     'weight': weight,
                     'date': goodDate,
@@ -401,7 +401,25 @@ const WorkoutGraph = ({navigation}) => {
       }
       //console.log('exercises unique: ', exercises)
 
-      console.log('megadata: ',megaData)
+      //console.log('megadata: ',megaData)
+
+      //console.log('megadata: ',megaData)
+      for (let i = 0; i < megaData.length; i++) {
+            console.log("hi");
+            console.log(megaData[i].toLowerCase());
+            if (megaData[i].toLowerCase() == "squat") {
+            
+                console.log("squat");
+            }
+            else if (megaData[i].toLowerCase().substring(0,5) == "bench") {
+               // megaData[i].name;
+                console.log("bench");
+            }
+            else if (megaData[i].toLowerCase() == "deadlift") {
+                //megaData[i].name;
+                console.log("dead");
+            }
+      }
 
     }
     getExercises()
@@ -425,7 +443,7 @@ const WorkoutGraph = ({navigation}) => {
                             let d = [];
                             let targ = megaData[selectedItem];
                             //console.log("Targ: ", targ);
-                            console.log("Sorting targ...")
+                            //console.log("Sorting targ...")
                             targ.sort((a,b) => (a.date > b.date) ? 1 : -1)
                             let benchod = 0;
                             for(let i = 0; i < targ.length; i++) {
