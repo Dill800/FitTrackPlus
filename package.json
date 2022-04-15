@@ -55,6 +55,7 @@
     "react-native-circular-progress-indicator": "^3.2.0",
     "react-native-console-time-polyfill": "^1.2.3",
     "react-native-date-picker": "4.1.2",
+    "react-native-dropdown-menu": "^2.0.0",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-invertible-scroll-view": "^2.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

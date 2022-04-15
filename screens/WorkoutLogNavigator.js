@@ -14,6 +14,7 @@ import config from '../backend/config/config.js'
 
 // For stack navigation
 import WorkoutLogDetail from './WorkoutLogDetail'
+import WorkoutGraphs from './WorkoutGraphs'
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ const WorkoutLogNavigator = ({navigation}) => {
       <Stack.Navigator initialRouteName='WorkoutLog'>
         <Stack.Screen name='WorkoutLog' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDashboard}/>
         <Stack.Screen name='WorkoutLogDetail' options={{headerShown: false, gestureEnabled: true}} component={WorkoutLogDetail}/>
+        <Stack.Screen name='WorkoutGraphs' options={{headerShown: false, gestureEnabled: true}} component={WorkoutGraphs}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -153,8 +155,10 @@ const WorkoutLogDashboard = ({navigation}) => {
       alignSelf: "center",
     },
     btn_box: {
+      marginHorizontal: 100,
       flexDirection: "row",
       width: "75%",
+      alignSelf: "center",
       justifyContent: "center",
     },
     btn_shape: {
@@ -246,8 +250,8 @@ const WorkoutLogDashboard = ({navigation}) => {
     let newlog = {
       id: wol_id,
       date: date_with_timestamp,
-      // exercises: new Array()
-      exercises: new Array(ex1, ex2, ex3, ex4)
+      exercises: new Array()
+      // exercises: new Array(ex1, ex2, ex3, ex4)
     }
     // console.log(newlog)
     // data.workoutlogList = newlog
@@ -268,42 +272,14 @@ const WorkoutLogDashboard = ({navigation}) => {
     dispatch(updateUsername(data))
   }
 
-//   // Update on every component render
-//   useEffect(() => {
-
-// // Function definition
-// async function getWorkoutLogList() {
-//   axios.get('http://' + config.ipv4 + ':5000/user/get', {
-//     params: {
-//       username: userData.username.username
-//     }
-//   })
-//   .then(function (response) {
-//     // console.log("raeeched")
-//     // console.log(response.data)
-//   	let jsonrep = (JSON.parse(JSON.stringify(response.data)))
-//     console.log(jsonrep.workoutlogList)
-//   })
-//   .catch(function (err) {
-// 	  console.log(err);
-//   })
-// }    
-
-// // Function call
-// getWorkoutLogList();
-  
-//   });
+const navi = useNavigation();
 
   return (
     <View style={styles.container}>
 
         <View style={[styles.exercise_container, {marginBottom: 10}]}>
-          <View
-            style={[
-              styles.title_box,
-              { backgroundColor: "#66059e", marginVertical: 10 },
-            ]}
-          >
+
+          <View style={[styles.title_box, { backgroundColor: "#66059e", marginVertical: 10 },]}>
             <Text style={styles.title}>All Workouts 🏋️</Text>
           </View>
 
@@ -318,6 +294,16 @@ const WorkoutLogDashboard = ({navigation}) => {
 
         </View>
 
+      <View style={styles.btn_box}>
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={toggleBottomNavigationView}>
+            <Text style={styles.btn_text}>Add New Workout</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#27833e" }]} onPress={() => navi.navigate("WorkoutGraphs")}>
+            <Text style={styles.btn_text}>View Graphs</Text>
+        </TouchableOpacity>
+      </View>
+
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
         <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
         
@@ -331,14 +317,6 @@ const WorkoutLogDashboard = ({navigation}) => {
         </View>
       </BottomSheet>
 
-      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={toggleBottomNavigationView}>
-          <Text style={styles.btn_text}>Add New Workout</Text>
-      </TouchableOpacity>
-
-      {/* <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3" }]}onPress={debugUser}>
-          <Text style={styles.btn_text}>DEBUG USER</Text>
-      </TouchableOpacity> */}
-      
     </View>
 );
 }

@@ -238,9 +238,6 @@ const WorkoutLogDetail = ({navigation, route}) => {
         <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "600", marginTop: -5, }}>{dateformat(route.params.name, 'm/d/yyyy')}: Workout Details</Text>
         <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
 
-        {/* <Text>{route.params.name}</Text> */}
-        <Text></Text>
-        
         {
         route.params.exercises.map(exercise =>
         // <View key={exercise.exid} style={{flex: 1}}>
