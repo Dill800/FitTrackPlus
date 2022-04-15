@@ -231,11 +231,12 @@ const ManualMeal = ({navigation}) => {
         const params = {
             api_key: 'gX9n2yNedDJtAGoQyF34t86M1gN63LjTuLFeDccy',
             query: getFoodSearch,
-            dataType: ["Survey (FNDDS)", ],
+            dataType: ["Foundation","Survey (FNDDS)"],
             pagesize: 1,
+            requireAllWords: true
         }
 
-        const api_url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(params.query)}&dataType=${encodeURIComponent(params.dataType)}&pagesize=${encodeURIComponent(params.pagesize)}`
+        const api_url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(params.api_key)}&query=${encodeURIComponent(params.query)}&dataType=${encodeURIComponent(params.dataType)}&pagesize=${encodeURIComponent(params.pagesize)}&requireAllWords=${encodeURIComponent(params.requireAllWords)}`
         function getData() {
           return fetch(api_url)
           .then(response => response.json())
