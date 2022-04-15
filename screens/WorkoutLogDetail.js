@@ -95,6 +95,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
       width: "95%",
       alignSelf: "center",
       justifyContent: "center",
+      top: 300
   },
 });
 
@@ -260,8 +261,8 @@ const WorkoutLogDetail = ({navigation, route}) => {
     <View style={styles.container}>
       <View style={{backgroundColor: theme.colors.card, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
         {/* <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "600", marginTop: -5, }}>{dateformat(route.params.name, 'm/d/yyyy')}: Workout Details</Text> */}
-        <Text style={{color: theme.colors.text, alignSelf: 'center', fontSize: 25, marginTop: 20}}>Workout Details</Text>
-        <Text style={{color: theme.colors.text, alignSelf: 'center', fontSize: 20, marginTop: 10}}>{dateformat(route.params.name, 'mmmm dd, yyyy')}</Text>
+        <Text style={{color: theme.colors.text, alignSelf: 'center', fontSize: 30, marginTop: 20}}>Workout Details</Text>
+        <Text style={{color: theme.colors.text, alignSelf: 'center', fontSize: 25, marginTop: 10, marginBottom: 5}}>{dateformat(route.params.name, 'mmmm dd, yyyy')}</Text>
         <View style={[{marginVertical: 10, borderBottomWidth: 1}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
 
         {
@@ -269,10 +270,10 @@ const WorkoutLogDetail = ({navigation, route}) => {
         // <View key={exercise.exid} style={{flex: 1}}>
         <View key={exercise.exid} style={{flexDirection: "row"}}>
         <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", marginVertical: 10, width: '95%'}}>
-          <TouchableOpacity style={{ backgroundColor: "red", padding: 5, borderRadius: 10 }} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}>
+          <TouchableOpacity style={{ backgroundColor: "#800040", padding: 5, borderRadius: 10 }} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}>
             <Text style={styles.btn_text}>🗑️</Text>
           </TouchableOpacity>
-          <Text style={{color: theme.colors.text, fontSize: 18, fontWeight: "600", alignSelf: 'center', marginHorizontal: 10}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+          <Text style={{color: theme.colors.text, fontSize: 18, fontWeight: "600", alignSelf: 'center', marginHorizontal: 10}}>{exercise.name}:   |   {exercise.sets}x{exercise.reps}   |   {exercise.weight} lbs</Text>     
           {/* <CircleButton text="" size={20} color="#979c9c" textColor="white" margin={10} fontSize={20} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}/> */}
         </View>
         </View>
@@ -280,11 +281,11 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
       {/* Button to add exercises */}
       <View style={styles.btn_box}>
-      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]}onPress={toggleBottomNavigationView}>
+      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)" }]}onPress={toggleBottomNavigationView}>
         <Text style={styles.btn_text}>Add Exercise</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#e91d1d" }]} onPress={deleteWorkoutLog}>
+      <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#800040" }]} onPress={deleteWorkoutLog}>
         <Text style={styles.btn_text}>Delete Log</Text>
       </TouchableOpacity>
       </View>

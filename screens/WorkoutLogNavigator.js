@@ -107,7 +107,7 @@ const WorkoutLogCard = (props) => {
         <View style={[{marginBottom: 5, borderBottomWidth: 1, }]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
         
         {props.exercises.map((exercise, index) =>
-          <Text key={""+exercise+index} style={{color: theme.colors.text, paddingVertical: 2, fontSize: 15}}>• {exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+          <Text key={""+exercise+index} style={{color: theme.colors.text, paddingVertical: 2, fontSize: 15}}>• {exercise.name}:   |   {exercise.sets}x{exercise.reps}   |   {exercise.weight} lbs</Text>     
         )}
       </TouchableOpacity>
 
@@ -328,7 +328,7 @@ const populateExerciseArray = () => {
 
         <View style={[styles.exercise_container, {marginBottom: 10}]}>
 
-          <View style={[styles.title_box, { backgroundColor: theme.colors.third, marginVertical: 10 },]}>
+          <View style={[styles.title_box, { backgroundColor: theme.colors.third, marginVertical: 15 },]}>
             <Text style={styles.title}>All Workouts 🏋️</Text>
           </View>
 

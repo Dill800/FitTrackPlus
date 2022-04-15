@@ -101,7 +101,29 @@ const WorkoutGraph = ({navigation}) => {
         bottom_buttons: {
             flex: 1,
             flexDirection: 'row'
-        }
+        },
+        dropdown2BtnStyle: {
+            width: '80%',
+            height: 50,
+            backgroundColor: theme.colors.secondary,
+            borderRadius: 8,
+          },
+          dropdown2BtnTxtStyle: {
+            color: theme.colors.text,
+            textAlign: 'center',
+            fontWeight: 'bold',
+          },
+          dropdown2DropdownStyle: {
+            backgroundColor: theme.colors.secondary,
+            borderBottomLeftRadius: 12,
+            borderBottomRightRadius: 12,
+          },
+          dropdown2RowStyle: {backgroundColor: theme.colors.secondary, borderBottomColor: 'transparent'},
+          dropdown2RowTxtStyle: {
+            color: theme.colors.text,
+            textAlign: 'center',
+            fontWeight: 'bold',
+          },
     })
 
     const navi = useNavigation();
@@ -272,7 +294,7 @@ const WorkoutGraph = ({navigation}) => {
                       setLoading(false);
                       setAllData(dater);
                       setMin(Math.min(...valer));
-                      setMax(Math.max(...valer));
+                      setMax(0);
                       setSubmitted(false);
                 })
                 .catch(function (error) {
@@ -379,7 +401,7 @@ const WorkoutGraph = ({navigation}) => {
       }
       //console.log('exercises unique: ', exercises)
 
-      //console.log('megadata: ',megaData)
+      console.log('megadata: ',megaData)
 
     }
     getExercises()
@@ -390,7 +412,7 @@ const WorkoutGraph = ({navigation}) => {
             <Logger>
                 <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>1RM Graphs</Text>
                 <View style={styles.container}>
-                    <View style={styles.box}>
+                    <View style={[styles.box, {alignItems: 'center'}]}>
                         <Text style={styles.title}>Select Exercise</Text>
                         <View style={styles.inputView}>
                             
@@ -405,8 +427,9 @@ const WorkoutGraph = ({navigation}) => {
                             //console.log("Targ: ", targ);
                             console.log("Sorting targ...")
                             targ.sort((a,b) => (a.date > b.date) ? 1 : -1)
-
+                            let benchod = 0;
                             for(let i = 0; i < targ.length; i++) {
+                              if(benchod < targ[i].max) benchod = targ[i].max;
                               d.push({
                                 x: i.toString(),
                                 y: targ[i].max,
@@ -417,6 +440,8 @@ const WorkoutGraph = ({navigation}) => {
                             //return;
 
                             setData(d)
+
+                            setMax(benchod)
 
                           }}
                           buttonTextAfterSelection={(selectedItem, index) => {
@@ -429,6 +454,12 @@ const WorkoutGraph = ({navigation}) => {
                             // if data array is an array of objects then return item.property to represent item in dropdown
                             return item
                           }}
+                          buttonStyle={styles.dropdown2BtnStyle}
+                          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                          dropdownIconPosition={'right'}
+                          dropdownStyle={styles.dropdown2DropdownStyle}
+                          rowStyle={styles.dropdown2RowStyle}
+                          rowTextStyle={styles.dropdown2RowTxtStyle}
                         />
 
 
@@ -450,7 +481,7 @@ const WorkoutGraph = ({navigation}) => {
                             */
                             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
                             xDomain={{ min: 0, max: data.length}}
-                            yDomain={{ min: 0, max: 800}}
+                            yDomain={{ min: 0, max: max + 100}}
                             viewport={{ size: { width: 5 }, initialOrigin: {x: 0} }}
                         >
                             <VerticalAxis
