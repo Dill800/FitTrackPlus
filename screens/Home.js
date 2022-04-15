@@ -240,12 +240,16 @@ const Home = ({ navigation }) => {
     }
   };
 
+  const [getName, setName] = useState(userData.username.username);
 
   useEffect(() => {
     async function getFriendsList() {
       axios(config2)
         .then(function (response) {
-
+          let upperName = getName;
+          upperName = upperName.charAt(0).toUpperCase() + upperName.slice(1);
+          console.log(upperName);
+          setName(upperName);
           //console.log(JSON.stringify(response.data.data));
           let bigDog = JSON.stringify(response.data.data);
           let biggerDog = (JSON.parse(bigDog));
@@ -594,7 +598,7 @@ const Home = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.progress}>
         <View style={styles.title_box}>
-          <Text style={styles.title}>Hi, {userData.username.username}! 👋</Text>
+          <Text style={styles.title}>Hi, {getName}! 👋</Text>
         </View>
         <View style={styles.progress_container}>
           <TouchableOpacity style={styles.progress_box} onPress={() => navigation.navigate("Weight Log")}>

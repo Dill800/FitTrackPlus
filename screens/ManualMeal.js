@@ -231,7 +231,7 @@ const ManualMeal = ({navigation}) => {
         const params = {
             api_key: 'gX9n2yNedDJtAGoQyF34t86M1gN63LjTuLFeDccy',
             query: getFoodSearch,
-            dataType: ["Survey (FNDDS)"],
+            dataType: ["Survey (FNDDS)", ],
             pagesize: 1,
         }
 

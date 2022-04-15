@@ -116,7 +116,7 @@ const Macros = ({ navigation }) => {
     const navi = useNavigation();
     let foodList = [];
     const isFocused = useIsFocused()
-    console.log(isFocused);
+    //console.log(isFocused);
 
 
     foodList.push(<View
