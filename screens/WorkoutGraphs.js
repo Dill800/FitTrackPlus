@@ -405,20 +405,20 @@ const WorkoutGraph = ({navigation}) => {
 
       //console.log('megadata: ',megaData)
       for (let exercises in megaData) {
-            console.log("hi");
+            console.log(exercises);
             // console.log(megaData[i].toLowerCase());
-            if (megaData[exercises].toLowerCase() == "squat") {
+            // if (megaData[exercises].toLowerCase() == "squat") {
             
-                console.log("squat");
-            }
-            else if (megaData[exercises].toLowerCase().substring(0,5) == "bench") {
-               // megaData[i].name;
-                console.log("bench");
-            }
-            else if (megaData[exercises].toLowerCase() == "deadlift") {
-                //megaData[i].name;
-                console.log("dead");
-            }
+            //     console.log("squat");
+            // }
+            // else if (megaData[exercises].toLowerCase().substring(0,5) == "bench") {
+            //    // megaData[i].name;
+            //     console.log("bench");
+            // }
+            // else if (megaData[exercises].toLowerCase() == "deadlift") {
+            //     //megaData[i].name;
+            //     console.log("dead");
+            // }
       }
 
     }

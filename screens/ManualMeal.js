@@ -422,7 +422,7 @@ const ManualMeal = ({navigation}) => {
                               onChangeText={e => setFoodSearch(e)}
                               value={getFoodSearch}
                             />
-                            <Text style={[styles.input_title, {marginRight: 200, marginBottom: 10}]}>Portion:</Text>
+                            <Text style={[styles.input_title, {marginRight: 175, marginBottom: 10}]}>Portion (g):</Text>
                             <TextInput
                               style={[styles.input,
                               { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: 250 }]}
