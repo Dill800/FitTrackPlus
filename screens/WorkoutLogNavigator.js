@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
@@ -75,7 +75,7 @@ const WorkoutLogCard = (props) => {
       <TouchableOpacity style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%",}}
         onPress={() => navi.navigate("WorkoutLogDetail", props)}
       >
-        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, }}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
+        <Text style={{color: theme.colors.text, fontSize: 23, fontWeight: "600", marginTop: -5, alignSelf: 'center'}}>{dateformat(date_clean, 'DDDD - m/d/yyyy')}</Text>
         <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
         
         {props.exercises.slice(0,3).map((exercise, index) =>
@@ -270,9 +270,14 @@ const WorkoutLogDashboard = ({navigation}) => {
     })
 
     dispatch(updateUsername(data))
+
+    toggleBottomNavigationView();
   }
 
 const navi = useNavigation();
+
+const passRef = useRef();
+const scrollViewRef = useRef();
 
 const populateExerciseArray = () => {
 
@@ -299,7 +304,12 @@ const populateExerciseArray = () => {
             <Text style={styles.title}>All Workouts 🏋️</Text>
           </View>
 
-          <ScrollView horizontal={false} style={styles.box} contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}>
+          <ScrollView 
+              ref={scrollViewRef}
+              onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })} 
+              horizontal={false} style={styles.box} 
+              contentContainerStyle={{paddingTop: 7, paddingBottom: 10}}
+          >
           
 
             {/* {userData.username.workoutlogList.map(workoutlog => */}
