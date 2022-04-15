@@ -122,23 +122,24 @@ const Tabs = ({navigation}) => {
                                 <Text style ={{color: focused ? ((theme.dark) ? 'ivory' : '#000') : ((theme.dark) ? '#000' : '#748c94'), fontSize: 12}}></Text>
                             </View>
                         ),
-                        headerStyle: {
-                            backgroundColor: theme.colors.primary,
-                            shadowColor: 'transparent',
-                          },
-                        headerRight: () => (
-                        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-                            <Image
-                                source={require('../assets/settings.png')}
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    right: 20
-                                }}
-                            />
-                        </TouchableOpacity>
-                        ),  
-                    }}
+                        headerShown: false
+                    //     headerStyle: {
+                    //         backgroundColor: theme.colors.primary,
+                    //         shadowColor: 'transparent',
+                    //       },
+                    //     headerRight: () => (
+                    //     <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+                    //         <Image
+                    //             source={require('../assets/settings.png')}
+                    //             style={{
+                    //                 width: 25,
+                    //                 height: 25,
+                    //                 right: 20
+                    //             }}
+                    //         />
+                    //     </TouchableOpacity>
+                    //     ),  
+                    // }}
                     // options={{
                     //     tabBarIcon: ({focused}) => (
                     //         <Image
@@ -154,7 +155,7 @@ const Tabs = ({navigation}) => {
                     //     tabBarButton: (props) => (
                     //         <CustomTabBarButton {... props} />
                     //     )
-                    // }}
+                    }}
                 />
                 <Tab.Screen name="Chat" component={Chat}
                         listeners={({ navigation }) => ({

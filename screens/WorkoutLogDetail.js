@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { BottomSheet } from 'react-native-btr';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
@@ -6,6 +6,7 @@ import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/n
 import { updateUsername } from '../redux/actions/user';
 import dateformat from "dateformat";
 import { v4 as uuid } from 'uuid';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import axios from 'axios'
 import config from '../backend/config/config.js'
@@ -34,7 +35,16 @@ const CircleButton = props => (
   </TouchableOpacity>
 );
 
-const styles = StyleSheet.create({
+const WorkoutLogDetail = ({navigation, route}) => {
+  
+  // Redux and navigation
+  const userData = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+  const theme = useTheme();
+  const navi = useNavigation();
+
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       flexDirection: "column",
@@ -43,18 +53,21 @@ const styles = StyleSheet.create({
     },
     input_box: {
       width: "75%",
-      height: 40,
+      height: 70,
       marginBottom: 25,
     },
     input_title: {
-      fontSize: 40,
+      color: theme.colors.text,
+      fontSize: 25,
+      marginBottom: 5
     },
     input_placeholder: {
-      flex: 1,
-      padding: 10,
+      flex: 0,
+      height: 40,
+      paddingHorizontal: 20,
       borderRadius: 10,
-      color: "#121212",
-      backgroundColor: "rgba(230,230,230,1)",
+      color: theme.colors.text,
+      backgroundColor: theme.colors.secondary,
     },
     btn_shape: {
       backgroundColor: "rgba(99,206,237,1)",
@@ -73,9 +86,9 @@ const styles = StyleSheet.create({
     },
     bottomNavigationView: {
       borderRadius: 10,
-      height: '85%',
+      height: '75%',
       justifyContent: 'flex-start',
-      paddingTop: "15%"
+      paddingTop: "10%"
     },
     btn_box: {
       flexDirection: "row",
@@ -85,21 +98,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const WorkoutLogDetail = ({navigation, route}) => {
-  
-  // Redux and navigation
-  const userData = useSelector(state => state.user);
-  const dispatch = useDispatch();
-  const themeReducer = useSelector(({ themeReducer }) => themeReducer);
-  const theme = useTheme();  
-  const navi = useNavigation();
-
   // Hooks
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState('');
   const [numSets, setNumSets] = useState('');
   const [numReps, setNumReps] = useState('');
   const [weight, setWeight] = useState('');
+
+  const scroll = useRef();
 
   // Toggling the visibility state of the bottom sheet
   const toggleBottomNavigationView = () => {
@@ -108,6 +114,10 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
   // Add exercise to Redux and DB when form is completed
   const addExercise = () => {
+
+    if(name == '' || numSets == '' || numReps == '' || weight == '') {
+      return;
+    }
 
     // Generate 8-digit UUID for key component for later rendering
     const exid = uuid().slice(0,8)
@@ -241,20 +251,29 @@ const WorkoutLogDetail = ({navigation, route}) => {
     dispatch(updateUsername(data))
   }
 
+  const closer = () => {
+    setVisible(false)
+  }
+
   return (
     <HideKeyboard>
     <View style={styles.container}>
-      <View style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
-        <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "600", marginTop: -5, }}>{dateformat(route.params.name, 'm/d/yyyy')}: Workout Details</Text>
-        <View style={[{marginBottom: 5, borderBottomWidth: 1,}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
+      <View style={{backgroundColor: theme.colors.card, borderRadius: 15, padding: 15, width: "95%", height: "95%"}}>
+        {/* <Text style={{color: theme.colors.text, fontSize: 25, fontWeight: "600", marginTop: -5, }}>{dateformat(route.params.name, 'm/d/yyyy')}: Workout Details</Text> */}
+        <Text style={{color: theme.colors.text, alignSelf: 'center', fontSize: 25, marginTop: 20}}>Workout Details</Text>
+        <Text style={{color: theme.colors.text, alignSelf: 'center', fontSize: 20, marginTop: 10}}>{dateformat(route.params.name, 'mmmm dd, yyyy')}</Text>
+        <View style={[{marginVertical: 10, borderBottomWidth: 1}]} borderBottomColor={themeReducer.theme ? "white" : "black"}/>
 
         {
         route.params.exercises.map(exercise =>
         // <View key={exercise.exid} style={{flex: 1}}>
         <View key={exercise.exid} style={{flexDirection: "row"}}>
-        <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start"}}>
-          <Text style={{color: theme.colors.text, fontSize: 18, fontWeight: "600", marginTop: -5, }}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
-          <CircleButton text="" size={20} color="#979c9c" textColor="white" margin={10} fontSize={20} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}/>
+        <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", marginVertical: 10, width: '95%'}}>
+          <TouchableOpacity style={{ backgroundColor: "red", padding: 5, borderRadius: 10 }} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}>
+            <Text style={styles.btn_text}>🗑️</Text>
+          </TouchableOpacity>
+          <Text style={{color: theme.colors.text, fontSize: 18, fontWeight: "600", alignSelf: 'center', marginHorizontal: 10}}>{exercise.name} {exercise.sets}x{exercise.reps} - {exercise.weight}</Text>     
+          {/* <CircleButton text="" size={20} color="#979c9c" textColor="white" margin={10} fontSize={20} onPress={() => deleteExerciseAlert(exercise.exid, exercise.name)}/> */}
         </View>
         </View>
         )}
@@ -262,44 +281,51 @@ const WorkoutLogDetail = ({navigation, route}) => {
       {/* Button to add exercises */}
       <View style={styles.btn_box}>
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]}onPress={toggleBottomNavigationView}>
-        <Text style={styles.btn_text}>Add Exercise to Log</Text>
+        <Text style={styles.btn_text}>Add Exercise</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#e91d1d" }]} onPress={deleteWorkoutLog}>
-        <Text style={styles.btn_text}>Delete Workout Log</Text>
+        <Text style={styles.btn_text}>Delete Log</Text>
       </TouchableOpacity>
       </View>
       </View>
 
       <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
-        <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, alignItems:'center'}]}>
-        
-          {/* Form to add exercise */}
-          <View style={styles.input_box}>
-            <Text style={styles.input_title}>Exercise Name</Text>
-            <TextInput placeholder={"Exercise Name"} style={styles.input_placeholder} value={name + ""} onChangeText={e => setName(e)} />
-          </View>
+      
+        <KeyboardAwareScrollView ref={scroll} bounces={false} keyboardOpeningTime={0} showsVerticalScrollIndicator={false} extraHeight={150} contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}>
+          <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.card, alignItems:'center'}]}>
+          
+            {/* Form to add exercise */}
+            <View style={styles.input_box}>
+              <Text style={styles.input_title}>Exercise Name</Text>
+              <TextInput placeholder={"Exercise Name"} style={styles.input_placeholder} value={name} onChangeText={e => setName(e)}/>
+            </View>
 
-          <View style={styles.input_box}>
-            <Text style={styles.input_title}>Number of Sets</Text>
-            <TextInput placeholder={"0"} keyboardType='numeric' style={styles.input_placeholder} value={numSets + ""} onChangeText={e => setNumSets(e)}/>
-          </View>
+            <View style={styles.input_box}>
+              <Text style={styles.input_title}>Number of Sets</Text>
+              <TextInput placeholder={"0"} keyboardType='numeric' style={styles.input_placeholder} value={numSets} onChangeText={e => setNumSets(e)} returnKeyType={'done'}/>
+            </View>
 
-          <View style={styles.input_box}>
-            <Text style={styles.input_title}>Number of Reps</Text>
-            <TextInput placeholder={"0"} keyboardType='numeric' style={styles.input_placeholder} value={numReps+ ""} onChangeText={e => setNumReps(e)}/>
-          </View>
+            <View style={styles.input_box}>
+              <Text style={styles.input_title}>Number of Reps</Text>
+              <TextInput placeholder={"0"} keyboardType='numeric' style={styles.input_placeholder} value={numReps} onChangeText={e => setNumReps(e)} returnKeyType={'done'}/>
+            </View>
 
-          <View style={styles.input_box}>
-            <Text style={styles.input_title}>Weight</Text>
-            <TextInput placeholder={"0"} keyboardType='numeric' style={styles.input_placeholder} value={weight+ ""} onChangeText={e => setWeight(e)}/>
-          </View>
+            <View style={styles.input_box}>
+              <Text style={styles.input_title}>Weight</Text>
+              <TextInput placeholder={"0"} keyboardType='numeric' style={styles.input_placeholder} value={weight} onChangeText={e => setWeight(e)} returnKeyType={'done'}/>
+            </View>
 
-        <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]} onPress={addExercise}>
-          <Text style={styles.btn_text}>Add Exercise</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]} onPress={addExercise}>
+              <Text style={styles.btn_text}>Add Exercise</Text>
+            </TouchableOpacity>
 
-        </View>
+            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3571f3" }]} onPress={closer}>
+              <Text style={styles.btn_text}>Return</Text>
+            </TouchableOpacity>
+
+            </View>
+          </KeyboardAwareScrollView>
       </BottomSheet>
 
     </View>
