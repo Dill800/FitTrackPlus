@@ -272,7 +272,7 @@ const WorkoutGraph = ({navigation}) => {
                       setLoading(false);
                       setAllData(dater);
                       setMin(Math.min(...valer));
-                      setMax(Math.max(...valer));
+                      setMax(0);
                       setSubmitted(false);
                 })
                 .catch(function (error) {
@@ -379,7 +379,7 @@ const WorkoutGraph = ({navigation}) => {
       }
       //console.log('exercises unique: ', exercises)
 
-      //console.log('megadata: ',megaData)
+      console.log('megadata: ',megaData)
 
     }
     getExercises()
@@ -405,8 +405,9 @@ const WorkoutGraph = ({navigation}) => {
                             //console.log("Targ: ", targ);
                             console.log("Sorting targ...")
                             targ.sort((a,b) => (a.date > b.date) ? 1 : -1)
-
+                            let benchod = 0;
                             for(let i = 0; i < targ.length; i++) {
+                              if(benchod < targ[i].max) benchod = targ[i].max;
                               d.push({
                                 x: i.toString(),
                                 y: targ[i].max,
@@ -417,6 +418,8 @@ const WorkoutGraph = ({navigation}) => {
                             //return;
 
                             setData(d)
+
+                            setMax(benchod)
 
                           }}
                           buttonTextAfterSelection={(selectedItem, index) => {
@@ -450,7 +453,7 @@ const WorkoutGraph = ({navigation}) => {
                             */
                             padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
                             xDomain={{ min: 0, max: data.length}}
-                            yDomain={{ min: 0, max: 800}}
+                            yDomain={{ min: 0, max: max + 100}}
                             viewport={{ size: { width: 5 }, initialOrigin: {x: 0} }}
                         >
                             <VerticalAxis

@@ -396,7 +396,7 @@ const ManualMeal = ({navigation}) => {
                     }}
                     style={styles.btn_shape}
                 >
-                    <Text style={styles.btn_text}>Save Changes</Text>
+                    <Text style={styles.btn_text}>Add Meal</Text>
                 </TouchableOpacity>
 
                 <Modal
