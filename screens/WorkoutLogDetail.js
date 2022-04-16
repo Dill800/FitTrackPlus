@@ -9,6 +9,7 @@ import { v4 as uuid } from 'uuid';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import axios from 'axios'
+import qs from 'qs'
 import config from '../backend/config/config.js'
 //import { ScrollView } from 'native-base';
 
@@ -114,6 +115,229 @@ const WorkoutLogDetail = ({navigation, route}) => {
     setVisible(!visible);
   };
 
+  const updateWilks = () => {
+
+    let exercises = []
+    let megaData = {}
+  
+    // have object [exercise name] of list of object [date and 1rm]
+    let calcMax = (sets, reps, weight) => {
+        //return parseInt((100 * weight) / (101.3 - 2.67123 * reps))
+        //console.log("reps", reps);
+        //console.log("max", parseInt(exp(-0.055 * reps)));
+        if (reps == 1) {
+            return weight;
+        }
+        return parseInt((100 * weight) / (52.2 + (41.9 * Math.exp(-0.055 * reps))))
+    }
+  
+    let sameDay = (x, actdate) => {
+      //console.log('x', x)
+      //console.log('otehr', actdate)
+      let k = x.getDate() === actdate.getDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear();
+      //console.log(k)
+      return k;
+    }
+  
+  
+  
+    let getExercises = () => {
+      //console.log("Populating exercise stuff")
+      let data = userData.username.workoutlogList;
+  
+      for(let i = 0; i < data.length; i++) {
+        let eggs = data[i].exercises;
+        let d = data[i].date;
+        for(let j = 0; j < eggs.length; j++) {
+            let name = String(eggs[j].name).toLowerCase();
+            if (name.substring(0,5) == "bench") {
+                name = "bench";
+            }
+  
+          if (name in megaData) {
+  
+            // calculate max
+            // see if date exists. if not, add in
+            // if date exists and max is greater, update max
+            let max = calcMax(eggs[j].sets, eggs[j].reps, eggs[j].weight)
+            let vals = megaData[name]
+            //console.log(vals)
+            if(vals === undefined) {
+              console.log('vals is undefined')
+              return;
+            }
+            
+  
+            let index = vals.findIndex(obj => sameDay(new Date(obj.date), new Date(d))); // <- error, see if obj.date is on same day as d
+            
+            if(index === -1) {
+              //megaData[eggs[j].name] = [];
+              megaData[name].push({
+                'date': d,
+                'max': max
+              })
+            }
+            else {
+              // date exists
+  
+              if(megaData[name][index].max < max) {
+                megaData[name][index].max = max;
+              }
+  
+            }
+  
+  
+          }
+          else {
+  
+            // if exercise is new
+            megaData[name] = []
+            megaData[name].push({
+              'date': d,
+              'max': calcMax(eggs[j].sets, eggs[j].reps, eggs[j].weight)
+            })
+  
+          }
+  
+          if(!exercises.includes(name)) {
+            if (name.substring(0,5) == "bench") {
+                if (!exercises.includes("bench")) {
+                    exercises.push("bench");
+                }
+            }
+            else {
+                exercises.push(name)
+            }
+          }
+        }
+  
+      }
+      //console.log('exercises unique: ', exercises)
+  
+      //console.log('megadata: ',megaData)
+  
+      //console.log('megadata: ',megaData)
+  
+  
+    }
+    getExercises()
+  
+    let wilks = 0;
+    let benchMax = 0;
+    let squatMax = 0;
+    let deadLiftMax = 0;
+    for (let exercises in megaData) {
+          //console.log(exercises);
+          // console.log(megaData[i].toLowerCase());
+          if (String(exercises).toLowerCase() == "squat") {
+  
+              for (let i = 0; i < megaData[exercises].length; i++) {
+                  if (megaData[exercises][i].max > squatMax) {
+                      squatMax = megaData[exercises][i].max 
+                  }
+              }
+          
+              console.log("squat2");
+          }
+          if (String(exercises).toLowerCase().substring(0,5) == "bench") {
+              for (let i = 0; i < megaData[exercises].length; i++) {
+                  if (megaData[exercises][i].max > benchMax) {
+                      benchMax = megaData[exercises][i].max 
+                  }
+              }
+          
+              console.log("bench2");
+          }
+          if (String(exercises).toLowerCase() == "deadlift") {
+              for (let i = 0; i < megaData[exercises].length; i++) {
+                  if (megaData[exercises][i].max > deadLiftMax) {
+                      deadLiftMax = megaData[exercises][i].max 
+                  }
+              }
+          
+              console.log("deadlift2");
+          }
+  
+          // else if (megaData[exercises].toLowerCase().substring(0,5) == "bench") {
+          //    // megaData[i].name;
+          //     console.log("bench");
+          // }
+          // else if (megaData[exercises].toLowerCase() == "deadlift") {
+          //     //megaData[i].name;
+          //     console.log("dead");
+          // }
+    }
+    console.log("start");
+    console.log("squat", squatMax);
+    console.log("bench", benchMax);
+    console.log("deadlift", deadLiftMax);
+  
+    let W = (parseInt(squatMax) + parseInt(benchMax) + parseInt(deadLiftMax)) / 2.2046;
+    console.log("total weight", W);
+    console.log("total weight lbs", squatMax + benchMax + deadLiftMax);
+  
+    let a = -216.0475144
+    let b = 16.2606339
+    let c = -0.002388645
+    let d = -0.00113732
+    let e = 7.01863 * Math.pow(10, -6)
+    let f = -1.291 * Math.pow(10, -8)
+  
+    let x = -1;
+  
+    if ( !userData.username.weightList.length == 0) {
+        x = userData.username.weightList[userData.username.weightList.length - 1].weight / 2.2046;
+    }
+    console.log("bodyweight", x);
+    wilks = (W * 500) / (a + (b * x) + (c * Math.pow(x,2)) + (d * Math.pow(x,3))  + (e * Math.pow(x,4)) + (f * Math.pow(x,5)));
+    wilks = wilks.toFixed(2);
+    let level = "";
+    if (wilks >= 414) {
+        level = "Elite";
+    }
+    else if (wilks >= 326) {
+        level = "Advanced";
+    }
+    else if (wilks >= 238) {
+        level = "Intermediate";
+    }
+    else if (wilks >= 200) {
+        level = "Novice";
+    }
+    else {
+        level = "Untrained";;
+    }
+    //setWilks(wilks);
+    if (x == -1) {
+      wilks = 0;
+    }
+    console.log("wilks", wilks);
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'wilksScore': wilks 
+    });
+    var config2 = {
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/user/updateWilks',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+    
+    axios(config2)
+    .then(function (response) {
+      //console.log(JSON.stringify(response.data));
+      let data = userData.username;
+      data.wilksScore = wilks;
+      dispatch(updateUsername(data))
+      //console.log("group name:" + userData.username.groupName);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   // Add exercise to Redux and DB when form is completed
   const addExercise = () => {
 
@@ -166,6 +390,8 @@ const WorkoutLogDetail = ({navigation, route}) => {
     })
 
     dispatch(updateUsername(data))
+
+    updateWilks();
   }
 
   const deleteWorkoutLog = () => {
@@ -200,6 +426,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
     dispatch(updateUsername(data))
 
     // Navigate back to dashboard automatically after deletion
+    updateWilks();
     navi.goBack()  }
 
   const deleteExerciseAlert = (ex_id, ex_name,) => {
@@ -215,6 +442,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
           text: "Yes", 
           onPress: () => deleteExercise(ex_id)
         }]);
+        
   }
 
   const deleteExercise = (ex_id) => {
@@ -251,6 +479,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
     })
 
     dispatch(updateUsername(data))
+    updateWilks();
   }
 
   const closer = () => {

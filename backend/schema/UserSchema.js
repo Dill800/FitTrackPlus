@@ -7,11 +7,11 @@ const collectionName = 'users' // Database table name
 const userSchema = new mongoose.Schema({
 	username : {type: String, required: true},
     passwordHash : {type: String, required: true},
-	pfpFilepath: { data: Buffer, contentType: String},
     streakCounter : {type: mongoose.Number, required: true, default: 0},
 	lastCheckIn: {type: Date, required: true, default: new Date(-287364287364)},
     friendList: {type: [String], required: true, default: []},
 	groupName: {type: String, required: true, default: 'Fellow'},
+	wilksScore: {type: mongoose.Number, required: true, default: 0},
 	workoutlogList: {
 		type: [{
 			id: {type: String, required: true},

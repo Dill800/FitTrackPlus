@@ -150,6 +150,19 @@ module.exports = {
 
     },
 
+    updateWilks: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, {wilksScore: req.body.wilksScore}, (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        })
+
+    },
+
     updateMacros: async (req, res) => {
 
         User.findOneAndUpdate({username: req.body.username}, {$set: {calorieGoal: req.body.calorieGoal, goalFat: req.body.goalFat, goalProtein: req.body.goalProtein, goalCarb: req.body.goalCarb}}, (err, data) => {

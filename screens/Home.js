@@ -42,9 +42,22 @@ const Home = ({ navigation }) => {
       height: 40,
       justifyContent: "center",
     },
+    title_box2: {
+      backgroundColor: "rgba(74,144,226,1)",
+      borderRadius: 10,
+      width: 30,
+      height: 40,
+      justifyContent: "center",
+    },
     title: {
       color: theme.colors.text,
       fontSize: 22,
+      fontWeight: "bold",
+      alignSelf: "center",
+    },
+    title2: {
+      color: theme.colors.text,
+      fontSize: 18,
       fontWeight: "bold",
       alignSelf: "center",
     },
@@ -132,6 +145,21 @@ const Home = ({ navigation }) => {
       shadowRadius: 4,
       elevation: 5
     },
+    modalView2: {
+      margin: 20,
+      backgroundColor: theme.colors.background,
+      borderRadius: 20,
+      paddingVertical: 30,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
     button: {
       borderRadius: 20,
       padding: 10,
@@ -153,6 +181,13 @@ const Home = ({ navigation }) => {
       textAlign: "center",
       fontSize: 20,
       color: theme.colors.text
+    },
+    modalText2: {
+      marginBottom: 15,
+      textAlign: "center",
+      fontSize: 25,
+      color: theme.colors.text,
+      fontWeight: 'bold'
     },
     inputView: {
       flexDirection: 'row',
@@ -194,6 +229,7 @@ const Home = ({ navigation }) => {
   const [goalWeight, setGoalWeight] = useState(0);
   const [currWeight, setCurrWeight] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [wilkModal, setWilkModal] = useState(false);
   //const [currentWeight, setCurrentWeight] = useState(0);
 
   let friends = [];
@@ -257,6 +293,7 @@ const Home = ({ navigation }) => {
             var friend = {
               "Username": biggerDog[i].username,
               "Streak": biggerDog[i].streakCounter,
+              "WilksScore": biggerDog[i].wilksScore,
             };
 
             if (biggerDog[i].username == userData.username.username) {
@@ -417,6 +454,25 @@ const Home = ({ navigation }) => {
       });
   }
 
+  const wilkslevel = (score) => {
+    let level = "";
+    if (score >= 414) {
+        level = "Elite";
+    }
+    else if (score >= 326) {
+        level = "Advanced";
+    }
+    else if (score >= 238) {
+        level = "Intermediate";
+    }
+    else if (score >= 200) {
+        level = "Novice";
+    }
+    else {
+        level = "Untrained";;
+    }
+    return level;
+  }
 
   for (var i = 0; i < friendsList.length; i++) {
     friends.push(
@@ -425,7 +481,7 @@ const Home = ({ navigation }) => {
         style={{
           alignItems: "center",
           width: 370,
-          height: 100,
+          height: 110,
           paddingTop: 8,
         }}
       >
@@ -448,7 +504,9 @@ const Home = ({ navigation }) => {
             }}
           >
             <Text style={{ fontSize: 25, fontWeight: "bold", color: theme.colors.text, width: 1000}}>{friendsList[i].Username}</Text>
-            <Text style={{ color: theme.colors.text }}>{"Streak: " + friendsList[i].Streak + "🔥"}</Text>
+            <Text style={{ color: theme.colors.text , marginVertical: 2}}>{"Streak: " + friendsList[i].Streak + "🔥"}</Text>
+            <Text style={{ color: theme.colors.text }}>{"Wilks Score: " + friendsList[i].WilksScore}</Text>
+            <Text style={{ color: theme.colors.text }}>{wilkslevel(friendsList[i].WilksScore)}</Text>
           </View>
           <View style={{ justifyContent: 'center', width: 50,}}>
             <Image
@@ -600,6 +658,232 @@ const Home = ({ navigation }) => {
 
   //sumCarbs()
   //console.timeEnd();
+
+
+
+  const updateWilks = () => {
+
+    let exercises = []
+    let megaData = {}
+  
+    // have object [exercise name] of list of object [date and 1rm]
+    let calcMax = (sets, reps, weight) => {
+        //return parseInt((100 * weight) / (101.3 - 2.67123 * reps))
+        //console.log("reps", reps);
+        //console.log("max", parseInt(exp(-0.055 * reps)));
+        if (reps == 1) {
+            return weight;
+        }
+        return parseInt((100 * weight) / (52.2 + (41.9 * Math.exp(-0.055 * reps))))
+    }
+  
+    let sameDay = (x, actdate) => {
+      //console.log('x', x)
+      //console.log('otehr', actdate)
+      let k = x.getDate() === actdate.getDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear();
+      //console.log(k)
+      return k;
+    }
+  
+  
+  
+    let getExercises = () => {
+      //console.log("Populating exercise stuff")
+      let data = userData.username.workoutlogList;
+  
+      for(let i = 0; i < data.length; i++) {
+        let eggs = data[i].exercises;
+        let d = data[i].date;
+        for(let j = 0; j < eggs.length; j++) {
+            let name = String(eggs[j].name).toLowerCase();
+            if (name.substring(0,5) == "bench") {
+                name = "bench";
+            }
+  
+          if (name in megaData) {
+  
+            // calculate max
+            // see if date exists. if not, add in
+            // if date exists and max is greater, update max
+            let max = calcMax(eggs[j].sets, eggs[j].reps, eggs[j].weight)
+            let vals = megaData[name]
+            //console.log(vals)
+            if(vals === undefined) {
+              console.log('vals is undefined')
+              return;
+            }
+            
+  
+            let index = vals.findIndex(obj => sameDay(new Date(obj.date), new Date(d))); // <- error, see if obj.date is on same day as d
+            
+            if(index === -1) {
+              //megaData[eggs[j].name] = [];
+              megaData[name].push({
+                'date': d,
+                'max': max
+              })
+            }
+            else {
+              // date exists
+  
+              if(megaData[name][index].max < max) {
+                megaData[name][index].max = max;
+              }
+  
+            }
+  
+  
+          }
+          else {
+  
+            // if exercise is new
+            megaData[name] = []
+            megaData[name].push({
+              'date': d,
+              'max': calcMax(eggs[j].sets, eggs[j].reps, eggs[j].weight)
+            })
+  
+          }
+  
+          if(!exercises.includes(name)) {
+            if (name.substring(0,5) == "bench") {
+                if (!exercises.includes("bench")) {
+                    exercises.push("bench");
+                }
+            }
+            else {
+                exercises.push(name)
+            }
+          }
+        }
+  
+      }
+      //console.log('exercises unique: ', exercises)
+  
+      //console.log('megadata: ',megaData)
+  
+      //console.log('megadata: ',megaData)
+  
+  
+    }
+    getExercises()
+  
+    let wilks = 0;
+    let benchMax = 0;
+    let squatMax = 0;
+    let deadLiftMax = 0;
+    for (let exercises in megaData) {
+          //console.log(exercises);
+          // console.log(megaData[i].toLowerCase());
+          if (String(exercises).toLowerCase() == "squat") {
+  
+              for (let i = 0; i < megaData[exercises].length; i++) {
+                  if (megaData[exercises][i].max > squatMax) {
+                      squatMax = megaData[exercises][i].max 
+                  }
+              }
+          
+              console.log("squat2");
+          }
+          if (String(exercises).toLowerCase().substring(0,5) == "bench") {
+              for (let i = 0; i < megaData[exercises].length; i++) {
+                  if (megaData[exercises][i].max > benchMax) {
+                      benchMax = megaData[exercises][i].max 
+                  }
+              }
+          
+              console.log("bench2");
+          }
+          if (String(exercises).toLowerCase() == "deadlift") {
+              for (let i = 0; i < megaData[exercises].length; i++) {
+                  if (megaData[exercises][i].max > deadLiftMax) {
+                      deadLiftMax = megaData[exercises][i].max 
+                  }
+              }
+          
+              console.log("deadlift2");
+          }
+  
+          // else if (megaData[exercises].toLowerCase().substring(0,5) == "bench") {
+          //    // megaData[i].name;
+          //     console.log("bench");
+          // }
+          // else if (megaData[exercises].toLowerCase() == "deadlift") {
+          //     //megaData[i].name;
+          //     console.log("dead");
+          // }
+    }
+    console.log("start");
+    console.log("squat", squatMax);
+    console.log("bench", benchMax);
+    console.log("deadlift", deadLiftMax);
+  
+    let W = (parseInt(squatMax) + parseInt(benchMax) + parseInt(deadLiftMax)) / 2.2046;
+    console.log("total weight", W);
+    console.log("total weight lbs", squatMax + benchMax + deadLiftMax);
+  
+    let a = -216.0475144
+    let b = 16.2606339
+    let c = -0.002388645
+    let d = -0.00113732
+    let e = 7.01863 * Math.pow(10, -6)
+    let f = -1.291 * Math.pow(10, -8)
+  
+    let x = -1;
+  
+    if ( !userData.username.weightList.length == 0) {
+        x = userData.username.weightList[userData.username.weightList.length - 1].weight / 2.2046;
+    }
+    console.log("bodyweight", x);
+    wilks = (W * 500) / (a + (b * x) + (c * Math.pow(x,2)) + (d * Math.pow(x,3))  + (e * Math.pow(x,4)) + (f * Math.pow(x,5)));
+    wilks = wilks.toFixed(2);
+    let level = "";
+    if (wilks >= 414) {
+        level = "Elite";
+    }
+    else if (wilks >= 326) {
+        level = "Advanced";
+    }
+    else if (wilks >= 238) {
+        level = "Intermediate";
+    }
+    else if (wilks >= 200) {
+        level = "Novice";
+    }
+    else {
+        level = "Untrained";;
+    }
+    //setWilks(wilks);
+    if (x == -1) {
+      wilks = 0;
+    }
+    console.log("wilks", wilks);
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'wilksScore': wilks 
+    });
+    var config2 = {
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/user/updateWilks',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+    
+    axios(config2)
+    .then(function (response) {
+      //console.log(JSON.stringify(response.data));
+      let data = userData.username;
+      data.wilksScore = wilks;
+      dispatch(updateUsername(data))
+      //console.log("group name:" + userData.username.groupName);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -732,14 +1016,16 @@ const Home = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.exercise_container}>
-        <View
+        <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity
+          onPress={() => setWilkModal(true)}
           style={[
-            styles.title_box,
-            { backgroundColor: theme.colors.third, marginVertical: 10 },
-            { flex: 1 },
+            styles.title_box2,
+            { backgroundColor: theme.colors.third, marginVertical: 10, alignSelf: 'left'},
+            { flex: 1 }, {marginRight: 20, marginLeft: 10},
           ]}
         >
-          <Text style={styles.title}>Workout Streak: {userData.username.streakCounter} 🔥</Text>
+          <Text style={styles.title2}>Wilks: {userData.username.wilksScore}</Text>
           {/* <Image
                 source={streakImageURL}
                 resizeMode='contain'
@@ -748,6 +1034,56 @@ const Home = ({ navigation }) => {
                     width: '100%',
                 }}
               /> */}
+        </TouchableOpacity>
+              <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={wilkModal}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setWilkModal(false);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView2}>
+                      <Text style={styles.modalText2}>What is a Wilks Score?</Text>
+                      <Text style={styles.modalText}>The Wilks Score measures your strength in powerlifting against other powerlifters with different bodyweights.</Text>
+                      <Text style={styles.modalText}>The lift requires data from your squat, bench, and deadlift, so please add those exercises
+                      to properly see your Wilks Score.</Text>
+                      
+                      <Text style={styles.modalText}>Untrained: 120</Text>
+                      <Text style={styles.modalText}>Novice: 200</Text>
+                      <Text style={styles.modalText}>Intermediate: 238</Text>
+                      <Text style={styles.modalText}>Advanced: 326</Text>
+                      <Text style={styles.modalText}>Elite: 414</Text>
+                      <Text style={styles.modalText}></Text>
+                      
+                      <TouchableOpacity
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setWilkModal(false)}
+                      >
+                        <Text style={styles.textStyle}>Return</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+        <View
+          style={[
+            styles.title_box2,
+            { backgroundColor: theme.colors.third, marginVertical: 10, alignSelf: 'right', marginRight: 10 },
+            { flex: 1 },
+          ]}
+        >
+          <Text style={styles.title2}>Streak: {userData.username.streakCounter} 🔥</Text>
+          {/* <Image
+                source={streakImageURL}
+                resizeMode='contain'
+                style={{
+                    flex: 1,
+                    width: '100%',
+                }}
+              /> */}
+        </View>
         </View>
         <ScrollView horizontal={false} style={styles.box}>
           <View style={{flexGrow: 0}}>{friends}</View>
