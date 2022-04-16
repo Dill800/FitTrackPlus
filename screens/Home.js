@@ -150,6 +150,8 @@ const Home = ({ navigation }) => {
       backgroundColor: theme.colors.background,
       borderRadius: 20,
       paddingVertical: 30,
+      paddingHorizontal:10,
+      //padding: 20,
       alignItems: "center",
       shadowColor: "#000",
       shadowOffset: {
@@ -163,6 +165,12 @@ const Home = ({ navigation }) => {
     button: {
       borderRadius: 20,
       padding: 10,
+      elevation: 2
+    },
+    buttonRyan: {
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 15,
       elevation: 2
     },
     buttonOpen: {
@@ -1056,10 +1064,10 @@ const Home = ({ navigation }) => {
                       <Text style={styles.modalText}>Intermediate: 238</Text>
                       <Text style={styles.modalText}>Advanced: 326</Text>
                       <Text style={styles.modalText}>Elite: 414</Text>
-                      <Text style={styles.modalText}></Text>
+                      
                       
                       <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
+                        style={[styles.buttonRyan, styles.buttonClose]}
                         onPress={() => setWilkModal(false)}
                       >
                         <Text style={styles.textStyle}>Return</Text>
@@ -1134,8 +1142,8 @@ const Home = ({ navigation }) => {
               </View>
               <TouchableOpacity
                 style={[
-                  styles.btn_shape,
-                  { backgroundColor: theme.colors.third, marginHorizontal: 10, padding: 10 },
+                  styles.button, styles.buttonClose,
+                  
                 ]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
