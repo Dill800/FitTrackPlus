@@ -9,6 +9,7 @@ import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-
 import { format } from 'date-fns'
 import {useSelector, useDispatch} from 'react-redux'
 import { updateUsername } from '../redux/actions/user';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import SelectDropdown from 'react-native-select-dropdown'
 
@@ -526,11 +527,15 @@ const WorkoutGraph = ({navigation}) => {
                 <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>1RM Graphs</Text>
                 <View style={styles.container}>
                     <View style={[styles.box, {alignItems: 'center'}]}>
-                        <Text style={styles.title}>Select Exercise</Text>
+                        <Text style={styles.title}></Text>
                         <View style={styles.inputView}>
                             
                         <SelectDropdown
                           data={exercises}
+                          defaultButtonText={'Select an exercise:'}
+                          renderDropdownIcon={isOpened => {
+                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={theme.colors.text} size={18} />;
+                          }}
                           onSelect={(selectedItem, index) => {
                             //console.log(selectedItem, index)
                             // {x: i.toString(), y: biggerDog[i].weight, meta: format(new Date(biggerDog[i].date), "MMM-dd").toString()}
