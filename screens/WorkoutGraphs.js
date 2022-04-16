@@ -14,6 +14,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown'
 
 import config from '../backend/config/config.js'
+import { Logger } from './../components/styles'
+import WeightLogList from './WeightLogList'
 import { exp } from 'react-native-reanimated';
 
 const HideKeyboard = ({ children }) => (
@@ -72,17 +74,16 @@ const WorkoutGraph = ({navigation}) => {
         container: {
             flexDirection: "row",
             width: "100%",
-            marginTop: 12,
+            marginTop: 20,
             justifyContent: "center",
         },
         box: {
-            backgroundColor: theme.colors.primary,
+            backgroundColor: theme.colors.card,
             width: "95%",
             height: 125,
             borderRadius: 10,
-            marginBottom: 10
-            // borderBottomLeftRadius: 0,
-            // borderBottomRightRadius: 0,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
         },
         title: {
             color: theme.colors.text,
@@ -94,22 +95,20 @@ const WorkoutGraph = ({navigation}) => {
             width: "95%",
             height: 400,
             borderRadius: 10,
-            // borderTopLeftRadius: 0,
-            // borderTopRightRadius: 0,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
             alignItems: 'center',
-            paddingTop: "5%",
-            marginBottom: -20
+            paddingBottom: 20
         },
         bottom_buttons: {
             flex: 1,
             flexDirection: 'row'
         },
         dropdown2BtnStyle: {
-            width: '100%',
-            height: 42,
+            width: '80%',
+            height: 50,
             backgroundColor: theme.colors.secondary,
             borderRadius: 8,
-            paddingHorizontal: 30,
           },
           dropdown2BtnTxtStyle: {
             color: theme.colors.text,
@@ -524,13 +523,19 @@ const WorkoutGraph = ({navigation}) => {
     return (
         <HideKeyboard>
         <View style={{flex: 1, alignItems: 'center'}}>
+            <Logger>
+                <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>1RM Graphs</Text>
                 <View style={styles.container}>
                     <View style={[styles.box, {alignItems: 'center'}]}>
-                        <Text style={{color: theme.colors.text, fontSize: 33, fontFamily: 'Avenir-Roman', textAlign: 'center', paddingTop: 15, paddingBottom: 8}}>1RM Graphs</Text>
+                        <Text style={styles.title}></Text>
                         <View style={styles.inputView}>
                             
                         <SelectDropdown
                           data={exercises}
+                          defaultButtonText={'Select an exercise:'}
+                          renderDropdownIcon={isOpened => {
+                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={theme.colors.text} size={18} />;
+                          }}
                           onSelect={(selectedItem, index) => {
                             //console.log(selectedItem, index)
                             // {x: i.toString(), y: biggerDog[i].weight, meta: format(new Date(biggerDog[i].date), "MMM-dd").toString()}
@@ -573,10 +578,6 @@ const WorkoutGraph = ({navigation}) => {
                           dropdownStyle={styles.dropdown2DropdownStyle}
                           rowStyle={styles.dropdown2RowStyle}
                           rowTextStyle={styles.dropdown2RowTxtStyle}
-                          defaultButtonText={'Select an exercise:'}
-                          renderDropdownIcon={isOpened => {
-                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={theme.colors.text} size={18} />;
-                          }}
                         />
 
 
@@ -658,6 +659,7 @@ const WorkoutGraph = ({navigation}) => {
                 </View>
                 {x == -1 ? <Text style={{color: theme.colors.text, textAlign: 'center', bottom: 30, fontSize: 15, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text> : <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>Wilks Score: {wilks}</Text>}
                 {x == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>({level})</Text>}
+            </Logger>
             
         </View>
         </HideKeyboard>
