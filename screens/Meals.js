@@ -38,7 +38,7 @@ const Meals = ({navigation}) => {
             justifyContent: "center",
         },
         title: {
-            color: theme.colors.text,
+            color: "rgba(255,255,255,1)",
             fontSize: 22,
             alignSelf: "center",
         },
@@ -92,7 +92,7 @@ const Meals = ({navigation}) => {
             justifyContent: "center",
         },
         btn_text: {
-            color: theme.colors.text,
+            color: "rgba(255,255,255,1)",
             fontSize: 16,
             textAlign: "center",
             fontWeight: "bold",
@@ -108,15 +108,18 @@ const Meals = ({navigation}) => {
         }
     })
 
-
     const navi = useNavigation();
     const scrollViewRef = useRef();
     let foodList = []
 
-    const [date, setDate] = useState(new Date(Date.now()))
+    let adjustedDate = new Date(Date.now());
+    adjustedDate.setHours(adjustedDate.getHours() - 4)
+    
+    const [date, setDate] = useState(adjustedDate)
+    
     const [visible, setVisible] = useState(false);
     const [detailMenuVisible, setDetailMenuVisible] = useState(false);
-    const [actdate, setActdate] = useState(new Date(Date.now()))
+    const [actdate, setActdate] = useState(adjustedDate);
 
     const [fatCount, setFatCount] = useState(0);
     const [proteinCount, setProteinCount] = useState(0);
@@ -125,6 +128,8 @@ const Meals = ({navigation}) => {
     const [mealName, setMealName] = useState();
 
     const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+    
+    
 
     const [sid, setSid] = useState(0)
 
@@ -136,25 +141,23 @@ const Meals = ({navigation}) => {
         setDetailMenuVisible(!detailMenuVisible);
     };
 
-    const onChange = (event, selectedDate) => {
-        let d = new Date();
-        d.setHours(d.getHours());
-        console.log("oogd", d)
+      const onChange = (event, selectedDate) => {
         const currentDate = new Date(selectedDate);
         setDate(new Date(selectedDate));
-        currentDate.setDate(currentDate.getDate())
+        //currentDate.setDate(currentDate.getDate() - 1)
         setActdate(currentDate)
-        console.log(currentDate)
-    };
+
+        console.log("dillon", currentDate)
+      };
 
     const changeDate = () => {
         console.log(date)
         setSid(sid+1)
     }
 
-    console.log("About to run for loop, list length: ", userData.username.mealList.length)
-
-    // Iterate thru all meal lists
+    //console.log("About to run for loop, list length: ", userData.username.mealList.length)
+    //console.log(new Date(Date.now()))
+    console.log("ryan", actdate);
     for(let i = 0; i < userData.username.mealList.length; i++) {
         let x = new Date(userData.username.mealList[i].date)
 
@@ -249,13 +252,13 @@ const Meals = ({navigation}) => {
             <View style={styles.progress}>
 
                 <TouchableOpacity style={[styles.title_box, {marginTop: 10}]} onPress={toggleBottomNavigationView}>
-                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getDate()}, {actdate.getFullYear()} 📅</Text>
+                    <Text style={styles.title}>{actdate.toLocaleString('default',{month:'long'})} {actdate.getDate()}, {actdate.getFullYear()}</Text>
                 </TouchableOpacity>
 
                 <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
                     <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
                     
-                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={themeReducer.theme ? "dark" : "light"} value={date} mode={'date'} onChange={onChange} display="inline"/>
+                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={'dark'} value={date} mode={'date'} onChange={onChange} display="inline"/>
                     <View style={{alignItems:'center', }}>
                     <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={toggleBottomNavigationView}>
                         <Text style={styles.btn_text}>Done</Text>
@@ -354,7 +357,7 @@ const Meals = ({navigation}) => {
                 <View
                     style={[
                         styles.title_box,
-                        { backgroundColor: theme.colors.third, marginVertical: 10, marginTop:-50 },
+                        { backgroundColor: "rgba(178,108,233,1)", marginVertical: 10, marginTop:-50 },
                     ]}
                 >
                     <Text style={styles.title}>Meals</Text>
@@ -374,9 +377,9 @@ const Meals = ({navigation}) => {
             <View style={[styles.btn_box, {marginTop: 40}]}>
                 <TouchableOpacity
                     onPress={() => {
-                        navi.navigate("Add Meal");
+                        navi.navigate("Add Meal", {date: date});
                     }}
-                    style={[styles.btn_shape, { backgroundColor: theme.colors.third, marginHorizontal: 10 }]}
+                    style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }]}
                 >
                     <Text style={[styles.btn_text]}>Add Meal</Text>
                 </TouchableOpacity>

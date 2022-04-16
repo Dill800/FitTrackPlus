@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { LogBox, StyleSheet, Text, View } from 'react-native';
 import React, {useState, useEffect} from 'react'
 import {NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
@@ -69,6 +69,8 @@ const App = () => {
 
   const [userData, setUserData] = useState(null);
   const themeReducer = useSelector(({ themeReducer }) => themeReducer);
+  //console.disableYellowBox = true;
+  LogBox.ignoreAllLogs();
 
   return (
 

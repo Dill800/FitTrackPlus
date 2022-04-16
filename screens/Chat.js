@@ -512,13 +512,13 @@ const Chat = ({ navigation }) => {
 
                   </View>
                   <TouchableOpacity
-                      style={[styles.btn_shape, styles.buttonClose, { marginTop: 15, width: '20%', backgroundColor: theme.colors.third }]}
+                      style={[styles.button, styles.buttonClose, { marginTop: 15, width: '20%'}]}
                       onPress={() => post()}
                     >
                       <Text style={styles.textStyle}>Post</Text>
                     </TouchableOpacity>
                   <TouchableOpacity
-                    style={[styles.btn_shape, styles.buttonClose, { marginTop: 15, width: '20%', backgroundColor: theme.colors.third}]}
+                    style={[styles.button, styles.buttonClose, { marginTop: 15, width: '20%'}]}
                     onPress={() => setPostModal(false)}
                   >
                     <Text style={styles.textStyle}>Return</Text>
@@ -575,7 +575,7 @@ const Chat = ({ navigation }) => {
                 </View>
               </ScrollView>
               <TouchableOpacity
-                style={[styles.btn_shape, styles.buttonClose, {backgroundColor: theme.colors.third, marginTop: 30}]}
+                style={[styles.button, styles.buttonClose, {marginTop: 30}]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.textStyle}>Return</Text>

@@ -20,7 +20,11 @@ const HideKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 );
 
-const ManualMeal = ({navigation}) => {
+const ManualMeal = ({route, navigation}) => {
+
+    console.log(route.params.date)
+    console.log(typeof(route.params.date))
+    console.log("brock", new Date(route.params.date))
 
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
@@ -181,7 +185,7 @@ const ManualMeal = ({navigation}) => {
     
     const updateMeals = () => {
         let d = Date.now();
-        let goodDate = new Date();
+        let goodDate = new Date(route.params.date);
         goodDate.setHours(goodDate.getHours());
         var data = qs.stringify({
           'username': userData.username.username,
@@ -206,7 +210,7 @@ const ManualMeal = ({navigation}) => {
         axios(config2)
         .then(function (response) {
           //console.log(JSON.stringify(response.data));
-          let goodDate = new Date();
+          let goodDate = new Date(route.params.date);
           goodDate.setHours(goodDate.getHours());
           let data = userData.username;
           data.mealList.push({
@@ -219,6 +223,7 @@ const ManualMeal = ({navigation}) => {
           })
 
           dispatch(updateUsername(data));
+          console.log("Good date", new Date(route.params.date));
         })
         .catch(function (error) {
           console.log(error);
@@ -433,7 +438,7 @@ const ManualMeal = ({navigation}) => {
 
 
                             <TouchableOpacity
-                              style={[styles.btn_shape, styles.buttonClose, { marginTop: 30 }]}
+                              style={[styles.button, styles.buttonClose, { marginTop: 30, width:150 }]}
                               onPress={() => {
                                 findFood();
                                 setModalVisible(false);
@@ -444,7 +449,7 @@ const ManualMeal = ({navigation}) => {
                             </TouchableOpacity>
                           </View>
                           <TouchableOpacity
-                            style={[styles.btn_shape, styles.buttonClose, {marginTop: 150}]}
+                            style={[styles.button, styles.buttonClose, {marginTop: 160}]}
                             onPress={() => setModalVisible(false)}
                           >
                             <Text style={styles.textStyle}>Return</Text>
