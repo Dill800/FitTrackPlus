@@ -314,9 +314,14 @@ const Home = ({ navigation }) => {
   }
 
   const updateGoalWeight = () => {
+    let startingWeight = 0;
+    if (userData.username.weightList.length != 0) {
+        startingWeight = userData.username.weightList[userData.username.weightList.length - 1].weight;
+    }
     var data = qs.stringify({
       'username': userData.username.username,
       'goalWeight': goalWeight,
+      'startingWeight': startingWeight,
     });
     var config2 = {
       method: 'post',
@@ -332,6 +337,7 @@ const Home = ({ navigation }) => {
         //console.log(JSON.stringify(response.data));
         let data = userData.username;
         data.goalWeight = goalWeight;
+        data.startingWeight = startingWeight;
         dispatch(updateUsername(data));
         setGoalWeight(userData.username.goalWeight);
         //.username.goalWeight);
@@ -605,7 +611,7 @@ const Home = ({ navigation }) => {
           <TouchableOpacity style={styles.progress_box} onPress={() => navigation.navigate("Weight Log")}>
             <Text style={styles.progress_title}>Current Weight:</Text>
             <Text style={styles.progress_value}>
-              {currentWeight == oldWeight ? (currentWeight + " lbs") : 
+              {currentWeight == oldWeight ? (currentWeight + " lbs ✏️") : 
                 (currentWeight < oldWeight ? (currentWeight + " lbs 🔽") : currentWeight + " lbs 🔼")}
             </Text>
           </TouchableOpacity>

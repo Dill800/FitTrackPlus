@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
 	weightList: {type: [{weight: mongoose.Number, date: Date}], required: true, default: []},
 	currentWeight : {type: mongoose.Number, required: true, default: 0},
 	goalWeight : {type: mongoose.Number, required: true, default: 0},
+	startingWeight : {type: mongoose.Number, required: true, default: 0},
 
 	currentCalorie : {type: mongoose.Number, required: true, default: 0},
 	calorieGoal : {type: mongoose.Number, required: true, default: 2000},

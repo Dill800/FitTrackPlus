@@ -488,8 +488,12 @@ const WorkoutGraph = ({navigation}) => {
     let d = -0.00113732
     let e = 7.01863 * Math.pow(10, -6)
     let f = -1.291 * Math.pow(10, -8)
+
+    let x = -1;
   
-    let x = userData.username.weightList[userData.username.weightList.length - 1].weight / 2.2046;
+    if ( !userData.username.weightList.length == 0) {
+        x = userData.username.weightList[userData.username.weightList.length - 1].weight / 2.2046;
+    }
     console.log("bodyweight", x);
     wilks = (W * 500) / (a + (b * x) + (c * Math.pow(x,2)) + (d * Math.pow(x,3))  + (e * Math.pow(x,4)) + (f * Math.pow(x,5)));
     wilks = wilks.toFixed(2);
@@ -511,6 +515,8 @@ const WorkoutGraph = ({navigation}) => {
     }
     //setWilks(wilks);
     console.log("wilks", wilks);
+
+    let displayString = "⚠️ Please log current weight to see Wilks Score";
     //setWilks(wilks);
     //let wilks = 0;
     return (
@@ -646,8 +652,8 @@ const WorkoutGraph = ({navigation}) => {
                         
                     {/* </ScrollView> */}
                 </View>
-                <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>Wilks Score: {wilks}</Text>
-                <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>({level})</Text>
+                {x == -1 ? <Text style={{color: theme.colors.text, textAlign: 'center', bottom: 30, fontSize: 15, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text> : <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>Wilks Score: {wilks}</Text>}
+                {x == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>({level})</Text>}
             </Logger>
             
         </View>
