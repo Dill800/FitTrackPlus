@@ -9,12 +9,11 @@ import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-
 import { format } from 'date-fns'
 import {useSelector, useDispatch} from 'react-redux'
 import { updateUsername } from '../redux/actions/user';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import SelectDropdown from 'react-native-select-dropdown'
 
 import config from '../backend/config/config.js'
-import { Logger } from './../components/styles'
-import WeightLogList from './WeightLogList'
 import { exp } from 'react-native-reanimated';
 
 const HideKeyboard = ({ children }) => (
@@ -73,16 +72,17 @@ const WorkoutGraph = ({navigation}) => {
         container: {
             flexDirection: "row",
             width: "100%",
-            marginTop: 20,
+            marginTop: 12,
             justifyContent: "center",
         },
         box: {
-            backgroundColor: theme.colors.card,
+            backgroundColor: theme.colors.primary,
             width: "95%",
             height: 125,
             borderRadius: 10,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
+            marginBottom: 10
+            // borderBottomLeftRadius: 0,
+            // borderBottomRightRadius: 0,
         },
         title: {
             color: theme.colors.text,
@@ -94,20 +94,22 @@ const WorkoutGraph = ({navigation}) => {
             width: "95%",
             height: 400,
             borderRadius: 10,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
+            // borderTopLeftRadius: 0,
+            // borderTopRightRadius: 0,
             alignItems: 'center',
-            paddingBottom: 20
+            paddingTop: "5%",
+            marginBottom: -20
         },
         bottom_buttons: {
             flex: 1,
             flexDirection: 'row'
         },
         dropdown2BtnStyle: {
-            width: '80%',
-            height: 50,
+            width: '100%',
+            height: 42,
             backgroundColor: theme.colors.secondary,
             borderRadius: 8,
+            paddingHorizontal: 30,
           },
           dropdown2BtnTxtStyle: {
             color: theme.colors.text,
@@ -516,11 +518,9 @@ const WorkoutGraph = ({navigation}) => {
     return (
         <HideKeyboard>
         <View style={{flex: 1, alignItems: 'center'}}>
-            <Logger>
-                <Text style={{color: theme.colors.text, fontSize: 38, fontFamily: 'Avenir-Roman', textAlign: 'center'}}>1RM Graphs</Text>
                 <View style={styles.container}>
                     <View style={[styles.box, {alignItems: 'center'}]}>
-                        <Text style={styles.title}>Select Exercise</Text>
+                        <Text style={{color: theme.colors.text, fontSize: 33, fontFamily: 'Avenir-Roman', textAlign: 'center', paddingTop: 15, paddingBottom: 8}}>1RM Graphs</Text>
                         <View style={styles.inputView}>
                             
                         <SelectDropdown
@@ -567,6 +567,10 @@ const WorkoutGraph = ({navigation}) => {
                           dropdownStyle={styles.dropdown2DropdownStyle}
                           rowStyle={styles.dropdown2RowStyle}
                           rowTextStyle={styles.dropdown2RowTxtStyle}
+                          defaultButtonText={'Select an exercise:'}
+                          renderDropdownIcon={isOpened => {
+                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={theme.colors.text} size={18} />;
+                          }}
                         />
 
 
@@ -648,7 +652,6 @@ const WorkoutGraph = ({navigation}) => {
                 </View>
                 <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>Wilks Score: {wilks}</Text>
                 <Text style={{color: theme.colors.text, fontSize: 30, textAlign: 'center', bottom: 80, fontFamily: 'Avenir-Roman',}}>({level})</Text>
-            </Logger>
             
         </View>
         </HideKeyboard>
