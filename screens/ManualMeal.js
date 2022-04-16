@@ -168,9 +168,6 @@ const ManualMeal = ({navigation}) => {
       },
   });
 
-    const [name, setName] = useState('');
-    const [numSets, setNumSets] = useState('');
-    const [numReps, setNumReps] = useState('');
     const [fatCount, setFatCount] = useState(0);
     const [proteinCount, setProteinCount] = useState(0);
     const [carbCount, setCarbCount] = useState(0);

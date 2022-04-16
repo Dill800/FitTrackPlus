@@ -427,7 +427,8 @@ const WorkoutLogDetail = ({navigation, route}) => {
 
     // Navigate back to dashboard automatically after deletion
     updateWilks();
-    navi.goBack()  }
+    navi.goBack()  
+  }
 
   const deleteExerciseAlert = (ex_id, ex_name,) => {
     Alert.alert(

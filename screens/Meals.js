@@ -6,6 +6,10 @@ import {useSelector, useDispatch} from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BottomSheet } from 'react-native-btr';
 
+import { updateUsername } from '../redux/actions/user';
+import axios from 'axios'
+import config from '../backend/config/config.js'
+
 const Meals = ({navigation}) => {
 
     const userData = useSelector(state => state.user);
@@ -111,70 +115,133 @@ const Meals = ({navigation}) => {
 
     const [date, setDate] = useState(new Date(Date.now()))
     const [visible, setVisible] = useState(false);
+    const [detailMenuVisible, setDetailMenuVisible] = useState(false);
     const [actdate, setActdate] = useState(new Date(Date.now()))
+
+    const [fatCount, setFatCount] = useState(0);
+    const [proteinCount, setProteinCount] = useState(0);
+    const [carbCount, setCarbCount] = useState(0);
+    const [calorieCount, setCalorieCount] = useState(0);
+    const [mealName, setMealName] = useState();
 
     const themeReducer = useSelector(({ themeReducer }) => themeReducer);
 
     const [sid, setSid] = useState(0)
 
+    // Controls visibility of date selector and edit menu
     const toggleBottomNavigationView = () => {
         setVisible(!visible);
-      };
+    };
+    const toggleDetailMenu = () => {
+        setDetailMenuVisible(!detailMenuVisible);
+    };
 
-      const onChange = (event, selectedDate) => {
-          let d = new Date();
-          d.setHours(d.getHours());
+    const onChange = (event, selectedDate) => {
+        let d = new Date();
+        d.setHours(d.getHours());
         console.log("oogd", d)
         const currentDate = new Date(selectedDate);
         setDate(new Date(selectedDate));
         currentDate.setDate(currentDate.getDate())
         setActdate(currentDate)
-
-        
         console.log(currentDate)
-      };
+    };
 
     const changeDate = () => {
-
         console.log(date)
         setSid(sid+1)
-
     }
 
     console.log("About to run for loop, list length: ", userData.username.mealList.length)
+
+    // Iterate thru all meal lists
     for(let i = 0; i < userData.username.mealList.length; i++) {
         let x = new Date(userData.username.mealList[i].date)
 
         if(x.getDate() === actdate.getDate() && x.getMonth() === actdate.getMonth() && x.getFullYear() === actdate.getFullYear())
+
+        // Meal w/ matching date found
         foodList.push(
-            <View
-            key = {i}
-            style={{
-            alignItems: "center",
-            width: 370,
-            height: 'auto',
-            marginBottom: 15
-        }}
-    >
-        <View
-            key = {i}
-            style={{
-                backgroundColor: theme.colors.secondary,
-                borderRadius: 15,
-                padding: 15,
-                width: "95%",
-                height: 'auto',
-                //alignItems: 'center',
-            }}
-        >
-            <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
-            <Text style={[styles.card_text, {color: 'tomato', fontWeight: 'bold'}]}>Calorie:                       {userData.username.mealList[i].calories}</Text>
-            <Text style={[styles.card_text, {color: 'skyblue', fontWeight: 'bold'}]}>Fat:                               {userData.username.mealList[i].fat} g</Text>
-            <Text style={[styles.card_text, {color: 'gold', fontWeight: 'bold'}]}>Protein:                       {userData.username.mealList[i].protein} g</Text>
-            <Text style={[styles.card_text, {color: 'forestgreen', fontWeight: 'bold'}]}>Carb:                            {userData.username.mealList[i].carbs} g</Text>
-        </View>
-    </View>
+            <TouchableOpacity onPress={() => {
+                setFatCount(userData.username.mealList[i].fat)
+                setProteinCount(userData.username.mealList[i].protein)
+                setCarbCount(userData.username.mealList[i].carbs)
+                setCalorieCount(userData.username.mealList[i].calories)
+                setMealName(userData.username.mealList[i].mealName)
+                setDate(x)
+                toggleDetailMenu(); 
+                }}>
+            <View key = {i} style={{alignItems: "center", width: 370, height: 'auto', marginBottom: 15}}>
+                <View key = {i} style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: 'auto',}}>
+                    <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
+                    <Text style={[styles.card_text, {color: 'tomato', fontWeight: 'bold'}]}>Calorie:                       {userData.username.mealList[i].calories}</Text>
+                    <Text style={[styles.card_text, {color: 'skyblue', fontWeight: 'bold'}]}>Fat:                               {userData.username.mealList[i].fat} g</Text>
+                    <Text style={[styles.card_text, {color: 'gold', fontWeight: 'bold'}]}>Protein:                       {userData.username.mealList[i].protein} g</Text>
+                    <Text style={[styles.card_text, {color: 'forestgreen', fontWeight: 'bold'}]}>Carb:                            {userData.username.mealList[i].carbs} g</Text>
+                </View>
+            </View>
+            </TouchableOpacity>
         )
+    }
+
+    // Update meal to Redux and DB when form is completed
+    const updateMeal = () => {
+
+        if(fatCount == '' || proteinCount == '' || carbCount == '' || calorieCount == '' || mealName == '') {
+            return;
+        }
+        
+        // Format data into object
+        let mealData = {
+            date: date,
+            mealName: mealName,
+            fat: fatCount,
+            protein: proteinCount,
+            carbs: carbCount,
+            calories: calorieCount,
+        }
+        
+        // Clear form after submitting
+        setFatCount("")
+        setProteinCount("")
+        setCarbCount("")
+        setCalorieCount("")
+        setMealName("")
+        
+        // Bodgy Redux querying
+        const data = userData.username
+        const meallist = data.mealList
+        
+        // Iterate and find the meal we want
+        let index = -1;
+        for(let i = 0; i < meallist.length; i++){
+            // console.log("EQCHECK", meallist[i].mealName, " ", meallist[i].date, date, )
+            if(meallist[i].mealName  == mealName && ((new Date(meallist[i].date)).toString() === date.toString())){
+                index = i
+                // console.log("INDEXDUMP",index)
+            }
+        }
+        
+        // Makes sure a workoutlog can't be deleted unless exact match found
+        data.mealList.splice(index, (index != -1) ? 1 : 0)
+        
+        // Add new meal
+        // console.log("DATADUMP",mealData)
+        meallist.push(mealData);
+        
+        // Save to Redux and DB
+        axios.post('http://' + config.ipv4 + ':5000/user/updateMealList', {
+            username: userData.username.username,
+            mealList : data.mealList
+        })
+        .then(res => {
+        // console.log("---------- POST Called to db")
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+        
+        dispatch(updateUsername(data))
     }
 
     return (
@@ -194,6 +261,80 @@ const Meals = ({navigation}) => {
                         <Text style={styles.btn_text}>Done</Text>
                     </TouchableOpacity>
                     </View>
+
+                    </View>
+                </BottomSheet>
+
+                <BottomSheet visible={detailMenuVisible} onBackButtonPress={toggleDetailMenu} onBackdropPress={toggleDetailMenu}>
+                    <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
+
+                        <View style={styles.box}>
+                            <View style={styles.input_box}>
+                                <Text style={styles.input_title}>Meal Name:</Text>
+                                <TextInput
+                                placeholder={mealName+""}
+                                placeholderTextColor='grey'
+                                returnKeyType={ 'done' }
+                                style={styles.input_placeholder}
+                                onChangeText={e => {setMealName(e)}}
+                                value={mealName}
+                                />
+                            </View>
+
+                            <View style={styles.input_box}>
+                                <Text style={styles.input_title}>Fat (g):</Text>
+                                <TextInput
+                                placeholder={fatCount+""}
+                                placeholderTextColor='grey'
+                                returnKeyType={ 'done' }
+                                style={styles.input_placeholder}
+                                keyboardType="numeric"
+                                onChangeText={e => {setFatCount(e); setCalorieCount((e * 9) + (proteinCount * 4) + (carbCount * 4));}}
+                                value={fatCount}
+                                />
+                            </View>
+                            
+                            <View style={styles.input_box}>
+                                <Text style={styles.input_title}>Protein (g):</Text>
+                                <TextInput
+                                style={styles.input_placeholder}
+                                keyboardType="numeric"
+                                placeholder={proteinCount+""}
+                                returnKeyType={ 'done' }
+                                placeholderTextColor='grey'
+                                onChangeText={e => {setProteinCount(e); setCalorieCount((fatCount * 9) + (e * 4) + (carbCount * 4));}}
+                                value={proteinCount}
+                                />
+                            </View>
+
+                            <View style={styles.input_box}>
+                                <Text style={styles.input_title}>Carbs (g):</Text>
+                                <TextInput
+                                style={styles.input_placeholder}
+                                keyboardType="numeric"
+                                returnKeyType={ 'done' }
+                                placeholder={carbCount+""}
+                                placeholderTextColor='grey'
+                                onChangeText={e => {setCarbCount(e); setCalorieCount((fatCount * 9) + (proteinCount * 4) + (e * 4));}}
+                                value={carbCount}
+                                />
+                            </View>
+
+                            <View style={styles.title_box}>
+                            <Text style={styles.title}>Total Calories: {calorieCount}</Text>
+                            </View>
+                            
+                        </View>
+
+                        {/* Button to add exercises */}
+                        <View style={[styles.btn_box,]}>
+                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)" }]} onPress={updateMeal}>
+                            <Text style={styles.btn_text}>Update Meal</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#800040" }]} onPress={toggleDetailMenu}>
+                            <Text style={styles.btn_text}>Delete Meal</Text>
+                            </TouchableOpacity>
+                        </View>
 
                     </View>
                 </BottomSheet>

@@ -41,6 +41,7 @@ userRouter.post('/addPfp', upload.single('photo'), userController.addPfp)
 userRouter.post('/updateGoalWeight', userController.updateGoalWeight)
 userRouter.post('/updateMacros', userController.updateMacros)
 userRouter.post('/addMeal', userController.addMeal)
+userRouter.post('/updateMealList', userController.updateMealList)
 userRouter.post('/updateWilks', userController.updateWilks)
 
 // Logging in as an existing user
