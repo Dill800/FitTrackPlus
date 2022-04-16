@@ -247,6 +247,37 @@ const Meals = ({navigation}) => {
         dispatch(updateUsername(data))
     }
 
+    const deleteMeal = () => {
+
+        // Bodgy Redux querying
+        const data = userData.username
+        const meallist = data.mealList
+
+        // Iterate and find the meal we want
+        let index = -1;
+        for(let i = 0; i < meallist.length; i++){
+            if(meallist[i].mealName  == mealName && ((new Date(meallist[i].date)).toString() === date.toString())){
+                index = i
+            }
+        }
+
+        // Makes sure a workoutlog can't be deleted unless exact match found
+        data.mealList.splice(index, (index != -1) ? 1 : 0)
+
+        // Save to Redux and DB
+        axios.post('http://' + config.ipv4 + ':5000/user/updateMealList', {
+            username: userData.username.username,
+            mealList : data.mealList
+        })
+        .then(res => {
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+
+        dispatch(updateUsername(data))        
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.progress}>
@@ -331,10 +362,10 @@ const Meals = ({navigation}) => {
 
                         {/* Button to add exercises */}
                         <View style={[styles.btn_box,]}>
-                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)" }]} onPress={updateMeal}>
+                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)" }]} onPress={() => {updateMeal(); toggleDetailMenu();}}>
                             <Text style={styles.btn_text}>Update Meal</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#800040" }]} onPress={toggleDetailMenu}>
+                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#800040" }]} onPress={() => {deleteMeal(); toggleDetailMenu();}}>
                             <Text style={styles.btn_text}>Delete Meal</Text>
                             </TouchableOpacity>
                         </View>
