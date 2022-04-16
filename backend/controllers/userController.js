@@ -139,7 +139,7 @@ module.exports = {
 
     updateGoalWeight: async (req, res) => {
 
-        User.findOneAndUpdate({username: req.body.username}, {goalWeight: req.body.goalWeight}, (err, data) => {
+        User.findOneAndUpdate({username: req.body.username}, {$set: {goalWeight: req.body.goalWeight, startingWeight: req.body.startingWeight}}, (err, data) => {
             if(err) {
                 console.log(err);
                 res.send({success: 0});
