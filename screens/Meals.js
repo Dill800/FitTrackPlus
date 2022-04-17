@@ -119,6 +119,7 @@ const Meals = ({navigation}) => {
     
     const [visible, setVisible] = useState(false);
     const [detailMenuVisible, setDetailMenuVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const [actdate, setActdate] = useState(adjustedDate);
 
     const [fatCount, setFatCount] = useState(0);
@@ -147,7 +148,7 @@ const Meals = ({navigation}) => {
         //currentDate.setDate(currentDate.getDate() - 1)
         setActdate(currentDate)
 
-        console.log("dillon", currentDate)
+        //console.log("dillon", currentDate)
       };
 
     const changeDate = () => {
@@ -157,7 +158,7 @@ const Meals = ({navigation}) => {
 
     //console.log("About to run for loop, list length: ", userData.username.mealList.length)
     //console.log(new Date(Date.now()))
-    console.log("ryan", actdate);
+    //console.log("ryan", actdate);
     for(let i = 0; i < userData.username.mealList.length; i++) {
         let x = new Date(userData.username.mealList[i].date)
 
@@ -172,7 +173,8 @@ const Meals = ({navigation}) => {
                 setCalorieCount(userData.username.mealList[i].calories)
                 setMealName(userData.username.mealList[i].mealName)
                 setDate(x)
-                toggleDetailMenu(); 
+                toggleDetailMenu();
+                setModalVisible(true); 
                 }}>
             <View key = {i} style={{alignItems: "center", width: 370, height: 'auto', marginBottom: 15}}>
                 <View key = {i} style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: 'auto',}}>
@@ -189,7 +191,7 @@ const Meals = ({navigation}) => {
 
     // Update meal to Redux and DB when form is completed
     const updateMeal = () => {
-
+        console.log("Gary");
         if(fatCount == '' || proteinCount == '' || carbCount == '' || calorieCount == '' || mealName == '') {
             return;
         }
@@ -299,7 +301,15 @@ const Meals = ({navigation}) => {
                     </View>
                 </BottomSheet>
 
-                <BottomSheet visible={detailMenuVisible} onBackButtonPress={toggleDetailMenu} onBackdropPress={toggleDetailMenu}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      Alert.alert("Modal has been closed.");
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
                     <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
 
                         <View style={styles.box}>
@@ -362,16 +372,16 @@ const Meals = ({navigation}) => {
 
                         {/* Button to add exercises */}
                         <View style={[styles.btn_box,]}>
-                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)" }]} onPress={() => {updateMeal(); toggleDetailMenu();}}>
+                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)" }]} onPress={() => {updateMeal(); setModalVisible(false);}}>
                             <Text style={styles.btn_text}>Update Meal</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#800040" }]} onPress={() => {deleteMeal(); toggleDetailMenu();}}>
+                            <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#800040" }]} onPress={() => {deleteMeal(); setModalVisible(false);}}>
                             <Text style={styles.btn_text}>Delete Meal</Text>
                             </TouchableOpacity>
                         </View>
 
                     </View>
-                </BottomSheet>
+                </Modal>
 
                 {/*
                 <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={"dark"} value={date} mode={'date'} onChange={(e, d) => console.log(e, d)} display="inline"/>
