@@ -19,6 +19,7 @@ import ProgressBar from "react-native-animated-progress";
 const Home = ({ navigation }) => {
 
   const userData = useSelector(state => state.user);
+  const [alerted, setAlerted] = useState(false);
 
   const updateStartingWeight = () => {
     let startingWeight = 0;
@@ -127,13 +128,15 @@ const Home = ({ navigation }) => {
                 displayString = String(daysLeft) + " more day!"
             }
         }
-        else if (exceeded) {
+        else if (exceeded && !alerted) {
             displayString = "Surpassed your goal‼️";
             Alert.alert("Congratulations on reaching and exceeding your goal! Please update your goal weight to continue making progress.")
+            setAlerted(true);
         }
-        else {
+        else if (proportion == 100 && !alerted) {
             displayString = "Goal Weight! ✅ ";
-            Alert.alert("Congratulations on reaching goal! Please update your goal weight to continue making progress.")
+            Alert.alert("Congratulations on reaching your goal! Please update your goal weight to continue making progress.")
+            setAlerted(true);
         }
   }
   console.log(proportion);
@@ -506,6 +509,7 @@ const Home = ({ navigation }) => {
         data.startingWeight = startingWeight;
         dispatch(updateUsername(data));
         setGoalWeight(userData.username.goalWeight);
+        setAlerted(false);
         //.username.goalWeight);
       })
       .catch(function (error) {
