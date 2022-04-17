@@ -391,7 +391,7 @@ const Meals = ({ navigation }) => {
                             <TextInput
                                 style={[styles.input, { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: "80%" }]}
                                 placeholder={mealName + ""}
-                                placeholderTextColor='grey'
+                                placeholderTextColor={theme.colors.text}
                                 returnKeyType={'done'}
                                 //style={styles.input_placeholder}
                                 onChangeText={e => { setMealName(e) }}
@@ -402,7 +402,7 @@ const Meals = ({ navigation }) => {
                                 style={[styles.input,
                                 { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: "80%" }]}
                                 placeholder={fatCount + ""}
-                                placeholderTextColor='grey'
+                                placeholderTextColor={theme.colors.text}
                                 returnKeyType={'done'}
                                 //style={styles.input_placeholder}
                                 keyboardType="numeric"
@@ -415,7 +415,7 @@ const Meals = ({ navigation }) => {
                                 keyboardType="numeric"
                                 placeholder={proteinCount + ""}
                                 returnKeyType={'done'}
-                                placeholderTextColor='grey'
+                                placeholderTextColor={theme.colors.text}
                                 onChangeText={e => { setProteinCount(e); setCalorieCount((fatCount * 9) + (e * 4) + (carbCount * 4)); }}
                                 value={proteinCount}
                             />
@@ -425,7 +425,7 @@ const Meals = ({ navigation }) => {
                                 keyboardType="numeric"
                                 returnKeyType={'done'}
                                 placeholder={carbCount + ""}
-                                placeholderTextColor='grey'
+                                placeholderTextColor= {theme.colors.text}
                                 onChangeText={e => { setCarbCount(e); setCalorieCount((fatCount * 9) + (proteinCount * 4) + (e * 4)); }}
                                 value={carbCount}
                             />
