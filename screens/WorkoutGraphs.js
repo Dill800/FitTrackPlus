@@ -585,6 +585,7 @@ const WorkoutGraph = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.graph}>
+                {data.length > 6 ? <Text style={{color: theme.colors.text, bottom: 10}}>Slide finger across graph to view more data</Text> : <Text></Text>}
 
                         {data.length > 0  ? <Chart
                             style={{ height: 250, width: '90%'}}

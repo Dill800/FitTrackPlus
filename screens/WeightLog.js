@@ -331,8 +331,12 @@ const WeightLog = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    
                 </View>
+
+                
                 <View style={styles.graph}>
+                {data.length > 6 ? <Text style={{color: theme.colors.text, bottom: 10}}>Slide finger across graph to view more data</Text> : <Text></Text>}
                     {/* <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false} // to hide scroll bar
