@@ -612,6 +612,7 @@ const Home = ({ navigation }) => {
           width: 370,
           height: 110,
           paddingTop: 8,
+          alignSelf: "center"
         }}
       >
         <View

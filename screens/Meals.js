@@ -400,7 +400,7 @@ const Meals = ({navigation}) => {
 
                     
                     {/* {console.log("Rendering list")} */}
-                    <View style={{flexGrow: 0, paddingTop: 8}}>
+                    <View style={{flexGrow: 0, paddingTop: 8, alignItems: "center"}}>
                         {foodList}
                     </View>
                 </ScrollView>
