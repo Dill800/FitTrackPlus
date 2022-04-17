@@ -289,7 +289,7 @@ const Meals = ({navigation}) => {
                 <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
                     <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
                     
-                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={'dark'} value={date} mode={'date'} onChange={onChange} display="inline"/>
+                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={themeReducer.theme ? "dark" : "light"} value={date} mode={'date'} onChange={onChange} display="inline"/>
                     <View style={{alignItems:'center', }}>
                     <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={toggleBottomNavigationView}>
                         <Text style={styles.btn_text}>Done</Text>
