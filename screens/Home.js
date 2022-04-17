@@ -620,7 +620,7 @@ const Home = ({ navigation }) => {
             backgroundColor: theme.colors.secondary,
             borderRadius: 15,
             padding: 15,
-            width: "95%",
+            width: "90%",
             height: "95%",
             flexDirection: "row",
           }}

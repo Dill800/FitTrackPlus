@@ -175,7 +175,7 @@ const Meals = ({navigation}) => {
                 toggleDetailMenu(); 
                 }}>
             <View key = {i} style={{alignItems: "center", width: 370, height: 'auto', marginBottom: 15}}>
-                <View key = {i} style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: 'auto',}}>
+                <View key = {i} style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "90%",}}>
                     <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
                     <Text style={[styles.card_text, {color: 'tomato', fontWeight: 'bold'}]}>Calorie:                       {userData.username.mealList[i].calories}</Text>
                     <Text style={[styles.card_text, {color: 'skyblue', fontWeight: 'bold'}]}>Fat:                               {userData.username.mealList[i].fat} g</Text>
