@@ -36,8 +36,8 @@ const Meals = ({ navigation }) => {
             //padding: 15,
             //bottom: 40,
             //top: 2,
-            //paddingTop: -50,
-            paddingBottom: 20,
+            //paddingTop: 20,
+            paddingBottom: 10,
             //marginBottom: 10,
             alignItems: "center",
             shadowColor: "#000",
@@ -133,6 +133,7 @@ const Meals = ({ navigation }) => {
             flexDirection: "row",
             width: "75%",
             justifyContent: "center",
+            bottom: 10,
         },
         btn_shape: {
             backgroundColor: "rgba(178,108,233,1)",
@@ -167,6 +168,7 @@ const Meals = ({ navigation }) => {
         },
         buttonClose: {
             backgroundColor: "#2196F3",
+            bottom: 10,
         },
         textStyle: {
             color: "white",
@@ -386,7 +388,7 @@ const Meals = ({ navigation }) => {
 
                         {/* <View style={styles.box}> */}
                         <View style={styles.modalView}>
-                            <Text style={[styles.modalText, { marginBottom: 20 }]}>Edit Food Data</Text>
+                            <Text style={[styles.modalText, { marginVertical: 20 }]}>Edit Food Data</Text>
                             <Text style={[styles.input_title, { marginRight: 220, marginBottom: 10, }]}>Meal Name:</Text>
                             <TextInput
                                 style={[styles.input, { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: "80%" }]}
