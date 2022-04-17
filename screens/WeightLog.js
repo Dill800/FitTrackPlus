@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { TouchableWithoutFeedback, Pressable, Text, ScrollView, ImageBackground, Dimensions, View, StyleSheet, TextInput, Button, Keyboard, TouchableOpacity, MaskedViewComponent, TouchableWithoutFeedbackBase } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {Svg, Rect, Text as TextSVG } from 'react-native-svg';
-import {NavigationContainer, useNavigation, useTheme } from '@react-navigation/native'
+import {NavigationContainer, useNavigation, useTheme, useIsFocused } from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis, Tooltip } from 'react-native-responsive-linechart'
 import { format } from 'date-fns'
@@ -24,6 +24,7 @@ const WeightLog = ({navigation}) => {
 
     const userData = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const isFocused = useIsFocused();
 
     const theme = useTheme();
     
@@ -221,6 +222,7 @@ const WeightLog = ({navigation}) => {
     const [min, setMin] = useState(99999);
     const [max, setMax] = useState(-99999);
     const [val, setVal] = useState(dater);
+
     // const [dataSize, setDataSize] = useState(dataAll.length);
 
     // let min = 9999
@@ -229,6 +231,7 @@ const WeightLog = ({navigation}) => {
     const valer = [];
 
     useEffect(() => {
+        console.log('log graph')
         async function getLogList() {
 
             var config2 = {
@@ -262,7 +265,7 @@ const WeightLog = ({navigation}) => {
                         // if (biggerDog[i].weight >= max) {
                         //     max = biggerDog[i].weight
                         // }
-                        console.log('uses effect like a boss')
+                        // console.log('uses effect like a boss')
                         console.log(dater[i])
                       }
                     
@@ -278,10 +281,10 @@ const WeightLog = ({navigation}) => {
                 });
         }
 
-        if (loading || submitted) {
+        if (loading || submitted || isFocused) {
             getLogList();
         }
-    }, [render]);
+    }, [render, isFocused]);
 
     if (loading) {
         return (

@@ -320,4 +320,20 @@ module.exports = {
         })        
 
     },
+
+    updateWeight: async (req, res) => {
+
+        User.findOneAndUpdate({username: req.body.username}, 
+            // {$push: {exerciseList: req.body.workou}}, 
+            {weightList: req.body.weightList},
+            (err, data) => {
+            if(err) {
+                console.log(err);
+                res.send({success: 0});
+            }
+            
+            res.send({success: 1, data: data})
+        }) 
+
+    },
 }

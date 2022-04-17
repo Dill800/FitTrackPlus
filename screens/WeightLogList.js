@@ -145,11 +145,11 @@ const WeightLogList = ({navigation}) => {
             borderRadius: 30,
             height: 45,
             marginBottom: 20,
-            marginHorizontal: 50,
+            marginHorizontal: 30,
             alignItems: "center",
           },
           input: {
-            flex: 1,
+            // flex: 1,
             height: 40,
             paddingHorizontal: 20,
             borderRadius: 15,
@@ -202,6 +202,8 @@ const WeightLogList = ({navigation}) => {
     const [key, setKey] = useState(0)
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(true)
+    const [index, setIndex] = useState(-1)
+    const [weight, setWeight] = useState('')
 
     let swipeBtns = [
         {
@@ -227,14 +229,20 @@ const WeightLogList = ({navigation}) => {
         axios.get('http://' + config.ipv4 + ':5000/user/getWeightLog?username=' + userData.username.username, {params: {}})
         .then(response => {
 
+            console.log('hi')
+
             let respData = (JSON.parse(JSON.stringify(response.data.data)));
-            let edits = Array.from({length: respData.length}, (v, i) => i).map((index) => {
+            let edits = Array.from({length: respData.length}, (v, i) => i).map((dex) => {
                 return(
                     <TouchableOpacity onPress={() => {
-                        console.log(index); 
+                        setIndex(dex)
+                        console.log(dex);
+                        setWeight(respData[dex].weight + '')
+                        setDate(new Date(respData[dex].date))
+                        console.log(weight)
                         setModalVisible(true)
                     }}>
-                        <Text style={{color: theme.colors.text}}>Edit</Text>
+                        <Text style={{color: theme.colors.text, margin: 6}}>Edit</Text>
                     </TouchableOpacity>
                 )                
             })
@@ -247,7 +255,12 @@ const WeightLogList = ({navigation}) => {
                     diff = respData[i].weight - respData[i - 1].weight;
                 }
 
-                logs.push([format(new Date(respData[i].date), "MMMM dd, yyyy"), respData[i].weight + 'lbs.', diff.toFixed(2) + ' lbs.', edits[i]]);
+                let change = ''
+                if (diff > 0) {
+                    change = '+'
+                }
+
+                logs.push([format(new Date(respData[i].date), "MMMM dd, yyyy"), respData[i].weight + ' lbs.', change + diff.toFixed(2) + ' lbs.', edits[i]]);
             }
             setLogList(logs);
 
@@ -271,9 +284,113 @@ const WeightLogList = ({navigation}) => {
         tableData.push([dates[i], weights[i], diff.toFixed(2), '']);
     }
 
-    const deleteWeight = () => {
-        
+    const removeWeight = () => {
+
+        const data = userData.username
+
+        let logs = logList
+        logs.splice(Math.abs(logList.length - index - 1), 1)
+        data.weightList.splice(index, 1)
+
+        let edits = Array.from({length: logs.length}, (v, i) => i).map((dex) => {
+            return(
+                <TouchableOpacity onPress={() => {
+                    setIndex(dex)
+                    console.log(dex); 
+                    setModalVisible(true)
+                }}>
+                    <Text style={{color: theme.colors.text, margin: 6}}>Edit</Text>
+                </TouchableOpacity>
+            )                
+        })
+
+        for (let i = 0; i < logs.length; i++) {
+            let diff = 0;
+            if (i != logs.length - 1) {
+                diff = parseFloat(logs[i][1].split(' ')[0]) - parseFloat(logs[i + 1][1].split(' ')[0]);
+            }
+
+            let change = ''
+            if (diff > 0) {
+                change = '+'
+            }
+
+            logs[i][2] = change + diff.toFixed(2) + ' lbs.'
+            logs[i][3] = edits[Math.abs(logs.length - i - 1)]
+        }
+
+        setLogList(logs)
+
+        axios.post('http://' + config.ipv4 + ':5000/user/updateWeight', {
+            username: userData.username.username,
+            weightList: data.weightList
+        })
+        .then(res => {
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+
+        dispatch(updateUsername(data))        
     }
+
+    const updateWeight = () => {
+
+        const data = userData.username
+        let newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+
+        if (weight == '' || (weight == data.weightList[index].weight && format(newDate, 'MMMM dd, yyyy') == logList[index][0])) {
+            return;
+        }
+
+        setModalVisible(!modalVisible)
+        let num = parseFloat(weight).toFixed(2)
+        setWeight('')
+
+        console.log(date)
+
+        let logs = logList
+        logs[index][0] = format(newDate, "MMMM dd, yyyy")
+        logs[index][1] = weight + ' lbs.'
+
+        data.weightList[index].date = newDate
+        data.weightList[index].weight = weight
+
+        for (let i = 0; i < logs.length; i++) {
+            let diff = 0;
+            if (i != logs.length - 1) {
+                diff = parseFloat(logs[i][1].split(' ')[0]) - parseFloat(logs[i + 1][1].split(' ')[0]);
+            }
+
+            let change = ''
+            if (diff > 0) {
+                change = '+'
+            }
+
+            logs[i][2] = change + diff.toFixed(2) + ' lbs.'
+        }
+
+        data.weightList.sort((a, b) => a.date - b.date)
+        logs.sort((a, b) => a[0] - b[0])
+
+        setLogList(logs)
+
+        axios.post('http://' + config.ipv4 + ':5000/user/updateWeight', {
+            username: userData.username.username,
+            weightList: data.weightList
+        })
+        .then(res => {
+        })
+        .catch(e => {
+            console.log("error", e)
+        })
+
+        dispatch(updateUsername(data))  
+
+
+    }
+
+
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -301,23 +418,24 @@ const WeightLogList = ({navigation}) => {
                             <View style={styles.modalView}>
                             <Text style={styles.modalText}>Edit Fields Below</Text>
                             <View style={styles.inputView}>
-                            <TouchableOpacity style={[styles.input, {backgroundColor: '#808080', paddingLeft: 0, justifyContent: 'center'}]}>
-                                {open && <RNDateTimePicker style={{backgroundColor: 'transparent', width: 100, alignSelf: 'center'}} value={date} mode={'date'} onChange={(event, selected) => {setDate(selected); setOpen(false); setTimeout(() => {setOpen(true)}, 10)}}/>}
+                            <TouchableOpacity style={[styles.input, {width: 150, backgroundColor: 'transparent', paddingLeft: 0, justifyContent: 'center'}]}>
+                                {open && <RNDateTimePicker style={{backgroundColor: 'transparent', width: 150, alignSelf: 'center'}} themeVariant={theme.dark ? 'dark' : 'light'} value={date} mode={'date'} onChange={(event, selected) => {setDate(selected); setOpen(false); setTimeout(() => {setOpen(true)}, 10)}}/>}
                             </TouchableOpacity>
                             <View style={{alignItems:'center', }}>
                             </View>
                                 <TextInput
-                                    style={[styles.input, {borderTopLeftRadius: 0, borderBottomLeftRadius: 0, borderLeftWidth: 1, backgroundColor: '#808080'}]}
+                                    style={[styles.input, {width: 100}]}
                                     placeholder='Weight'
                                     placeholderTextColor='white'
                                     keyboardType={'numeric'}
                                     returnKeyType={ 'done' }
-                                    // onChangeText={}
-                                    // value={}
+                                    onChangeText={e => setWeight(e)}
+                                    value={weight}
                                 />
                                 <TouchableOpacity
                                 onPress={() => {
                                     Keyboard.dismiss();
+                                    updateWeight();
                                 }}
                                 style={styles.brock_button}
                                 >
@@ -329,6 +447,7 @@ const WeightLogList = ({navigation}) => {
                                 style={[styles.button, styles.buttonClose, {backgroundColor: 'red'}]}
                                 onPress={() => {
                                     console.log("Rmovepress")
+                                    removeWeight()
                                     setModalVisible(!modalVisible)
                                 }}
                             >
@@ -355,7 +474,7 @@ const WeightLogList = ({navigation}) => {
                                         key={index}
                                         data={rowData}
                                         style={[styles.row, index%2 && {backgroundColor: theme.colors.secondary}]}
-                                        textStyle={{margin: 6, color: theme.colors.text}}
+                                        textStyle={{margin: 6, color: theme.colors.text, fontSize: 12}}
                                     />
                                 // </Swipeout>
                             ))

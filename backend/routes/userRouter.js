@@ -43,6 +43,7 @@ userRouter.post('/updateMacros', userController.updateMacros)
 userRouter.post('/addMeal', userController.addMeal)
 userRouter.post('/updateMealList', userController.updateMealList)
 userRouter.post('/updateWilks', userController.updateWilks)
+userRouter.post('/updateWeight', userController.updateWeight)
 
 // Logging in as an existing user
 // userRouter.post('/login', userController.authenticate)
