@@ -612,6 +612,7 @@ const Home = ({ navigation }) => {
           width: 370,
           height: 110,
           paddingTop: 8,
+          alignSelf: "center"
         }}
       >
         <View
@@ -619,7 +620,7 @@ const Home = ({ navigation }) => {
             backgroundColor: theme.colors.secondary,
             borderRadius: 15,
             padding: 15,
-            width: "95%",
+            width: "90%",
             height: "95%",
             flexDirection: "row",
           }}
@@ -1310,35 +1311,34 @@ const Home = ({ navigation }) => {
             <Text style={styles.btn_text}>Log Out</Text>
           </TouchableOpacity> */}
       <View
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'space-evenly',
-                                    paddingHorizontal: 16,
-                                    bottom: 20
-                                }}>
-                                
-                                <View>
-                                    <Text style={{ marginBottom:  0, opacity: 0}}>
-                                    Progress with animation and increased heighthhhhhhhh
-                                    </Text>
-                                    <View stlye={{flexDirection:'row'}}>
-                                        {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'left', top: 24, fontSize: 20}}>{startingWeight} lbs</Text>}
-                                        {/* {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'center', top: 0, fontSize: 15}}>{proportion.toFixed(2)} %</Text>} */}
-                                        {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'right', fontSize: 20}}>{goalWeight2} lbs 🏆</Text>}
-                                        {proportion == -1 ? <Text></Text> : <ProgressBar progress={proportion + 1} height={15} backgroundColor="#00ffff" trackColor={theme.colors.card} />}
-                                        {proportion == -1 ? <Text></Text> : <Text style={{color: 'grey', textAlign: 'center', bottom: 16, fontSize: 15}}>{currentWeight2} lbs</Text>}
-                                        
-                                    </View>
-                                    <View >
-                                        
-                                        {proportion == -1 ? <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 15, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text>  
-                                                         : <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 25, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text> }
-                                        
-                                    </View>
-                                    
-                                </View>
-                           
-                                </View>
+        style={{
+            flex: 1,
+            justifyContent: 'space-evenly',
+            paddingHorizontal: 16,
+            bottom: 20
+        }}>
+        
+        <View style={{marginTop: 10}}>
+            <View stlye={{flexDirection:'row'}}>
+                {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'left', top: 24, fontSize: 20}}>{startingWeight} lbs</Text>}
+                {/* {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'center', top: 0, fontSize: 15}}>{proportion.toFixed(2)} %</Text>} */}
+                {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'right', fontSize: 20}}>{goalWeight2} lbs 🏆</Text>}
+                {proportion == -1 ? <Text></Text> : <ProgressBar progress={proportion + 1} height={15} backgroundColor="#00ffff" trackColor={theme.colors.card} />}
+                {proportion == -1 ? <Text></Text> : <Text style={{color: 'grey', textAlign: 'center', bottom: 16, fontSize: 15}}>{currentWeight2} lbs</Text>}
+                
+            </View>
+            <View >
+                
+                {proportion == -1 ? <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 15, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text>  
+                                  : <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 25, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text> }
+                
+            </View>
+            <Text style={{ marginBottom: "14%", opacity: 0}}>
+            Progress with animation and increased heighthhhhhhhh
+            </Text>
+        </View>
+    
+        </View>
     </View>
     </ScrollView>
   );

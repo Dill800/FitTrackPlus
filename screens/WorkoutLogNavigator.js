@@ -242,35 +242,6 @@ const WorkoutLogDashboard = ({navigation}) => {
     // Generate 8-digit UUID for key component for later rendering
     const wol_id = uuid().slice(0,8)
 
-    let ex1 = {
-      exid: uuid().slice(0,8),
-      name: "bid is goat",
-      sets: 5,
-      reps: 7,
-      weight: 20
-    }
-    let ex2 = {
-      exid: uuid().slice(0,8),
-      name: "bid is goat",
-      sets: 5,
-      reps: 7,
-      weight: 20
-    }
-    let ex3 = {
-      exid: uuid().slice(0,8),
-      name: "ben ching",
-      sets: 5,
-      reps: 6,
-      weight: 2120
-    }
-    let ex4 = {
-      exid: uuid().slice(0,8),
-      name: "ben ching",
-      sets: 5,
-      reps: 6,
-      weight: 2120
-    }
-
     // Add timestamp to selected date to help in sorting in main dashboard
     const current = new Date();
     const date_with_timestamp = new Date(date.getFullYear(), date.getMonth(), date.getDate(), current.getHours(), current.getMinutes(), current.getSeconds())

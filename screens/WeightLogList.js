@@ -221,81 +221,44 @@ const WeightLogList = ({navigation}) => {
     ];
 
     var axios = require('axios');
-    var qs = require('qs');
-
-    var config2 = {
-        method: 'get',
-        url: 'http://' + config.ipv4 + ':5000/user/getWeightLog?username=' + userData.username.username,
-        headers: { },
-    };
 
     useEffect(() => {
-        async function getLogList() {
 
-            axios(config2)
-                .then(function (response) {
-                    let bigDog = JSON.stringify(response.data.data);
-                    let biggerDog = (JSON.parse(bigDog));
+        axios.get('http://' + config.ipv4 + ':5000/user/getWeightLog?username=' + userData.username.username, {params: {}})
+        .then(response => {
 
-                    let edits = Array.from({length: biggerDog.length}, (v, i) => i).map((index) => {
-                        return(
-                            <TouchableOpacity onPress={() => {console.log(index); setModalVisible(true)}}>
-                                <Text style={{color: theme.colors.text}}>
-                                    Edit
-                                </Text>
-                            </TouchableOpacity>
-                        )
-                    })
-                    // console.log(JSON.stringify(response.data));
-                    for (var i = biggerDog.length - 1; i >= 0; i--) {
-                        // console.log(biggerDog[i]);
-                        // var friend  = {
-                        //   "Username" : biggerDog[i].username,
-                        //   "Streak" : biggerDog[i].streakCounter,
-                        // };
-                        // console.log(biggerDog[i]);
-                        //console.log(frien;
-                        console.log(edits[i])
-                        let diff = 0;
-                        if (i != 0) {
-                            diff = biggerDog[i].weight - biggerDog[i - 1].weight;
-                        }
+            let respData = (JSON.parse(JSON.stringify(response.data.data)));
+            let edits = Array.from({length: respData.length}, (v, i) => i).map((index) => {
+                return(
+                    <TouchableOpacity onPress={() => {
+                        console.log(index); 
+                        setModalVisible(true)
+                    }}>
+                        <Text style={{color: theme.colors.text}}>Edit</Text>
+                    </TouchableOpacity>
+                )                
+            })
 
-                        // console.log(diff);
-                        logs.push([format(new Date(biggerDog[i].date), "MMMM dd, yyyy"), biggerDog[i].weight + 'lbs.', diff.toFixed(2) + ' lbs.', edits[i]]);
-                        // console.log(typeof(biggerDog[i].weight));
-                        //setFriendsList(friendsList.concat(friend));
-                        //setFriendsList(friendsList.concat(biggerDog[i].username));
-                      }
+            for (var i = respData.length - 1; i >= 0; i--) {
 
-                      setLogList(logs);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            
-            // console.log('got da loot');
+                // console.log(edits[i])
+                let diff = 0;
+                if (i != 0) {
+                    diff = respData[i].weight - respData[i - 1].weight;
+                }
 
-            // console.log ("TEST TEST TEST")
-            // for (let i = 0; i < logList.length; i++) {
-            //     console.log('hi ' + logs[i]);
-            // }
-        }
+                logs.push([format(new Date(respData[i].date), "MMMM dd, yyyy"), respData[i].weight + 'lbs.', diff.toFixed(2) + ' lbs.', edits[i]]);
+            }
+            setLogList(logs);
 
-        getLogList();
+        })
+        .catch(e => {
+            console.log(e)
+        })
 
-        // for (let i = 0; i < logList.length; i++) {
-        //     console.log('hi2 ' + logs[i]);
-        // }
-
-        // console.log ("TEST TEST TEST")
-        // for (let i = 0; i < logList.length; i++) {
-        //     console.log('hi ' + logs[i]);
-        // }
     }, []);
 
     const [modalVisible, setModalVisible] = useState(false);
-
 
     var tableData = [];
     for (let i = dates.length - 1; i >= 0; i--) {
@@ -306,6 +269,10 @@ const WeightLogList = ({navigation}) => {
 
         // console.log(diff);
         tableData.push([dates[i], weights[i], diff.toFixed(2), '']);
+    }
+
+    const deleteWeight = () => {
+        
     }
 
     return (
@@ -360,7 +327,10 @@ const WeightLogList = ({navigation}) => {
                             <Text style={styles.modalText}>Or Remove Entry</Text>
                             <TouchableOpacity
                                 style={[styles.button, styles.buttonClose, {backgroundColor: 'red'}]}
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={() => {
+                                    console.log("Rmovepress")
+                                    setModalVisible(!modalVisible)
+                                }}
                             >
                                 <Text style={styles.textStyle}>Remove Entry</Text>
                             </TouchableOpacity>

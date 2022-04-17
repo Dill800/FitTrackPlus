@@ -9,6 +9,7 @@ import { BottomSheet } from 'react-native-btr';
 import { updateUsername } from '../redux/actions/user';
 import axios from 'axios'
 import config from '../backend/config/config.js'
+import dateformat from "dateformat";
 
 const Meals = ({navigation}) => {
 
@@ -112,21 +113,22 @@ const Meals = ({navigation}) => {
     const scrollViewRef = useRef();
     let foodList = []
 
-    let adjustedDate = new Date(Date.now());
-    adjustedDate.setHours(adjustedDate.getHours() - 4)
+    // let adjustedDate = new Date(Date.now());
+    // adjustedDate.setHours(adjustedDate.getHours() - 4)
     
-    const [date, setDate] = useState(adjustedDate)
+    const [date, setDate] = useState(new Date())
     
     const [visible, setVisible] = useState(false);
     const [detailMenuVisible, setDetailMenuVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [actdate, setActdate] = useState(adjustedDate);
+    const [actdate, setActdate] = useState(new Date());
 
     const [fatCount, setFatCount] = useState(0);
     const [proteinCount, setProteinCount] = useState(0);
     const [carbCount, setCarbCount] = useState(0);
     const [calorieCount, setCalorieCount] = useState(0);
     const [mealName, setMealName] = useState();
+    const [originalMealName, setOriginalMealName] = useState();
 
     const themeReducer = useSelector(({ themeReducer }) => themeReducer);
     
@@ -142,23 +144,25 @@ const Meals = ({navigation}) => {
         setDetailMenuVisible(!detailMenuVisible);
     };
 
-      const onChange = (event, selectedDate) => {
+    const onChange = (event, selectedDate) => {
         const currentDate = new Date(selectedDate);
         setDate(new Date(selectedDate));
         //currentDate.setDate(currentDate.getDate() - 1)
         setActdate(currentDate)
 
         //console.log("dillon", currentDate)
-      };
+    };
 
     const changeDate = () => {
         console.log(date)
         setSid(sid+1)
     }
 
-    //console.log("About to run for loop, list length: ", userData.username.mealList.length)
-    //console.log(new Date(Date.now()))
-    //console.log("ryan", actdate);
+    // console.log(new Date(Date.now()))
+    // console.log("ryan", actdate);
+    // console.log("TODAY:", dateformat(new Date(Date.now()), 'mmmm dd, yyyy'))
+    // console.log("ACTDATE", dateformat(actdate, 'mmmm dd, yyyy'))
+
     for(let i = 0; i < userData.username.mealList.length; i++) {
         let x = new Date(userData.username.mealList[i].date)
 
@@ -172,12 +176,13 @@ const Meals = ({navigation}) => {
                 setCarbCount(userData.username.mealList[i].carbs)
                 setCalorieCount(userData.username.mealList[i].calories)
                 setMealName(userData.username.mealList[i].mealName)
+                setOriginalMealName(userData.username.mealList[i].mealName)
                 setDate(x)
                 toggleDetailMenu();
                 setModalVisible(true); 
                 }}>
             <View key = {i} style={{alignItems: "center", width: 370, height: 'auto', marginBottom: 15}}>
-                <View key = {i} style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "95%", height: 'auto',}}>
+                <View key = {i} style={{backgroundColor: theme.colors.secondary, borderRadius: 15, padding: 15, width: "90%",}}>
                     <Text style={{ color: theme.colors.text, fontSize: 25, fontWeight: "bold" }}>{userData.username.mealList[i].mealName}</Text>
                     <Text style={[styles.card_text, {color: 'tomato', fontWeight: 'bold'}]}>Calorie:                       {userData.username.mealList[i].calories}</Text>
                     <Text style={[styles.card_text, {color: 'skyblue', fontWeight: 'bold'}]}>Fat:                               {userData.username.mealList[i].fat} g</Text>
@@ -212,6 +217,7 @@ const Meals = ({navigation}) => {
         setCarbCount("")
         setCalorieCount("")
         setMealName("")
+        setOriginalMealName("")
         
         // Bodgy Redux querying
         const data = userData.username
@@ -221,7 +227,7 @@ const Meals = ({navigation}) => {
         let index = -1;
         for(let i = 0; i < meallist.length; i++){
             // console.log("EQCHECK", meallist[i].mealName, " ", meallist[i].date, date, )
-            if(meallist[i].mealName  == mealName && ((new Date(meallist[i].date)).toString() === date.toString())){
+            if(meallist[i].mealName  == originalMealName && ((new Date(meallist[i].date)).toString() === date.toString())){
                 index = i
                 // console.log("INDEXDUMP",index)
             }
@@ -291,7 +297,7 @@ const Meals = ({navigation}) => {
                 <BottomSheet visible={visible} onBackButtonPress={toggleBottomNavigationView} onBackdropPress={toggleBottomNavigationView}>
                     <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
                     
-                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={'dark'} value={date} mode={'date'} onChange={onChange} display="inline"/>
+                    <DateTimePicker style={{width: '90%', alignSelf: 'center', marginTop: '-10%', marginBottom: '-11%'}} themeVariant={themeReducer.theme ? "dark" : "light"} value={date} mode={'date'} onChange={onChange} display="inline"/>
                     <View style={{alignItems:'center', }}>
                     <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "#3551f3",  }]} onPress={toggleBottomNavigationView}>
                         <Text style={styles.btn_text}>Done</Text>
@@ -410,7 +416,7 @@ const Meals = ({navigation}) => {
 
                     
                     {/* {console.log("Rendering list")} */}
-                    <View style={{flexGrow: 0, paddingTop: 8}}>
+                    <View style={{flexGrow: 0, paddingTop: 8, alignItems: "center"}}>
                         {foodList}
                     </View>
                 </ScrollView>
