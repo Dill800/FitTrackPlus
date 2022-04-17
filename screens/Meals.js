@@ -126,6 +126,7 @@ const Meals = ({navigation}) => {
     const [carbCount, setCarbCount] = useState(0);
     const [calorieCount, setCalorieCount] = useState(0);
     const [mealName, setMealName] = useState();
+    const [originalMealName, setOriginalMealName] = useState();
 
     const themeReducer = useSelector(({ themeReducer }) => themeReducer);
     
@@ -171,6 +172,7 @@ const Meals = ({navigation}) => {
                 setCarbCount(userData.username.mealList[i].carbs)
                 setCalorieCount(userData.username.mealList[i].calories)
                 setMealName(userData.username.mealList[i].mealName)
+                setOriginalMealName(userData.username.mealList[i].mealName)
                 setDate(x)
                 toggleDetailMenu(); 
                 }}>
@@ -210,6 +212,7 @@ const Meals = ({navigation}) => {
         setCarbCount("")
         setCalorieCount("")
         setMealName("")
+        setOriginalMealName("")
         
         // Bodgy Redux querying
         const data = userData.username
@@ -219,7 +222,7 @@ const Meals = ({navigation}) => {
         let index = -1;
         for(let i = 0; i < meallist.length; i++){
             // console.log("EQCHECK", meallist[i].mealName, " ", meallist[i].date, date, )
-            if(meallist[i].mealName  == mealName && ((new Date(meallist[i].date)).toString() === date.toString())){
+            if(meallist[i].mealName  == originalMealName && ((new Date(meallist[i].date)).toString() === date.toString())){
                 index = i
                 // console.log("INDEXDUMP",index)
             }
