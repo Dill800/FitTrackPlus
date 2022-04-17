@@ -18,6 +18,44 @@ const Meals = ({navigation}) => {
     
 
     const styles = StyleSheet.create({
+        centeredView: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22
+          },
+          modalView: {
+            margin: 20,
+            backgroundColor: theme.colors.background,
+            borderRadius: 20,
+            paddingVertical: 100,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5
+          },
+          input: {
+            flex: 1,
+            height: 40,
+            paddingHorizontal: 20,
+            borderRadius: 15,
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+            backgroundColor: theme.colors.secondary,
+            color: theme.colors.text,
+          },
+        modalText: {
+            //marginBottom: 15,
+            //textAlign: "center",
+            fontSize: 20,
+            color: theme.colors.text,
+            //marginHorizontal: 100
+          },
         container: {
             flex: 1,
             flexDirection: "column",
@@ -310,36 +348,41 @@ const Meals = ({navigation}) => {
                       setModalVisible(!modalVisible);
                     }}
                   >
-                    <View style={[styles.bottomNavigationView, { backgroundColor: theme.colors.secondary, }]}>
+                    <View style={[styles.centeredView, { backgroundColor: theme.colors.secondary,}]}>
 
-                        <View style={styles.box}>
-                            <View style={styles.input_box}>
-                                <Text style={styles.input_title}>Meal Name:</Text>
+                        {/* <View style={styles.box}> */}
+                            <View style={styles.modalView}>
+                            <Text style={[styles.modalText, ]}>Edit Food Data</Text>
+                            <Text style={[styles.input_title, {marginRight: 210, marginBottom: 10, textAlign: 'left'}]}>Meal Name:</Text>
                                 <TextInput
+                                style={[styles.input,{ flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 20, width: 250 }]}
                                 placeholder={mealName+""}
                                 placeholderTextColor='grey'
                                 returnKeyType={ 'done' }
-                                style={styles.input_placeholder}
+                                //style={styles.input_placeholder}
                                 onChangeText={e => {setMealName(e)}}
                                 value={mealName}
                                 />
                             </View>
-
-                            <View style={styles.input_box}>
-                                <Text style={styles.input_title}>Fat (g):</Text>
+                            <Text style={[styles.input_title, {marginRight: 175, marginBottom: 10}]}>Fat (g):</Text>
+                            <View style={styles.input}>
+                                {/* <Text style={styles.input_title}>Fat (g):</Text> */}
                                 <TextInput
+                                style={[styles.input,
+                                    { flex: 0, borderTopRightRadius: 15, borderBottomRightRadius: 15, marginBottom: 10, width: 250 }]}
                                 placeholder={fatCount+""}
                                 placeholderTextColor='grey'
                                 returnKeyType={ 'done' }
-                                style={styles.input_placeholder}
+                                //style={styles.input_placeholder}
                                 keyboardType="numeric"
                                 onChangeText={e => {setFatCount(e); setCalorieCount((e * 9) + (proteinCount * 4) + (carbCount * 4));}}
                                 value={fatCount}
                                 />
                             </View>
                             
-                            <View style={styles.input_box}>
-                                <Text style={styles.input_title}>Protein (g):</Text>
+                            <Text style={[styles.input_title, {marginRight: 210, marginBottom: 10, textAlign: 'left'}]}>Protein (g):</Text>
+                            <View style={styles.input}>
+                                {/* <Text style={styles.input_title}>Protein (g):</Text> */}
                                 <TextInput
                                 style={styles.input_placeholder}
                                 keyboardType="numeric"
@@ -368,7 +411,7 @@ const Meals = ({navigation}) => {
                             <Text style={styles.title}>Total Calories: {calorieCount}</Text>
                             </View>
                             
-                        </View>
+                        {/* </View> */}
 
                         {/* Button to add exercises */}
                         <View style={[styles.btn_box,]}>
