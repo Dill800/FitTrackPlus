@@ -52,6 +52,9 @@ const Meals = ({ navigation }) => {
             backgroundColor: theme.colors.secondary,
             color: theme.colors.text,
         },
+        input_title: {
+            color: theme.colors.text,
+        },
         modalText: {
             //marginBottom: 15,
             //textAlign: "center",
