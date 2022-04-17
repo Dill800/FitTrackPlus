@@ -9,6 +9,7 @@ import { BottomSheet } from 'react-native-btr';
 import { updateUsername } from '../redux/actions/user';
 import axios from 'axios'
 import config from '../backend/config/config.js'
+import dateformat from "dateformat";
 
 const Meals = ({navigation}) => {
 
@@ -112,14 +113,15 @@ const Meals = ({navigation}) => {
     const scrollViewRef = useRef();
     let foodList = []
 
-    let adjustedDate = new Date(Date.now());
-    adjustedDate.setHours(adjustedDate.getHours() - 4)
+    // let adjustedDate = new Date(Date.now());
+    // adjustedDate.setHours(adjustedDate.getHours() - 4)
     
-    const [date, setDate] = useState(adjustedDate)
+    const [date, setDate] = useState(new Date())
     
     const [visible, setVisible] = useState(false);
     const [detailMenuVisible, setDetailMenuVisible] = useState(false);
-    const [actdate, setActdate] = useState(adjustedDate);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [actdate, setActdate] = useState(new Date());
 
     const [fatCount, setFatCount] = useState(0);
     const [proteinCount, setProteinCount] = useState(0);
@@ -142,23 +144,25 @@ const Meals = ({navigation}) => {
         setDetailMenuVisible(!detailMenuVisible);
     };
 
-      const onChange = (event, selectedDate) => {
+    const onChange = (event, selectedDate) => {
         const currentDate = new Date(selectedDate);
         setDate(new Date(selectedDate));
         //currentDate.setDate(currentDate.getDate() - 1)
         setActdate(currentDate)
 
-        console.log("dillon", currentDate)
-      };
+        //console.log("dillon", currentDate)
+    };
 
     const changeDate = () => {
         console.log(date)
         setSid(sid+1)
     }
 
-    //console.log("About to run for loop, list length: ", userData.username.mealList.length)
-    //console.log(new Date(Date.now()))
-    console.log("ryan", actdate);
+    // console.log(new Date(Date.now()))
+    // console.log("ryan", actdate);
+    // console.log("TODAY:", dateformat(new Date(Date.now()), 'mmmm dd, yyyy'))
+    // console.log("ACTDATE", dateformat(actdate, 'mmmm dd, yyyy'))
+
     for(let i = 0; i < userData.username.mealList.length; i++) {
         let x = new Date(userData.username.mealList[i].date)
 
