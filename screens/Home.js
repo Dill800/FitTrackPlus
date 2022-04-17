@@ -12,13 +12,134 @@ import qs from 'qs'
 import config from '../backend/config/config.js'
 import { UPDATE_USERNAME } from "../redux/actions/user";
 import { updateUsername } from '../redux/actions/user';
+import ProgressBar from "react-native-animated-progress";
 
 
 
 const Home = ({ navigation }) => {
-  //e();
 
   const userData = useSelector(state => state.user);
+
+  const updateStartingWeight = () => {
+    let startingWeight = 0;
+    if (userData.username.weightList.length != 0) {
+        startingWeight = userData.username.weightList[userData.username.weightList.length - 1].weight;
+    }
+    var data = qs.stringify({
+      'username': userData.username.username,
+      'goalWeight': userData.username.goalWeight,
+      'startingWeight': startingWeight,
+    });
+    var config2 = {
+      method: 'post',
+      url: 'http://' + config.ipv4 + ':5000/user/updateGoalWeight',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+    };
+
+    axios(config2)
+      .then(function (response) {
+        //console.log(JSON.stringify(response.data));
+        let data = userData.username;
+        //data.goalWeight = goalWeight;
+        data.startingWeight = startingWeight;
+        dispatch(updateUsername(data));
+        //setGoalWeight(userData.username.goalWeight);
+        //.username.goalWeight);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  let displayString = "";
+  let startingWeight = 0;
+  let currentWeight2 = 0;
+  let goalWeight2 = 0;
+  let initialDiffernce = 0;
+  let currentDifference = 0;
+  let initialDaysLeft = 0;
+  let proportion = -1;
+  let daysLeft = 0;
+  let exceeded = false;
+  if (userData.username.weightList.length == 0) {
+        displayString = "⚠️ Please log current weight and set goal weight";
+  }
+  else {
+        startingWeight = userData.username.startingWeight;
+        currentWeight2 = userData.username.weightList[userData.username.weightList.length - 1].weight;
+        goalWeight2 = userData.username.goalWeight;
+        initialDiffernce = goalWeight - startingWeight;
+        initialDaysLeft = Math.abs(Math.round(((goalWeight2 - startingWeight) / 0.8) * 7));
+
+        //bulking or cutting
+        if (currentWeight2 != goalWeight2) { 
+            currentDifference = Math.abs(goalWeight2 - currentWeight2);
+            daysLeft = Math.abs(Math.round(((goalWeight2 - currentWeight2) / 0.8) * 7));
+
+            //if you are originally cutting and go below goal weight
+            if (currentWeight2 < goalWeight2 && startingWeight > goalWeight2) {
+                // startingWeight = currentWeight;
+                // updateStartingWeight();
+                // initialDaysLeft = daysLeft;
+                exceeded = true;
+
+
+            }
+            //if you are originally bulking and go above goal weight 
+            else if (currentWeight2 > goalWeight2 && startingWeight < goalWeight2) {
+                // startingWeight = currentWeight;
+                // updateStartingWeight();
+                // initialDaysLeft = daysLeft;
+                exceeded = true;
+            }
+              //if you get to a worse off position from your starting weight
+            else if (daysLeft > initialDaysLeft) {
+                startingWeight = currentWeight2;
+                updateStartingWeight();
+                initialDaysLeft = daysLeft;
+            }
+            proportion = (1 - daysLeft/initialDaysLeft) * 100;
+            if (proportion < 0) {
+                proportion = 0;
+            }
+            if (exceeded) {
+                proportion = 100;
+            }
+            
+
+        }
+        
+        //reached goal/recomp
+        else {
+            //startingWeight = goalWeight;
+            daysLeft = 0;
+            proportion = 100;
+            
+        }
+        
+        if (proportion != 100) {
+            if (daysLeft != 1) {
+                displayString = String(daysLeft) + " more days!";
+            }
+            else {
+                displayString = String(daysLeft) + " more day!"
+            }
+        }
+        else if (exceeded) {
+            displayString = "Surpassed your goal‼️";
+            Alert.alert("Congratulations on reaching and exceeding your goal! Please update your goal weight to continue making progress.")
+        }
+        else {
+            displayString = "Goal Weight! ✅ ";
+            Alert.alert("Congratulations on reaching goal! Please update your goal weight to continue making progress.")
+        }
+  }
+  console.log(proportion);
+  //e();
+
+  
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -1188,14 +1309,36 @@ const Home = ({ navigation }) => {
           >
             <Text style={styles.btn_text}>Log Out</Text>
           </TouchableOpacity> */}
-      <View style={styles.container}>
-        <StatusBar hidden />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: 'wrap', alignItems: 'center', top: 10 }}>
-          {donutData.map((p, i) => {
-            return <Donut key={i} percentage={p.percentage} color={p.color} delay={500 + 100 * i} max={p.max} calorie={p.calorie} dataLabel={p.dataLabel} />
-          })}
-        </View>
-      </View>
+      <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: 'space-evenly',
+                                    paddingHorizontal: 16,
+                                    bottom: 20
+                                }}>
+                                
+                                <View>
+                                    <Text style={{ marginBottom:  0, opacity: 0}}>
+                                    Progress with animation and increased heighthhhhhhhh
+                                    </Text>
+                                    <View stlye={{flexDirection:'row'}}>
+                                        {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'left', top: 24, fontSize: 20}}>{startingWeight} lbs</Text>}
+                                        {/* {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'center', top: 0, fontSize: 15}}>{proportion.toFixed(2)} %</Text>} */}
+                                        {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'right', fontSize: 20}}>{goalWeight2} lbs 🏆</Text>}
+                                        {proportion == -1 ? <Text></Text> : <ProgressBar progress={proportion + 1} height={15} backgroundColor="#00ffff" trackColor={theme.colors.card} />}
+                                        {proportion == -1 ? <Text></Text> : <Text style={{color: 'grey', textAlign: 'center', bottom: 16, fontSize: 15}}>{currentWeight2} lbs</Text>}
+                                        
+                                    </View>
+                                    <View >
+                                        
+                                        {proportion == -1 ? <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 15, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text>  
+                                                         : <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 25, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text> }
+                                        
+                                    </View>
+                                    
+                                </View>
+                           
+                                </View>
     </View>
     </ScrollView>
   );

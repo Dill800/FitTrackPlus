@@ -405,13 +405,13 @@ const Macros = ({ navigation }) => {
                     <View
                         style={[
                             styles.title_box,
-                            { backgroundColor: theme.colors.third, marginVertical: 10 },
+                            { backgroundColor: theme.colors.third, marginVertical: 10, marginBottom: 30 },
                         ]}
                     >
                         <Text style={styles.title}>Today's Progress</Text>
                     </View>
 
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <View style={{ flex: 1, flexDirection: 'row', marginBottom: 50 }}>
 
                         {
                         donutData1.map((p, i) => {
@@ -442,7 +442,7 @@ const Macros = ({ navigation }) => {
                 </View>
 
 
-                <View style={[styles.btn_box, {marginTop: 1}]}>
+                <View style={[styles.btn_box, {marginTop: 60}]}>
                     <TouchableOpacity
                         onPress={() => {
                             navi.navigate("Meals");
@@ -467,36 +467,7 @@ const Macros = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                                         
-                            <View
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'space-evenly',
-                                    paddingHorizontal: 16,
-                                    bottom: 20
-                                }}>
-                                
-                                <View>
-                                    <Text style={{ marginBottom:  0, opacity: 0}}>
-                                    Progress with animation and increased heighthhhhhhhh
-                                    </Text>
-                                    <View stlye={{flexDirection:'row'}}>
-                                        {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'left', top: 24, fontSize: 20}}>{startingWeight} lbs</Text>}
-                                        {/* {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'center', top: 0, fontSize: 15}}>{proportion.toFixed(2)} %</Text>} */}
-                                        {proportion == -1 ? <Text></Text> : <Text style={{color: theme.colors.text, textAlign: 'right', fontSize: 20}}>{goalWeight} lbs 🏆</Text>}
-                                        {proportion == -1 ? <Text></Text> : <ProgressBar progress={proportion + 1} height={15} backgroundColor="#00ffff" trackColor={theme.colors.card} />}
-                                        {proportion == -1 ? <Text></Text> : <Text style={{color: 'grey', textAlign: 'center', bottom: 16, fontSize: 15}}>{currentWeight} lbs</Text>}
-                                        
-                                    </View>
-                                    <View >
-                                        
-                                        {proportion == -1 ? <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 15, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text>  
-                                                         : <Text style={{color: theme.colors.text, textAlign: 'center', marginTop: -10, fontSize: 30, fontFamily: 'Avenir-Roman', fontWeight: 'bold'}}>{displayString}</Text> }
-                                        
-                                    </View>
-                                    
-                                </View>
-                           
-                                </View>
+                            
            
               
 

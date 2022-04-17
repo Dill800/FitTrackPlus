@@ -162,7 +162,7 @@ export default function Donut({
         ]}
       />
       {/* <Text style={{textAlign:'center', color: color, textShadowColor: 'black', textShadowRadius: 0.5}}>{dataLabel}</Text> */}
-      <Text style={{textAlign:'center', color: color, fontWeight: '900'}}> {dataLabel} {over100 && '⚠️'}</Text>
+      <Text style={{textAlign:'center', color: color, fontWeight: '900', fontSize: 20 }}> {dataLabel} {over100 && '⚠️'}</Text>
       {/* <Text style={[
           StyleSheet.absoluteFillObject,
           { fontSize: radius / 2.5, color: textColor ?? color },
