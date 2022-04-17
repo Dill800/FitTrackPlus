@@ -28,10 +28,17 @@ const Meals = ({ navigation }) => {
         },
         modalView: {
             margin: 20,
-            width: "90%",
+            width: "92%",
+            //height: "80%",
             backgroundColor: theme.colors.background,
             borderRadius: 20,
-            paddingVertical: 100,
+            //paddingVertical: 85,
+            //padding: 15,
+            //bottom: 40,
+            //top: 2,
+            //paddingTop: -50,
+            paddingBottom: 20,
+            //marginBottom: 10,
             alignItems: "center",
             shadowColor: "#000",
             shadowOffset: {
@@ -40,7 +47,7 @@ const Meals = ({ navigation }) => {
             },
             shadowOpacity: 0.25,
             shadowRadius: 4,
-            elevation: 5
+            elevation: 5,
         },
         input: {
             flex: 1,
@@ -149,7 +156,23 @@ const Meals = ({ navigation }) => {
         card_text: {
             color: theme.colors.text,
             fontSize: 15
-        }
+        },
+        button: {
+            borderRadius: 20,
+            padding: 10,
+            elevation: 2
+        },
+        buttonOpen: {
+            backgroundColor: "#F194FF",
+        },
+        buttonClose: {
+            backgroundColor: "#2196F3",
+        },
+        textStyle: {
+            color: "white",
+            fontWeight: "bold",
+            textAlign: "center"
+        },
     })
 
     const navi = useNavigation();
@@ -410,7 +433,7 @@ const Meals = ({ navigation }) => {
                                 <Text style={[styles.title,]}>Total Calories: {calorieCount}</Text>
                             </View>
                             {/* Button to add exercises */}
-                            <View style={[styles.btn_box,]}>
+                            <View style={[styles.btn_box, {marginBottom: 30}]}>
                                 <TouchableOpacity style={[styles.btn_shape, { backgroundColor: "rgba(153,50,245,1)", marginHorizontal: 10 }]} onPress={() => { updateMeal(); setModalVisible(false); }}>
                                     <Text style={styles.btn_text}>Update Meal</Text>
                                 </TouchableOpacity>
@@ -419,6 +442,13 @@ const Meals = ({ navigation }) => {
                                     <Text style={styles.btn_text}>Delete Meal</Text>
                                 </TouchableOpacity>
                             </View>
+                                <TouchableOpacity
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => setModalVisible(false)}
+                                    >
+                                        <Text style={[styles.textStyle,]}>Return</Text>
+                                    </TouchableOpacity>
+                                    
                         </View>
 
 
