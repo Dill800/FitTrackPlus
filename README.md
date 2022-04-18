@@ -2,6 +2,10 @@
 
 FitTrack+ is a social fitness app developed for iOS machines
 
+## Screenshots
+
+Go to the demo_screenshots folder to view screenshots of the app
+
 ## Setup
 * Navigate to project directory (.../FitTrackPlus)
 * Create a config.js file in ```FitTrackPlus/backend/config``` (you will have to create the config folder)
