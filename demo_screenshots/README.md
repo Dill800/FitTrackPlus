@@ -1,6 +1,6 @@
-<Text>1. Home Page --- 2. Settings --- 3. Light Mode</Text> 
+<Text>1. Home Page --- 2. Settings --- 3. Light Mode --- 4. Wilks Score Info</Text> 
 
-<img src="Home.jpg" alt="drawing" width="200"/> <img src="Settings.jpg" alt="drawing" width="200"/> <img src="LightMode.jpg" alt="drawing" width="200"/> 
+<img src="Home.jpg" alt="drawing" width="200"/> <img src="Settings.jpg" alt="drawing" width="200"/> <img src="LightMode.jpg" alt="drawing" width="200"/> <img src="WilksScore.png" alt="drawing" width="200"/>
 
 
   
