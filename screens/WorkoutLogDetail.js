@@ -142,6 +142,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
   
   
     let getExercises = () => {
+      console.log("hit get ee");
       //console.log("Populating exercise stuff")
       let data = userData.username.workoutlogList;
   
@@ -384,15 +385,16 @@ const WorkoutLogDetail = ({navigation, route}) => {
     })
     .then(res => {
       // console.log("---------- POST Called to db")
+      updateWilks();
     })
     .catch(e => {
       console.log("error", e)
     })
 
     dispatch(updateUsername(data))
-
-    updateWilks();
+    //updateWilks();
   }
+
 
   const deleteWorkoutLog = () => {
 
@@ -418,6 +420,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
     })
     .then(res => {
       // console.log("---------- POST Called to db")
+      updateWilks();
     })
     .catch(e => {
       console.log("error", e)
@@ -426,7 +429,7 @@ const WorkoutLogDetail = ({navigation, route}) => {
     dispatch(updateUsername(data))
 
     // Navigate back to dashboard automatically after deletion
-    updateWilks();
+    //updateWilks();
     navi.goBack()  
   }
 
@@ -474,13 +477,14 @@ const WorkoutLogDetail = ({navigation, route}) => {
     })
     .then(res => {
       // console.log("---------- POST Called to db")
+      updateWilks();
     })
     .catch(e => {
       console.log("error", e)
     })
 
     dispatch(updateUsername(data))
-    updateWilks();
+    //updateWilks();
   }
 
   const closer = () => {
