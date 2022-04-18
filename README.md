@@ -45,7 +45,7 @@ To find your IPv4 address:
 
 * Run expo start (or ```expo start --tunnel``` if you're using a WSL terminal)
 
-* Run ```expo start``` and ```npm run server``` from CMD instead of a WSL terminal (WSL uses a different Internet Adapter which assigns a different IP)
+* Run ```expo start``` and ```npm run server``` from CMD instead of a WSL terminal (WSL uses a different Internet Adapter which assigns a different IP). Make sure to run ```expo start``` and ```npm run server``` in their own CMD terminals.
 
 
 ## Contributors
